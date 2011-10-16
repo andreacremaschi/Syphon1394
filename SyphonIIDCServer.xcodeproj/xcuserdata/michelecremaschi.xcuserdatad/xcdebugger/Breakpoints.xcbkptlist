@@ -8,14 +8,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "SyphonIIDCServer/KOpenGLView.h"
-         timestampString = "340476449.418388"
+         filePath = "SyphonIIDCServer/TFLibDC1394Capture+CIImageFromDc1394Frame.m"
+         timestampString = "340500390.708506"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "27"
-         endingLineNumber = "27"
-         landmarkName = "pixelAspectRatio"
-         landmarkType = "19">
+         startingLineNumber = "1"
+         endingLineNumber = "1">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
