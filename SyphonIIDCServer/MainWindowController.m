@@ -60,7 +60,7 @@
         
     }
         
-    captureObject = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithInt: [UUID intValue]]
+    captureObject = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithLongLong: [UUID longLongValue]]
                                                                  error:&error];
     if (nil==captureObject)
     {
