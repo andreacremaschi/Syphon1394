@@ -1,0 +1,586 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A53144B3E960088F701 /* libdc1394.dylib */; };
+		C4121A60144B3EFD0088F701 /* TFCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A56144B3EFD0088F701 /* TFCapture.m */; };
+		C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */; };
+		C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */; };
+		C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
+		C4121A66144B3F150088F701 /* SICError.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A65144B3F150088F701 /* SICError.m */; };
+		C4121A6D144B3FB30088F701 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A6C144B3FB30088F701 /* Accelerate.framework */; };
+		C4121A74144B41020088F701 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4121A73144B41020088F701 /* MainWindowController.xib */; };
+		C4121A78144B41740088F701 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A77144B41740088F701 /* MainWindowController.m */; };
+		C4195787144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
+		C4195791144B376700338631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C419578F144B376700338631 /* InfoPlist.strings */; };
+		C4195793144B376700338631 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4195792144B376700338631 /* main.m */; };
+		C4195797144B376700338631 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C4195795144B376700338631 /* Credits.rtf */; };
+		C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4195799144B376700338631 /* SyIIDCAppDelegate.m */; };
+		C419579D144B376700338631 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C419579B144B376700338631 /* MainMenu.xib */; };
+		C41957A5144B376700338631 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957A4144B376700338631 /* SenTestingKit.framework */; };
+		C41957A6144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
+		C41957AE144B376700338631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C41957AC144B376700338631 /* InfoPlist.strings */; };
+		C41957B1144B376700338631 /* SyphonIIDCServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957B0144B376700338631 /* SyphonIIDCServerTests.m */; };
+		C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957BA144B378D00338631 /* QuartzCore.framework */; };
+		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
+		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
+		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C41957A7144B376700338631 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C4195779144B376600338631 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C4195781144B376700338631;
+			remoteInfo = SyphonIIDCServer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C4121A53144B3E960088F701 /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = /usr/local/lib/libdc1394.dylib; sourceTree = "<absolute>"; };
+		C4121A55144B3EFD0088F701 /* TFCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapture.h; sourceTree = "<group>"; };
+		C4121A56144B3EFD0088F701 /* TFCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCapture.m; sourceTree = "<group>"; };
+		C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFCapturePixelFormatConversions.c; sourceTree = "<group>"; };
+		C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapturePixelFormatConversions.h; sourceTree = "<group>"; };
+		C4121A59144B3EFD0088F701 /* TFExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFExceptions.h; sourceTree = "<group>"; };
+		C4121A5A144B3EFD0088F701 /* TFIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIncludes.h; sourceTree = "<group>"; };
+		C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394Capture.h; sourceTree = "<group>"; };
+		C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLibDC1394Capture.m; sourceTree = "<group>"; };
+		C4121A5D144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.h"; sourceTree = "<group>"; };
+		C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.m"; sourceTree = "<group>"; };
+		C4121A5F144B3EFD0088F701 /* TFLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLocalization.h; sourceTree = "<group>"; };
+		C4121A64144B3F150088F701 /* SICError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SICError.h; sourceTree = "<group>"; };
+		C4121A65144B3F150088F701 /* SICError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SICError.m; sourceTree = "<group>"; };
+		C4121A6C144B3FB30088F701 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		C4121A73144B41020088F701 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
+		C4121A76144B41740088F701 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
+		C4121A77144B41740088F701 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
+		C4195782144B376700338631 /* SyphonIIDCServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SyphonIIDCServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4195786144B376700338631 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C4195789144B376700338631 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		C419578A144B376700338631 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C419578B144B376700338631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C419578E144B376700338631 /* SyphonIIDCServer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SyphonIIDCServer-Info.plist"; sourceTree = "<group>"; };
+		C4195790144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C4195792144B376700338631 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C4195794144B376700338631 /* SyphonIIDCServer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SyphonIIDCServer-Prefix.pch"; sourceTree = "<group>"; };
+		C4195796144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		C4195798144B376700338631 /* SyIIDCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyIIDCAppDelegate.h; sourceTree = "<group>"; };
+		C4195799144B376700338631 /* SyIIDCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyIIDCAppDelegate.m; sourceTree = "<group>"; };
+		C419579C144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C41957A3144B376700338631 /* SyphonIIDCServerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyphonIIDCServerTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C41957A4144B376700338631 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		C41957AB144B376700338631 /* SyphonIIDCServerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SyphonIIDCServerTests-Info.plist"; sourceTree = "<group>"; };
+		C41957AD144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C41957AF144B376700338631 /* SyphonIIDCServerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonIIDCServerTests.h; sourceTree = "<group>"; };
+		C41957B0144B376700338631 /* SyphonIIDCServerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonIIDCServerTests.m; sourceTree = "<group>"; };
+		C41957BA144B378D00338631 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C41957BC144B37B000338631 /* KOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KOpenGLView.h; sourceTree = "<group>"; };
+		C41957BD144B37B000338631 /* KOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KOpenGLView.m; sourceTree = "<group>"; };
+		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
+		C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
+		C41957C2144B380900338631 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C419577F144B376700338631 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4121A6D144B3FB30088F701 /* Accelerate.framework in Frameworks */,
+				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
+				C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */,
+				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
+				C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C419579F144B376700338631 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C41957A5144B376700338631 /* SenTestingKit.framework in Frameworks */,
+				C41957A6144B376700338631 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C4121A6E144B3FC90088F701 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C4121A76144B41740088F701 /* MainWindowController.h */,
+				C4121A77144B41740088F701 /* MainWindowController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		C4121A6F144B3FCD0088F701 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C41957BC144B37B000338631 /* KOpenGLView.h */,
+				C41957BD144B37B000338631 /* KOpenGLView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C4121A70144B3FD10088F701 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C4121A71144B3FE00088F701 /* IIDC protocol management */ = {
+			isa = PBXGroup;
+			children = (
+				C4121A53144B3E960088F701 /* libdc1394.dylib */,
+				C4121A55144B3EFD0088F701 /* TFCapture.h */,
+				C4121A56144B3EFD0088F701 /* TFCapture.m */,
+				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
+				C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */,
+				C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */,
+				C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */,
+				C4121A5D144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
+				C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */,
+			);
+			name = "IIDC protocol management";
+			sourceTree = "<group>";
+		};
+		C4121A72144B40090088F701 /* Misc includes */ = {
+			isa = PBXGroup;
+			children = (
+				C4121A64144B3F150088F701 /* SICError.h */,
+				C4121A65144B3F150088F701 /* SICError.m */,
+				C4121A59144B3EFD0088F701 /* TFExceptions.h */,
+				C4121A5A144B3EFD0088F701 /* TFIncludes.h */,
+				C4121A5F144B3EFD0088F701 /* TFLocalization.h */,
+				C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */,
+				C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */,
+			);
+			name = "Misc includes";
+			sourceTree = "<group>";
+		};
+		C4121A75144B412A0088F701 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C419579B144B376700338631 /* MainMenu.xib */,
+				C4121A73144B41020088F701 /* MainWindowController.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C4195777144B376600338631 = {
+			isa = PBXGroup;
+			children = (
+				C419578C144B376700338631 /* Source */,
+				C41957A9144B376700338631 /* SyphonIIDCServerTests */,
+				C4121A75144B412A0088F701 /* Resources */,
+				C4195785144B376700338631 /* Frameworks */,
+				C4195783144B376700338631 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C4195783144B376700338631 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4195782144B376700338631 /* SyphonIIDCServer.app */,
+				C41957A3144B376700338631 /* SyphonIIDCServerTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C4195785144B376700338631 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4121A6C144B3FB30088F701 /* Accelerate.framework */,
+				C41957C2144B380900338631 /* OpenGL.framework */,
+				C41957BA144B378D00338631 /* QuartzCore.framework */,
+				C4195786144B376700338631 /* Cocoa.framework */,
+				C41957A4144B376700338631 /* SenTestingKit.framework */,
+				C4195788144B376700338631 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4195788144B376700338631 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4195789144B376700338631 /* AppKit.framework */,
+				C419578A144B376700338631 /* CoreData.framework */,
+				C419578B144B376700338631 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		C419578C144B376700338631 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				C4121A71144B3FE00088F701 /* IIDC protocol management */,
+				C4121A70144B3FD10088F701 /* Model */,
+				C4121A6F144B3FCD0088F701 /* View */,
+				C4121A6E144B3FC90088F701 /* Controller */,
+				C4195798144B376700338631 /* SyIIDCAppDelegate.h */,
+				C4195799144B376700338631 /* SyIIDCAppDelegate.m */,
+				C4121A72144B40090088F701 /* Misc includes */,
+				C419578D144B376700338631 /* Supporting Files */,
+			);
+			name = Source;
+			path = SyphonIIDCServer;
+			sourceTree = "<group>";
+		};
+		C419578D144B376700338631 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C419578E144B376700338631 /* SyphonIIDCServer-Info.plist */,
+				C419578F144B376700338631 /* InfoPlist.strings */,
+				C4195792144B376700338631 /* main.m */,
+				C4195794144B376700338631 /* SyphonIIDCServer-Prefix.pch */,
+				C4195795144B376700338631 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C41957A9144B376700338631 /* SyphonIIDCServerTests */ = {
+			isa = PBXGroup;
+			children = (
+				C41957AF144B376700338631 /* SyphonIIDCServerTests.h */,
+				C41957B0144B376700338631 /* SyphonIIDCServerTests.m */,
+				C41957AA144B376700338631 /* Supporting Files */,
+			);
+			path = SyphonIIDCServerTests;
+			sourceTree = "<group>";
+		};
+		C41957AA144B376700338631 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C41957AB144B376700338631 /* SyphonIIDCServerTests-Info.plist */,
+				C41957AC144B376700338631 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C4195781144B376700338631 /* SyphonIIDCServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C41957B4144B376700338631 /* Build configuration list for PBXNativeTarget "SyphonIIDCServer" */;
+			buildPhases = (
+				C419577E144B376700338631 /* Sources */,
+				C419577F144B376700338631 /* Frameworks */,
+				C4195780144B376700338631 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SyphonIIDCServer;
+			productName = SyphonIIDCServer;
+			productReference = C4195782144B376700338631 /* SyphonIIDCServer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C41957A2144B376700338631 /* SyphonIIDCServerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C41957B7144B376700338631 /* Build configuration list for PBXNativeTarget "SyphonIIDCServerTests" */;
+			buildPhases = (
+				C419579E144B376700338631 /* Sources */,
+				C419579F144B376700338631 /* Frameworks */,
+				C41957A0144B376700338631 /* Resources */,
+				C41957A1144B376700338631 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C41957A8144B376700338631 /* PBXTargetDependency */,
+			);
+			name = SyphonIIDCServerTests;
+			productName = SyphonIIDCServerTests;
+			productReference = C41957A3144B376700338631 /* SyphonIIDCServerTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C4195779144B376600338631 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = C419577C144B376600338631 /* Build configuration list for PBXProject "SyphonIIDCServer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C4195777144B376600338631;
+			productRefGroup = C4195783144B376700338631 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C4195781144B376700338631 /* SyphonIIDCServer */,
+				C41957A2144B376700338631 /* SyphonIIDCServerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C4195780144B376700338631 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4195791144B376700338631 /* InfoPlist.strings in Resources */,
+				C4195797144B376700338631 /* Credits.rtf in Resources */,
+				C419579D144B376700338631 /* MainMenu.xib in Resources */,
+				C4121A74144B41020088F701 /* MainWindowController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C41957A0144B376700338631 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C41957AE144B376700338631 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C41957A1144B376700338631 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C419577E144B376700338631 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4195793144B376700338631 /* main.m in Sources */,
+				C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */,
+				C41957BE144B37B000338631 /* KOpenGLView.m in Sources */,
+				C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */,
+				C4121A60144B3EFD0088F701 /* TFCapture.m in Sources */,
+				C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */,
+				C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */,
+				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
+				C4121A66144B3F150088F701 /* SICError.m in Sources */,
+				C4121A78144B41740088F701 /* MainWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C419579E144B376700338631 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C41957B1144B376700338631 /* SyphonIIDCServerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C41957A8144B376700338631 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C4195781144B376700338631 /* SyphonIIDCServer */;
+			targetProxy = C41957A7144B376700338631 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C419578F144B376700338631 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4195790144B376700338631 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C4195795144B376700338631 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4195796144B376700338631 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		C419579B144B376700338631 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C419579C144B376700338631 /* en */,
+			);
+			name = MainMenu.xib;
+			path = SyphonIIDCServer;
+			sourceTree = "<group>";
+		};
+		C41957AC144B376700338631 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C41957AD144B376700338631 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C41957B2144B376700338631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C41957B3144B376700338631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C41957B5144B376700338631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/usr/local/include/**";
+				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C41957B6144B376700338631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
+				HEADER_SEARCH_PATHS = "/usr/local/include/**";
+				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C41957B8144B376700338631 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SyphonIIDCServer.app/Contents/MacOS/SyphonIIDCServer";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
+				INFOPLIST_FILE = "SyphonIIDCServerTests/SyphonIIDCServerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		C41957B9144B376700338631 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SyphonIIDCServer.app/Contents/MacOS/SyphonIIDCServer";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
+				INFOPLIST_FILE = "SyphonIIDCServerTests/SyphonIIDCServerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C419577C144B376600338631 /* Build configuration list for PBXProject "SyphonIIDCServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C41957B2144B376700338631 /* Debug */,
+				C41957B3144B376700338631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C41957B4144B376700338631 /* Build configuration list for PBXNativeTarget "SyphonIIDCServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C41957B5144B376700338631 /* Debug */,
+				C41957B6144B376700338631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C41957B7144B376700338631 /* Build configuration list for PBXNativeTarget "SyphonIIDCServerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C41957B8144B376700338631 /* Debug */,
+				C41957B9144B376700338631 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C4195779144B376600338631 /* Project object */;
+}
