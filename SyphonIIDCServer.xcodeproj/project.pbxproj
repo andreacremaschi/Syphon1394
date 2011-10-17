@@ -30,6 +30,7 @@
 		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
 		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
 		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
+		C41E3AA5144CB89200FB4A29 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E594144C91DE00CF26C7 /* KCanvas.m */; };
 		C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E596144C91DE00CF26C7 /* KCVBufferPool.m */; };
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
@@ -90,6 +91,7 @@
 		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
 		C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
 		C41957C2144B380900338631 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		C41E3AA4144CB89200FB4A29 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		C436E593144C91DE00CF26C7 /* KCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCanvas.h; sourceTree = "<group>"; };
 		C436E594144C91DE00CF26C7 /* KCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCanvas.m; sourceTree = "<group>"; };
 		C436E595144C91DE00CF26C7 /* KCVBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCVBufferPool.h; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
 				C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */,
+				C41E3AA5144CB89200FB4A29 /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +217,8 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C41E3AA6144CB89500FB4A29 /* New Group */,
+				C41E3AA4144CB89200FB4A29 /* Syphon.framework */,
 				C4121A6C144B3FB30088F701 /* Accelerate.framework */,
 				C41957C2144B380900338631 /* OpenGL.framework */,
 				C41957BA144B378D00338631 /* QuartzCore.framework */,
@@ -280,6 +285,13 @@
 				C41957AC144B376700338631 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C41E3AA6144CB89500FB4A29 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
 			sourceTree = "<group>";
 		};
 		C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */ = {
@@ -527,6 +539,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../Syphon SDK Public Beta 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
@@ -545,6 +558,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../Syphon SDK Public Beta 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";

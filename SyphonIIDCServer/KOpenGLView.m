@@ -74,14 +74,21 @@
         
         // create CIContext -- the CIContext object provides an evaluation context for
         // rendering a Core Image image (CIImage) through Quartz 2D or OpenGL
-        _ciContext = [[CIContext contextWithCGLContext: [[self openGLContext] CGLContextObj]		// Core Image draws all output into the surface attached to this OpenGL context
-                                           pixelFormat: [[self pixelFormat] CGLPixelFormatObj]		// must be the same pixel format used to create the cgl context
+        CGLContextObj contextObj = self.openGLContext.CGLContextObj;
+        CGLPixelFormatObj pixelFormatObj = self.pixelFormat.CGLPixelFormatObj;
+
+/*        _ciContext = [CIContext contextWithCGLContext:contextObj 
+                                          pixelFormat:nil 
+                                           colorSpace:NULL 
+                                              options:nil];
+*/                               
+        _ciContext = [[CIContext contextWithCGLContext: contextObj		// Core Image draws all output into the surface attached to this OpenGL context
+                                           pixelFormat: pixelFormatObj		// must be the same pixel format used to create the cgl context
                                             colorSpace: colorSpace
-                                               options: [NSDictionary dictionaryWithObjectsAndKeys:(id)colorSpace, kCIContextOutputColorSpace,	 // dictionary containing color space information
-                                                         (id)colorSpace, CGContextSetFillColorSpace, nil]] retain];
+                                               options: nil] retain];
         
         // release the colorspace we don't need it anymore
-        CGColorSpaceRelease(colorSpace);
+       CGColorSpaceRelease(colorSpace);
     }
     return _ciContext;
     
@@ -90,8 +97,12 @@
 - (void) setImageToShow:(CIImage *) newImage {
 	
 	@synchronized (self)	{
+        CGLLockContext(self.openGLContext.CGLContextObj);
+        [newImage retain];
 		[self renderImage: newImage];
-/*		if ([self isProcessing])	{
+        [newImage release];
+        CGLUnlockContext(self.openGLContext.CGLContextObj);
+        /*		if ([self isProcessing])	{
 			[_renderingQueue enqueue: newImage];
 		}*/
 	}
@@ -146,7 +157,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 			//glFlush();
 		}
 		CGLUnlockContext ( cgl_ctx );
-
+        
 		return;
 	}		
 		
@@ -187,17 +198,18 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	
 	{
 		// clear to black if nothing else
-		glClearColor(0, 0, 0, 0);
+		glClearColor(1, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		@try {
-			[[self ciContext] drawImage: retainedImage
+            CIContext *ciContext = self.ciContext;
+			[ciContext drawImage: retainedImage
 								 inRect: CGRectMake(topx, topy, width, height)
 							   fromRect: [retainedImage extent]];
 		}
 		@catch (NSError *error) {
 			NSLog(@"%@", error);
 		}
-		//glFlush();
+        glFlush();
 
 	}
 	CGLUnlockContext ( cgl_ctx );	
@@ -302,15 +314,15 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     	glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-	/*	glViewport (0, 0, 640, 400);
-	 glMatrixMode (GL_PROJECTION);
+		glViewport (0, 0, 640, 400);
+	/* glMatrixMode (GL_PROJECTION);
 	 glLoadIdentity ();
 	 glOrtho (0, 640, 0, 400, -1, 1);
 	 glMatrixMode (GL_MODELVIEW);
 	 glLoadIdentity ();
 	 glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	 glEnable (GL_BLEND);*/
-	
+	 glEnable (GL_BLEND);
+	*/
 
 	[super prepareOpenGL];
 	}
@@ -373,14 +385,10 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 		//[self prepareOpenGL];
 		
 		
-		if (nil != _ciContext) 
+		if (nil != _ciContext) {
 			[_ciContext release];
-		
-		_ciContext= [[CIContext contextWithCGLContext:[[self openGLContext] CGLContextObj]
-										  pixelFormat:[[self pixelFormat] CGLPixelFormatObj]
-										   colorSpace:nil
-											  options: nil
-					  ] retain];
+            _ciContext = nil;
+        }
 	}
 
 

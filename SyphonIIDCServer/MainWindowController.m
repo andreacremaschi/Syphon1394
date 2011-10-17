@@ -9,7 +9,8 @@
 #import "MainWindowController.h"
 #import "TFLibDC1394Capture.h"
 #import "TFIncludes.h"
-
+#import "KOpenGLView.h"
+#import "IIDCCameraController.h"
 
 @implementation MainWindowController
 @synthesize selectedCameraUUID;
@@ -56,37 +57,64 @@
 {
     NSError * error;
     if (captureObject) {
-        if ([captureObject isCapturing]) [captureObject stopCapturing: &error]; 
+        if ([captureObject.dc1394Camera isCapturing]) [captureObject.dc1394Camera stopCapturing: &error]; 
         
     }
         
-    captureObject = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithLongLong: [UUID longLongValue]]
+    TFLibDC1394Capture *dc1394Camera = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithLongLong: [UUID longLongValue]]
                                                                  error:&error];
-    if (nil==captureObject)
+    if (nil==dc1394Camera)
     {
         // error management!
         NSLog (@"%@", TFLocalizedString([error description], nil));
         return;
     }
 
-    captureObject.delegate = self;
-    if (![captureObject startCapturing: &error]) 
+
+    if (![dc1394Camera startCapturing: &error]) 
     {
         NSLog (@"%@", TFLocalizedString([error description], nil));
         // error management!
     }
+    self.captureObject = [IIDCCameraController cameraControllerWithTFLibDC1394CaptureObject: dc1394Camera];
+    self.captureObject.delegate = self;
     return;
 }
 
 
-#pragma mark TFLibDC1394Capture delegates
+#pragma mark IIDCCameraController delegates
 /*- (CGColorSpaceRef)wantedCIImageColorSpaceForCapture:(TFCapture*)capture;
 {
 }*/
-
-- (void)capture:(TFCapture*)capture didCaptureFrame:(CIImage*)capturedFrame
+- (void)captureObject:(IIDCCameraController*)capture
+didCaptureFrame:(CIImage*)capturedFrame
 {
+
+    if ([syServer hasClients])
+    {
+        // lockTexture just stops the renderer from drawing until we're done with it
+   /*     [theRenderer lockTexture];
+        
+        // publish our frame to our server. We use the whole texture, but we could just publish a region of it
+        CGLLockContext(syServer.context);
+        [syServer publishFrameTexture:theRenderer.textureName
+                        textureTarget:GL_TEXTURE_RECTANGLE_EXT
+                          imageRegion:NSMakeRect(0, 0, theRenderer.textureSize.width, theRenderer.textureSize.height)
+                    textureDimensions:theRenderer.textureSize
+                              flipped:NO];
+        CGLUnlockContext(syServer.context);
+        // let the renderer resume drawing
+        [theRenderer unlockTexture];*/
+    }
+    
+    
+    
+    
+    
+    [previewGLView setImageToShow: capturedFrame];
     return;  
 }
+
+
 
 @end

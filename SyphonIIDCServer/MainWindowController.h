@@ -7,15 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Syphon/Syphon.h>
 
-@class TFLibDC1394Capture;
+@class IIDCCameraController, KOpenGLView;
 @interface MainWindowController : NSWindowController {
-    
+    SyphonServer *syServer;
+    IBOutlet KOpenGLView *previewGLView;
 }
 
 @property (readonly) NSArray * IIDCCameraList;
 @property (nonatomic, retain) NSString *selectedCameraUUID;
-@property (nonatomic, retain) TFLibDC1394Capture *captureObject;
+@property (nonatomic, retain) IIDCCameraController *captureObject;
 
 
 

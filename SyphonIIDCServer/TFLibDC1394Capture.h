@@ -83,4 +83,8 @@ struct TFLibDC1394CaptureConversionContext;
 + (CGSize)defaultResolutionForCameraWithUniqueId:(NSNumber*)uid;
 + (BOOL)cameraWithUniqueId:(NSNumber*)uid supportsResolution:(CGSize)resolution;
 
++ (NSArray*)supportedVideoModesForFrameSize:(CGSize)frameSize 
+                                  forCamera:(dc1394camera_t*)cam 
+                                      error:(NSError**)error;
+
 @end

@@ -56,6 +56,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 @implementation TFLibDC1394Capture
 
+#pragma mark - Class init and destructor
+
 + (void)initialize
 {
 	_allocatedTFLibDc1394CaptureObjects = [[NSMutableDictionary alloc] init];
@@ -159,6 +161,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	return self;
 }
+#pragma mark Camera initialization and release
 
 - (void)_freeCamera
 {
@@ -183,6 +186,9 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		}
 	}
 }
+
+
+#pragma mark - Accessors
 
 - (BOOL)setCameraToCameraWithUniqueId:(NSNumber*)uid error:(NSError**)error;
 {
@@ -826,6 +832,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	return 0;
 }
+#pragma mark - 
 
 - (void)_videoCaptureThread
 {
@@ -845,6 +852,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	}
 }
 
+#pragma mark - Class methods
 + (NSString*)_displayNameForCamera:(dc1394camera_t*)camera
 {
 	if (NULL == camera)
@@ -1209,6 +1217,13 @@ errorReturn2:
 	dc1394_free(dc);
 errorReturn:
 	return retval;
+}
+
++ (NSArray*)supportedVideoModesForFrameSize:(CGSize)frameSize 
+                                  forCamera:(dc1394camera_t*)cam 
+                                      error:(NSError**)error
+{
+    return [self _supportedVideoModesForFrameSize: frameSize forCamera:cam error:error];
 }
 
 + (BOOL)_getFrameRatesForCamera:(dc1394camera_t*)cam

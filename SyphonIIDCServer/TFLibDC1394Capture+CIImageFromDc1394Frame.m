@@ -30,6 +30,11 @@
 #import "TFCapturePixelFormatConversions.h"
 #import "TFIncludes.h"
 
+#import "KCanvas.h"
+#import "KBO.h"
+
+#import <OpenGL/CGLMacro.h>
+
 #if defined(_USES_IPP_)
 #import <ipp.h>
 #import <ippi.h>
@@ -111,7 +116,8 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 	return nil;
 }
 
-- (CIImage*)ciImageWithDc1394Frame:(dc1394video_frame_t*)frame error:(NSError**)error
+- (CIImage*)ciImageWithDc1394Frame: (dc1394video_frame_t*) frame 
+                             error: (NSError**) error
 {
 	if (NULL == frame)
 		return nil;
@@ -152,7 +158,7 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 						break;
 				}
 				
-				NSDictionary* poolAttr = [NSDictionary dictionaryWithObjectsAndKeys:
+			/*	NSDictionary* poolAttr = [NSDictionary dictionaryWithObjectsAndKeys:
 											[NSNumber numberWithUnsignedInt:pixelFormat], (id)kCVPixelBufferPixelFormatTypeKey,
 											[NSNumber numberWithUnsignedInt:frame->size[0]], (id)kCVPixelBufferWidthKey,
 											[NSNumber numberWithUnsignedInt:frame->size[1]], (id)kCVPixelBufferHeightKey,
@@ -164,10 +170,10 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 					// TODO: report error
 				}
 								
-				_pixelBufferPoolNeedsUpdating = NO;
+				_pixelBufferPoolNeedsUpdating = NO;*/
 			}
 			
-			CVPixelBufferRef pixelBuffer = nil;
+			/*CVPixelBufferRef pixelBuffer = nil;
 			CVReturn err = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _pixelBufferPool, &pixelBuffer);
 			
 			if (kCVReturnSuccess != err) {
@@ -195,9 +201,11 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 			}
 			
 			unsigned char* baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-			
+			*/
+            
+            
 			// do pixel format conversion if needed.
-			if (DC1394_COLOR_CODING_YUV444 == frame->color_coding		||
+			/*if (DC1394_COLOR_CODING_YUV444 == frame->color_coding		||
 				DC1394_COLOR_CODING_YUV411 == frame->color_coding		||
 				DC1394_COLOR_CODING_RGB8 == frame->color_coding			||
 				DC1394_COLOR_CODING_MONO8 == frame->color_coding) {
@@ -216,10 +224,10 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 			
 			if (kCVReturnSuccess != err) {
 				// TODO: report error
-			}
+			}*/
 			
 			CIImage* image = nil;
-			if (_delegateCapabilities.hasWantedCIImageColorSpace) {
+			/*if (_delegateCapabilities.hasWantedCIImageColorSpace) {
 				id colorSpace = (id)[delegate wantedCIImageColorSpaceForCapture:self];
 				if (nil == colorSpace)
 					colorSpace = [NSNull null];
@@ -227,12 +235,44 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 				image = [CIImage imageWithCVImageBuffer:pixelBuffer
 												options:[NSDictionary dictionaryWithObject:colorSpace
 																					forKey:kCIImageColorSpace]];
-			} else
-				image = [CIImage imageWithCVImageBuffer:pixelBuffer];
-						
-			CVPixelBufferRelease(pixelBuffer);
+			} else*/
+            
+            
+            
+            
+            
+			//	image = [CIImage imageWithCVImageBuffer:pixelBuffer];
+            
+		//	CVPixelBufferRelease(pixelBuffer);
 					
-			return image;
+            CGSize size = CGSizeMake(frame->size[0], frame->size[1]);
+            static KCanvas *canvas = nil;
+            if (nil==canvas) {
+                canvas = [KCanvas canvasWithSize: size];
+            }
+                
+            if (!CGSizeEqualToSize(size, canvas.size)) [canvas setSize: size];
+            
+            
+            CGLContextObj cgl_ctx = canvas.openGLContext.CGLContextObj;
+            CGLLockContext(cgl_ctx);
+            {
+                
+                [canvas.bo attachPBO];
+                
+
+                
+                glBufferDataARB(GL_PIXEL_UNPACK_BUFFER, frame->total_bytes, frame->image, GL_STREAM_DRAW_ARB);
+                glDrawPixels(frame->size[0],  frame->size[1], GL_LUMINANCE,  GL_UNSIGNED_BYTE, frame->image);
+                glFlush();
+                
+                [canvas.bo detachPBO];
+
+            }
+            CGLUnlockContext(cgl_ctx);
+            
+            
+			return canvas.image;
 		}
 	}
 	
