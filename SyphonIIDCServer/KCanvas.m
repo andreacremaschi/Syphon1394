@@ -23,7 +23,8 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 
 
 @implementation KCanvas 
-
+@synthesize sharedContext;
+@synthesize pixelFormat;
 @synthesize  height;
 @synthesize  width;
 @synthesize maxFPS;
@@ -88,20 +89,10 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 	return _pbo;
 }
 
-#pragma mark Lazy evaluation
-- (void) increaseConsumersCount {
-	[self setConsumers_count: [NSNumber numberWithInt: [[self consumers_count] intValue] + 1]]; 
-	NSLog (@"%@ cons count++: %i", [self name],  [[self consumers_count] intValue]);
-}
 
-- (void) decreaseConsumersCount {
-	[self setConsumers_count: [NSNumber numberWithInt: [[self consumers_count] intValue] - 1]];
-	NSLog (@"%@ cons count--: %i", [self name],  [[self consumers_count] intValue]);
-	if ([[self consumers_count] intValue] <=0) [self releaseOpenGLObjects];
-} 
-
-- (bool) wantsToBeDrawn {
-	return [self consumers_count] > 0;
+-(GLuint )textureName
+{
+    return _texture;
 }
 
 #pragma mark Constructors
@@ -131,13 +122,14 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 #pragma mark openGL methods
 
 - (void) initPBO	{
-	
-	CGLLockContext([_openGLContext CGLContextObj]);
+	CGLContextObj cgl_ctx = _openGLContext.CGLContextObj; 
+	CGLLockContext(cgl_ctx);
 	{
 		if (nil !=_pbo) {
 			[_pbo release];
 			_pbo=nil;
-		}
+		}        
+
 		int canvType = [[self canvasType] intValue];
 		
 		Class pboClass;
@@ -152,14 +144,16 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 		
 		_pbo = [[pboClass alloc]  initPBOWithSize: [self size]
 									openGLContext: [[self openGLContext] CGLContextObj]];
+        
+
 	}
-	CGLUnlockContext([_openGLContext CGLContextObj]);
+	CGLUnlockContext(cgl_ctx);
 	
 }
 
 
 
-- (NSOpenGLPixelFormat *)pixelFormat	{
+- (NSOpenGLPixelFormat *)defaultPixelFormat	{
 	NSOpenGLPixelFormatAttribute	attributes[] = {
 		//NSOpenGLPFAPixelBuffer,
 		NSOpenGLPFADoubleBuffer,
@@ -178,8 +172,9 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 - (bool) initOpenGLContextWithError: (NSError **)error 
 						   shareContext: (NSOpenGLContext *)shareContext {
 	
-	NSOpenGLPixelFormat *format = [self pixelFormat];
 	
+    NSOpenGLPixelFormat *format = pixelFormat;
+	if (nil==format) format = [self defaultPixelFormat];
 	int width = [self.width intValue];
 	int height = [self.height intValue];
 	
@@ -189,15 +184,16 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 		return false;
 	}
 
+    CGLContextObj cgl_ctx = _openGLContext.CGLContextObj;
+    if(_texture)
+    {
+        glDeleteTextures(1, &_texture);
+    }
+    
 	if (nil != _openGLContext) [_openGLContext release];
 	
-	// TEMP
-	/*NSOpenGLContext* sharedContext = nil;
-	if ([[self canvasType] intValue] == K_CANVAS_TYPE_FBO) {
-		id parent = [[[self compositing_layers] anyObject] parent] ;
-		sharedContext = [parent openGLContext] ;
-	}*/
-	// TEMP
+
+    
 	//Create the OpenGL context to render with (with color and depth buffers)
 	_openGLContext = [[NSOpenGLContext alloc] 
 					  initWithFormat:format 
@@ -209,9 +205,10 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 		return false;
 	}
 	
-	CGLContextObj cgl_ctx = [_openGLContext CGLContextObj];
+    cgl_ctx = _openGLContext.CGLContextObj;
 	CGLLockContext( cgl_ctx );	
-	{			
+	{		
+        
 		glViewport(0, 0, width, height);
 		
 		glMatrixMode(GL_MODELVIEW);    // select the modelview matrix
@@ -222,6 +219,14 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 		
 		glOrtho(0, width, 0, height, -1.0, 1.0);// define a 2-D orthographic projection matrix
 		
+        // texture / color attachment
+		glGenTextures(1, &_texture);
+		glEnable(GL_TEXTURE_RECTANGLE_EXT);
+		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _texture);
+		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+        
+        
 	}
 	CGLUnlockContext( cgl_ctx );
 	
@@ -235,9 +240,8 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 	if (nil==_openGLContext) {
 		NSError *error = nil;
 		
-		NSOpenGLContext *shareContext = nil;
 		bool result = [self initOpenGLContextWithError: &error 
-											  shareContext: shareContext];
+											  shareContext: sharedContext];
 		if (!result)	{
 			NSLog(@"Error initalizing openGLContext: %@", [error description]);
 			return nil;

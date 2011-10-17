@@ -52,9 +52,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 - (void)_setupCapture:(NSValue*)errPointer;
 - (void)_stopCapture:(NSValue*)errPointer;
 - (void)_videoCaptureThread;
+- (BOOL)startCapturing:(NSError**)error;
 @end
 
 @implementation TFLibDC1394Capture
+@synthesize delegate;
 
 #pragma mark - Class init and destructor
 
@@ -65,8 +67,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (void)dealloc
 {
-	if ([self isCapturing])
-		[self stopCapturing:NULL];
+    delegate = nil;
+    
 
 	[self _freeCamera];
 	
@@ -168,9 +170,6 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (NULL == _camera)
 		return;
 
-	if ([self isCapturing])
-		[self stopCapturing:NULL];
-		
 	if (NULL != _camera) {
 		NSNumber* guid = [NSNumber numberWithUnsignedLongLong:_camera->guid];
 		
@@ -198,13 +197,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (NULL != _camera && [uid unsignedLongLongValue] == _camera->guid)
 		return YES;
 	
-	BOOL wasRunning = [self isCapturing];
 	BOOL hadCamera = (NULL != _camera);
 	CGSize frameSize;
 
 	if (hadCamera) {
 		frameSize = [self frameSize];
-		[self stopCapturing:NULL];
 		[self _freeCamera];
 	}
 	
@@ -309,9 +306,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			[self setFrameSize:[[self class] defaultResolutionForCameraWithUniqueId:uid] error:NULL];
 	}
 	
-	BOOL success = YES;
-	if (wasRunning)
-		success = [self startCapturing:error];
+	BOOL success = [self startCapturing:error];
 	
 	return success;
 }
@@ -468,7 +463,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		}
 	}
 		
-	return [super startCapturing:error];
+	return YES;
 }
 
 - (BOOL)stopCapturing:(NSError**)error
@@ -495,7 +490,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		}
 	}
 	
-	BOOL success = [super stopCapturing:error];
+	BOOL success = YES;
 				
 	if (nil != *error) {
 		[*error autorelease];
@@ -518,7 +513,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	dc1394_video_get_mode(_camera, &mode);
 	dc1394_video_get_framerate(_camera, &framerate);
 	dc1394_video_set_mode(_camera, mode);
-	dc1394_video_set_framerate(_camera, mode);
+	dc1394_video_set_framerate(_camera, framerate);
 
 	dc1394_capture_schedule_with_runloop(_camera,
 										 [[NSRunLoop currentRunLoop] getCFRunLoop],
@@ -805,14 +800,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (void)dispatchFrame:(dc1394video_frame_t*)frame
 {
-//	TFPMStartTimer(TFPerformanceTimerCIImageAcquisition);
-
-	CIImage* image = [self ciImageWithDc1394Frame:frame error:NULL];
-				
-	if (nil != image && _delegateCapabilities.hasDidCaptureFrame)
-			[_frameQueue enqueue:image];
-	
-//	TFPMStopTimer(TFPerformanceTimerCIImageAcquisition);
+	if ([delegate respondsToSelector:@selector(capture:didCaptureFrame:)])
+                         [delegate capture:self didCaptureFrame: frame];
 }
 
 - (dc1394feature_t)_featureFromKey:(NSInteger)featureKey

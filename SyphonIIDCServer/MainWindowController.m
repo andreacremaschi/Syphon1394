@@ -11,6 +11,7 @@
 #import "TFIncludes.h"
 #import "KOpenGLView.h"
 #import "IIDCCameraController.h"
+#import "KCanvas.h"
 
 @implementation MainWindowController
 @synthesize selectedCameraUUID;
@@ -32,6 +33,10 @@
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    	CGLContextObj context = [previewGLView openGLContext].CGLContextObj;
+    if (nil==syServer) {
+        syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
+    }
 }
 
 
@@ -77,15 +82,17 @@
         // error management!
     }
     self.captureObject = [IIDCCameraController cameraControllerWithTFLibDC1394CaptureObject: dc1394Camera];
-    self.captureObject.delegate = self;
+    self.captureObject.canvas.sharedContext = previewGLView.openGLContext;
+    self.captureObject.canvas.pixelFormat = previewGLView.pixelFormat;
+    [self.captureObject.canvas initPBO];
+        self.captureObject.delegate = self;
+    
     return;
 }
 
 
 #pragma mark IIDCCameraController delegates
-/*- (CGColorSpaceRef)wantedCIImageColorSpaceForCapture:(TFCapture*)capture;
-{
-}*/
+
 - (void)captureObject:(IIDCCameraController*)capture
 didCaptureFrame:(CIImage*)capturedFrame
 {
@@ -93,18 +100,18 @@ didCaptureFrame:(CIImage*)capturedFrame
     if ([syServer hasClients])
     {
         // lockTexture just stops the renderer from drawing until we're done with it
-   /*     [theRenderer lockTexture];
+        [captureObject lockTexture];
         
         // publish our frame to our server. We use the whole texture, but we could just publish a region of it
         CGLLockContext(syServer.context);
-        [syServer publishFrameTexture:theRenderer.textureName
+        [syServer publishFrameTexture:captureObject.textureName
                         textureTarget:GL_TEXTURE_RECTANGLE_EXT
-                          imageRegion:NSMakeRect(0, 0, theRenderer.textureSize.width, theRenderer.textureSize.height)
-                    textureDimensions:theRenderer.textureSize
+                          imageRegion: NSMakeRect(0, 0, captureObject.currentSize.width, captureObject.currentSize.height)
+                    textureDimensions: captureObject.currentSize
                               flipped:NO];
         CGLUnlockContext(syServer.context);
         // let the renderer resume drawing
-        [theRenderer unlockTexture];*/
+        [captureObject unlockTexture];
     }
     
     

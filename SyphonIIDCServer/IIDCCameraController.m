@@ -8,12 +8,18 @@
 
 #import "IIDCCameraController.h"
 #import "TFLibDC1394Capture.h"
+#import <OpenGL/CGLMacro.h>
+#import <dc1394/dc1394.h>
+#import "KCanvas.h"
+#import "KBO.h"
 
 @implementation IIDCCameraController
-@synthesize features;
+
 @synthesize delegate;
 @synthesize dc1394Camera;
+@synthesize canvas;
 
+@synthesize features;
 @dynamic brightness;
 @dynamic gain;
 @dynamic focus;
@@ -31,6 +37,9 @@
 - (id) initWithTFLibDC1394CaptureObject: (TFLibDC1394Capture *) captureObject {
     self = [super init];
     if (self) {
+
+            canvas = [[KCanvas canvasWithSize: CGSizeZero] retain];
+        
         NSArray *featuresKeys = [IIDCCameraController featuresKeys];
         features = [[NSMutableDictionary dictionary] retain];
         int i=0;
@@ -56,6 +65,7 @@
 
 -(void)dealloc
 {
+    [canvas release];
     [features release];
     [super dealloc];
 }
@@ -64,14 +74,69 @@
     
     return [[IIDCCameraController alloc] initWithTFLibDC1394CaptureObject: captureObject];
 }
+#pragma mark - Accessors
 
+-(GLuint)textureName
+{
+    return canvas.textureName;
+}
+
+- (CGSize) currentSize 
+{
+    return dc1394Camera.frameSize;
+}
+
+#pragma mark - Lock/unlock texture
+- (void)lockTexture
+{
+	CGLLockContext(canvas.openGLContext.CGLContextObj);
+}
+
+- (void)unlockTexture
+{
+	CGLUnlockContext(canvas.openGLContext.CGLContextObj);
+}
+
+-(NSOpenGLContext *)openGLContext
+{
+    return canvas.openGLContext;
+}
 
 #pragma mark libdc1394 delegate
-- (void)capture:(TFCapture*)capture
-didCaptureFrame:(CIImage*)capturedFrame
+- (void)capture:(TFLibDC1394Capture*)capture
+didCaptureFrame:(dc1394video_frame_t*)frame
 {
+    
+    
+    CGSize size = CGSizeMake(frame->size[0], frame->size[1]);
+    if (nil==canvas) {
+        canvas = [KCanvas canvasWithSize: size];
+    }
+    
+    if (!CGSizeEqualToSize(size, canvas.size)) [canvas setSize: size];
+    
+    
+    CGLContextObj cgl_ctx = canvas.openGLContext.CGLContextObj;
+    CGLLockContext(cgl_ctx);
+    {
+        
+        [canvas.bo attachPBO];
+
+        glBufferDataARB(GL_PIXEL_UNPACK_BUFFER, frame->total_bytes, frame->image, GL_STREAM_DRAW_ARB);
+        glDrawPixels(frame->size[0],  frame->size[1], GL_LUMINANCE,  GL_UNSIGNED_BYTE, frame->image);
+        glFlush();
+        
+        [canvas.bo detachPBO];
+        
+    }
+    CGLUnlockContext(cgl_ctx);
+    
+    
+    CIImage *frameOnGPU= canvas.image;
+    
+    
     [self.delegate captureObject:self
-                 didCaptureFrame:capturedFrame];
+                 didCaptureFrame:frameOnGPU];
 
     return;  
 }

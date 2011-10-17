@@ -27,7 +27,6 @@
 #import <dc1394/dc1394.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "TFCapture.h"
 
 enum {
 	TFLibDC1394CaptureFeatureBrightness		= 0,
@@ -41,7 +40,7 @@ enum {
 
 struct TFLibDC1394CaptureConversionContext;
 
-@interface TFLibDC1394Capture : TFCapture {
+@interface TFLibDC1394Capture : NSObject {
 	dc1394_t*			_dc;
 	dc1394camera_t*		_camera;
 	NSThread*			_thread;
@@ -60,7 +59,11 @@ struct TFLibDC1394CaptureConversionContext;
 	BOOL					_pixelBufferPoolNeedsUpdating;
 	
 	struct TFLibDC1394CaptureConversionContext* _pixelConversionContext;
+    
+    id		delegate;
 }
+
+@property (assign) id delegate;
 
 - (id)initWithCameraUniqueId:(NSNumber*)uid;
 - (id)initWithCameraUniqueId:(NSNumber*)uid error:(NSError**)error;
@@ -77,6 +80,10 @@ struct TFLibDC1394CaptureConversionContext;
 - (BOOL)setFeature:(NSInteger)feature toValue:(float)val;
 - (BOOL)setMinimumFramerate:(NSUInteger)frameRate;
 
+- (CGSize)frameSize;
+- (BOOL)setFrameSize:(CGSize)size error:(NSError**)error;
+- (BOOL)supportsFrameSize:(CGSize)size;
+
 + (NSDictionary*)connectedCameraNamesAndUniqueIds;
 + (BOOL)cameraConnectedWithGUID:(NSNumber*)guidNumber;
 + (NSNumber*)defaultCameraUniqueId;
@@ -87,4 +94,8 @@ struct TFLibDC1394CaptureConversionContext;
                                   forCamera:(dc1394camera_t*)cam 
                                       error:(NSError**)error;
 
+@end
+
+@interface NSObject (TFLibDC1394CaptureDelegate)
+- (void)capture:(TFLibDC1394Capture*)capture didCaptureFrame:(dc1394video_frame_t*)capturedFrame;
 @end

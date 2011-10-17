@@ -30,12 +30,17 @@ typedef enum
     NSNumber *width;
     NSNumber *maxFPS;
     NSNumber *canvasType;
+    GLuint _texture;
 }
 
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * width;
 @property (nonatomic, retain) NSNumber * maxFPS;
 @property (nonatomic, retain) NSNumber * canvasType;
+@property (nonatomic, assign) NSOpenGLContext * sharedContext;
+@property (nonatomic, assign) NSOpenGLPixelFormat * pixelFormat;
+
+@property (readonly) GLuint textureName;
 
 @property (readonly) KBO* bo;
 
