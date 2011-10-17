@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A53144B3E960088F701 /* libdc1394.dylib */; };
-		C4121A60144B3EFD0088F701 /* TFCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A56144B3EFD0088F701 /* TFCapture.m */; };
 		C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */; };
 		C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */; };
 		C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
@@ -30,11 +29,12 @@
 		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
 		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
 		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
-		C41E3AA5144CB89200FB4A29 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E594144C91DE00CF26C7 /* KCanvas.m */; };
 		C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E596144C91DE00CF26C7 /* KCVBufferPool.m */; };
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
+		C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
+		C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,10 +47,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C48705C5144CBAE700B5A460 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C4121A53144B3E960088F701 /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = /usr/local/lib/libdc1394.dylib; sourceTree = "<absolute>"; };
-		C4121A55144B3EFD0088F701 /* TFCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapture.h; sourceTree = "<group>"; };
-		C4121A56144B3EFD0088F701 /* TFCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCapture.m; sourceTree = "<group>"; };
 		C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFCapturePixelFormatConversions.c; sourceTree = "<group>"; };
 		C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapturePixelFormatConversions.h; sourceTree = "<group>"; };
 		C4121A59144B3EFD0088F701 /* TFExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFExceptions.h; sourceTree = "<group>"; };
@@ -107,12 +119,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */,
 				C4121A6D144B3FB30088F701 /* Accelerate.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
 				C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
 				C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */,
-				C41E3AA5144CB89200FB4A29 /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,8 +171,6 @@
 			isa = PBXGroup;
 			children = (
 				C4121A53144B3E960088F701 /* libdc1394.dylib */,
-				C4121A55144B3EFD0088F701 /* TFCapture.h */,
-				C4121A56144B3EFD0088F701 /* TFCapture.m */,
 				C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */,
 				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
 				C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */,
@@ -315,8 +325,9 @@
 			buildConfigurationList = C41957B4144B376700338631 /* Build configuration list for PBXNativeTarget "SyphonIIDCServer" */;
 			buildPhases = (
 				C419577E144B376700338631 /* Sources */,
-				C419577F144B376700338631 /* Frameworks */,
 				C4195780144B376700338631 /* Resources */,
+				C48705C5144CBAE700B5A460 /* Copy Frameworks */,
+				C419577F144B376700338631 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -419,7 +430,6 @@
 				C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */,
 				C41957BE144B37B000338631 /* KOpenGLView.m in Sources */,
 				C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */,
-				C4121A60144B3EFD0088F701 /* TFCapture.m in Sources */,
 				C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */,
 				C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */,
 				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
