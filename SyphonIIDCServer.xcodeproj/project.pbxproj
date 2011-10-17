@@ -30,6 +30,10 @@
 		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
 		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
 		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
+		C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E594144C91DE00CF26C7 /* KCanvas.m */; };
+		C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E596144C91DE00CF26C7 /* KCVBufferPool.m */; };
+		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
+		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +90,14 @@
 		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
 		C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
 		C41957C2144B380900338631 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		C436E593144C91DE00CF26C7 /* KCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCanvas.h; sourceTree = "<group>"; };
+		C436E594144C91DE00CF26C7 /* KCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCanvas.m; sourceTree = "<group>"; };
+		C436E595144C91DE00CF26C7 /* KCVBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCVBufferPool.h; sourceTree = "<group>"; };
+		C436E596144C91DE00CF26C7 /* KCVBufferPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCVBufferPool.m; sourceTree = "<group>"; };
+		C436E599144C925B00CF26C7 /* KBO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBO.h; sourceTree = "<group>"; };
+		C436E59A144C925B00CF26C7 /* KBO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBO.m; sourceTree = "<group>"; };
+		C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCameraController.h; sourceTree = "<group>"; };
+		C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCameraController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +146,8 @@
 		C4121A70144B3FD10088F701 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */,
+				C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -144,8 +158,8 @@
 				C4121A53144B3E960088F701 /* libdc1394.dylib */,
 				C4121A55144B3EFD0088F701 /* TFCapture.h */,
 				C4121A56144B3EFD0088F701 /* TFCapture.m */,
-				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
 				C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */,
+				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
 				C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */,
 				C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */,
 				C4121A5D144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
@@ -223,6 +237,7 @@
 		C419578C144B376700338631 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */,
 				C4121A71144B3FE00088F701 /* IIDC protocol management */,
 				C4121A70144B3FD10088F701 /* Model */,
 				C4121A6F144B3FCD0088F701 /* View */,
@@ -265,6 +280,19 @@
 				C41957AC144B376700338631 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */ = {
+			isa = PBXGroup;
+			children = (
+				C436E593144C91DE00CF26C7 /* KCanvas.h */,
+				C436E594144C91DE00CF26C7 /* KCanvas.m */,
+				C436E595144C91DE00CF26C7 /* KCVBufferPool.h */,
+				C436E596144C91DE00CF26C7 /* KCVBufferPool.m */,
+				C436E599144C925B00CF26C7 /* KBO.h */,
+				C436E59A144C925B00CF26C7 /* KBO.m */,
+			);
+			name = "CoreVideo and OpenGL convenience classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -385,6 +413,10 @@
 				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 				C4121A66144B3F150088F701 /* SICError.m in Sources */,
 				C4121A78144B41740088F701 /* MainWindowController.m in Sources */,
+				C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */,
+				C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */,
+				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
+				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
