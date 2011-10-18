@@ -111,6 +111,7 @@ didCaptureFrame:(dc1394video_frame_t*)frame
         {
             
             _bufferSize = size;
+            uploadingData = false;
             
             GLuint oldTexture = self.textureName;
             if(oldTexture)
@@ -118,7 +119,7 @@ didCaptureFrame:(dc1394video_frame_t*)frame
                 glDeleteTextures(1, &oldTexture);
             }
                      
-            if(_fbo)
+           /* if(_fbo)
             {
                 glDeleteFramebuffersEXT(1, &_fbo);
                 _fbo = 0;
@@ -127,8 +128,12 @@ didCaptureFrame:(dc1394video_frame_t*)frame
             {
                 glDeleteRenderbuffersEXT(1, &_depthBuffer);
                 _depthBuffer = 0;
-            }
+            }*/
             
+            if (_pixelBuffer)
+            {
+                glDeleteBuffers(1, &_pixelBuffer);
+            }
             
             // texture / color attachment
             glGenTextures(1, &_texture);
@@ -137,81 +142,102 @@ didCaptureFrame:(dc1394video_frame_t*)frame
             glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, size.width, size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
             glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
                          
-            // depth buffer
-            glGenRenderbuffersEXT(1, &_depthBuffer);
-            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, _depthBuffer);
-            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, size.width, size.height);
-            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
             
-            // FBO and connect attachments
-            glGenFramebuffersEXT(1, &_fbo);
-            glBindFramebufferEXT(GL_FRAMEBUFFER, _fbo);
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_RECTANGLE_EXT, _texture, 0);
-            glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER_EXT, _depthBuffer);
+            //PBO
+            /*glGenBuffersARB(1, &_pixelBuffer );
+            glBindBufferARB(GL_PIXEL_PACK_BUFFER, _pixelBuffer);
             // Draw black so we have output if the renderer isn't loaded
-            glClearColor(0.0, 0.0, 0.0, 0.0);
+            glClearColor(1.0, 0.0, 0.0, 0.0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
-            
-            GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER);
-            if(status != GL_FRAMEBUFFER_COMPLETE)
-            {
-                NSLog(@"Simple Client: OpenGL error %04X", status);
-                glDeleteTextures(1, &_texture);
-                glDeleteFramebuffersEXT(1, &_fbo);
-                glDeleteRenderbuffersEXT(1, &_depthBuffer);
-                _texture = 0;
-                _fbo = 0;
-                _depthBuffer = 0;
-                CGLUnlockContext(cgl_ctx);
-                return;
-            }
-            
+            glBindBufferARB(GL_PIXEL_PACK_BUFFER, 0);
+            */
         }
         
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _fbo);
+     
+        /* GL_PIXEL_PACK_BUFFER_ARB and GL_PIXEL_UNPACK_BUFFER_ARB. GL_PIXEL_PACK_BUFFER_ARB is for transferring pixel data from OpenGL to your application, and GL_PIXEL_UNPACK_BUFFER_ARB means transferring pixel data from an application to OpenGL*/
+        
+       /* glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, _pixelBuffer);
+        
+        if (uploadingData) {
+
+            uploadingData=false;
+
+        }
         
         glViewport(0, 0, size.width,  size.height);
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
-        //	glOrtho(0, textureSize.width, 0, textureSize.height, -1, 1);
+        glOrtho(0, size.width, 0, size.height, -1, 1);
         
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
 
         
+
+
+
+        */
         
-        // check GL_APPLE_client_storage, GL_APPLE_texture_range for async transfer
+        glViewport(0, 0, size.width,  size.height);
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0, size.width, 0, size.height, -1, 1);
+        
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
         
         //upload camera frame to GPU memory
-        glBufferDataARB(GL_PIXEL_UNPACK_BUFFER, frame->total_bytes, frame->image, GL_STREAM_DRAW_ARB);
+        /*glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, _pixelBuffer);
+        glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, frame->total_bytes, frame->image, GL_STREAM_DRAW_ARB);
         glDrawPixels(frame->size[0],  frame->size[1], GL_LUMINANCE,  GL_UNSIGNED_BYTE, frame->image);
-        glFlush();
+        glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);     
+        //        glFlush();
+        
+        
+        //copy PBO image to texture for drawing
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _texture);
+        glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, _pixelBuffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, 0, size.width, size.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+        
+        glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+*/
+        
+        
+        
+        //direct copy CPU memory -> texture
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _texture);
+        glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, size.width, size.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, frame->image);
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+        
+        
+        
 
         
-       /* glClearColor(1.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT);*/
-        
-        // Restore OpenGL states
+                // Restore OpenGL states
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
         
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();
-		
         // back to main rendering.
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+        // glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+        /* glClearColor(1.0, 0.0, 0.0, 0.0);
+         glClear(GL_COLOR_BUFFER_BIT);*/
+
         
+        uploadingData = true;
         
     }
     CGLUnlockContext(cgl_ctx);
-    
-    
+
     [self.delegate captureObject:self
                  didCaptureFrame:nil];
-
     return;  
 }
 

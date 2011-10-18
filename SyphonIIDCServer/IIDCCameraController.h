@@ -16,11 +16,13 @@
     NSDictionary *features;
     TFLibDC1394Capture *dc1394Camera;
     CGSize _bufferSize;
-    CVOpenGLBufferPoolRef _bufferPool;
     	
     GLuint _texture;
     GLuint _fbo;
 	GLuint _depthBuffer;
+    GLuint _pixelBuffer;
+    
+    bool uploadingData;
 }
 
 
