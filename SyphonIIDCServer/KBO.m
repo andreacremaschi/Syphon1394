@@ -117,9 +117,9 @@
 		
 		NSAssert([self _primitiveAttachBO: cgl_ctx], @"Error attaching OpenGL Buffer Object!");
 		
-		{
+/*		{
 
-			glViewport(0, 0,  pboSize.width, pboSize.height);
+		glViewport(0, 0,  pboSize.width, pboSize.height);
 		
 			// Save openGL states			
 			glMatrixMode(GL_MODELVIEW);
@@ -130,7 +130,7 @@
 			glPushMatrix();
 			glLoadIdentity();
 			
-			glOrtho(0.0, pboSize.width,  0.0,  pboSize.height, -1, 1);		
+			glOrtho(0.0, pboSize.width,  0.0,  pboSize.height, -1, 1);
 		}
 		
 		//clear the buffer!
@@ -138,7 +138,7 @@
 			glClearColor(0.0, 0.0, 0.0, 0.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glFlushRenderAPPLE();	
-		}
+		}*/
 		wasPBOAttached=true;
 		
 	}

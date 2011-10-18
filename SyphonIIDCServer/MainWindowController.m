@@ -12,6 +12,7 @@
 #import "KOpenGLView.h"
 #import "IIDCCameraController.h"
 #import "KCanvas.h"
+#import "SimpleServerGLView.h"
 
 @implementation MainWindowController
 @synthesize selectedCameraUUID;
@@ -32,12 +33,85 @@
 {
     [super windowDidLoad];
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    	CGLContextObj context = [previewGLView openGLContext].CGLContextObj;
-    if (nil==syServer) {
-        syServer = [[SyphonServer alloc] initWithName:nil context:context options:nil];
-    }
+
 }
+
+- (void) stopSyphon 
+{
+    // You should always stop a server so clients know it has gone
+    if (nil!=syServer)
+        [syServer stop];  
+}
+
+- (void) stopCamera
+{
+    if (captureObject) {
+        previewGLView.source = nil;
+        if ([captureObject.dc1394Camera isCapturing]) 
+            [captureObject.dc1394Camera stopCapturing: nil]; 
+        [captureObject release];
+    }
+
+}
+
+-(void)dealloc
+{
+
+    [self stopSyphon];
+    [self stopCamera];
+    
+    [super dealloc];
+}
+
+#pragma OpenGLContext
+- (NSOpenGLContext *) openGLContextWithError: (NSError **)error 
+                                shareContext: (NSOpenGLContext *)shareContext size:(CGSize)size{
+	
+    NSOpenGLPixelFormatAttribute	attributes[] = {
+		//NSOpenGLPFAPixelBuffer,
+		NSOpenGLPFADoubleBuffer,
+		NSOpenGLPFAAccelerated,
+		NSOpenGLPFADepthSize,8,
+		(NSOpenGLPixelFormatAttribute) 0
+	};
+	
+    
+	NSOpenGLPixelFormat *format = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+    
+	//Create the OpenGL context to render with (with color and depth buffers)
+	NSOpenGLContext * openGLContext = [[NSOpenGLContext alloc] 
+					  initWithFormat:format 
+					  shareContext: shareContext];
+	
+	if(openGLContext == nil) {
+		//TODO: error management
+		NSLog(@"Cannot create OpenGL context");
+		return false;
+	}
+	
+    CGLContextObj cgl_ctx = openGLContext.CGLContextObj;
+	CGLLockContext( cgl_ctx );	
+	{		
+        
+		glViewport(0, 0, size.width, size.height);
+		
+		glMatrixMode(GL_MODELVIEW);    // select the modelview matrix
+		glLoadIdentity();              // reset it
+		
+		glMatrixMode(GL_PROJECTION);   // select the projection matrix
+		glLoadIdentity();              // reset it
+		
+		glOrtho(0, size.width, 0, size.height, -1.0, 1.0);// define a 2-D orthographic projection matrix
+        
+	}
+	CGLUnlockContext( cgl_ctx );
+	
+	//[self initPBO];
+	
+	return openGLContext;
+	
+}
+
 
 
 #pragma mark Accessors
@@ -58,14 +132,21 @@
     return cameraList;
 }
 
+
+- (NSOpenGLContext *)openGLContext
+{
+    static NSOpenGLContext *context = nil;
+    if (nil==context)
+        context= [self openGLContextWithError: nil shareContext:previewGLView.openGLContext size: CGSizeMake(1024,768)];
+    return context;
+}
+
 - (void)setSelectedCameraUUID:(NSString *)UUID 
 {
     NSError * error;
-    if (captureObject) {
-        if ([captureObject.dc1394Camera isCapturing]) [captureObject.dc1394Camera stopCapturing: &error]; 
-        
-    }
-        
+    
+    [self stopCamera];
+    
     TFLibDC1394Capture *dc1394Camera = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithLongLong: [UUID longLongValue]]
                                                                  error:&error];
     if (nil==dc1394Camera)
@@ -81,12 +162,20 @@
         NSLog (@"%@", TFLocalizedString([error description], nil));
         // error management!
     }
-    self.captureObject = [IIDCCameraController cameraControllerWithTFLibDC1394CaptureObject: dc1394Camera];
-    self.captureObject.canvas.sharedContext = previewGLView.openGLContext;
-    self.captureObject.canvas.pixelFormat = previewGLView.pixelFormat;
-    [self.captureObject.canvas initPBO];
+    
+    NSOpenGLContext *openGLContext = [self openGLContext];
+    
+    // init capture object
+    self.captureObject = [IIDCCameraController cameraControllerWithTFLibDC1394CaptureObject: dc1394Camera openGLContext: openGLContext];
         self.captureObject.delegate = self;
     
+    //init syphon server if needed
+
+    if (nil==syServer) {
+        syServer = [[SyphonServer alloc] initWithName:nil context: openGLContext.CGLContextObj options:nil];
+    }
+    
+    previewGLView.source = captureObject;
     return;
 }
 
@@ -100,25 +189,25 @@ didCaptureFrame:(CIImage*)capturedFrame
     if ([syServer hasClients])
     {
         // lockTexture just stops the renderer from drawing until we're done with it
-        [captureObject lockTexture];
+        [capture lockTexture];
         
         // publish our frame to our server. We use the whole texture, but we could just publish a region of it
         CGLLockContext(syServer.context);
-        [syServer publishFrameTexture:captureObject.textureName
+        [syServer publishFrameTexture:capture.textureName
                         textureTarget:GL_TEXTURE_RECTANGLE_EXT
-                          imageRegion: NSMakeRect(0, 0, captureObject.currentSize.width, captureObject.currentSize.height)
-                    textureDimensions: captureObject.currentSize
+                          imageRegion: NSMakeRect(0, 0, capture.textureSize.width, captureObject.textureSize.height)
+                    textureDimensions: capture.textureSize
                               flipped:NO];
         CGLUnlockContext(syServer.context);
         // let the renderer resume drawing
-        [captureObject unlockTexture];
+        [capture unlockTexture];
     }
     
+    [previewGLView setNeedsDisplay: YES];
     
     
     
-    
-    [previewGLView setImageToShow: capturedFrame];
+   // [previewGLView setImageToShow: capturedFrame];
     return;  
 }
 

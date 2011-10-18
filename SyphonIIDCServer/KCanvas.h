@@ -44,7 +44,10 @@ typedef enum
 
 @property (readonly) KBO* bo;
 
-+ (KCanvas *)canvasWithSize: (NSSize)canvasSize;
++ (KCanvas *)canvasWithSize: (NSSize)canvasSize withOpenGLContext: (NSOpenGLContext*)context;
++ (KCanvas *)canvasWithOpenGLContext: (NSOpenGLContext*)context;
+
+-(id)initWithOpenGLContext:(NSOpenGLContext *)context;
 
 // Lazy evaluation
 - (void) increaseConsumersCount;

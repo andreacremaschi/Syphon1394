@@ -7,12 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
+#import "SimpleServerTextureSource.h"
 
 @class TFLibDC1394Capture, KCanvas;
-@interface IIDCCameraController : NSObject {
+@interface IIDCCameraController : NSObject <SimpleServerTextureSource>{
     NSDictionary *features;
     TFLibDC1394Capture *dc1394Camera;
-    KCanvas * canvas;
+    CGSize _bufferSize;
+    CVOpenGLBufferPoolRef _bufferPool;
+    	
+    GLuint _texture;
+    GLuint _fbo;
+	GLuint _depthBuffer;
 }
 
 
@@ -21,9 +29,9 @@
 
 @property (readonly) TFLibDC1394Capture * dc1394Camera;
 
-@property (readonly) NSOpenGLContext *openGLContext;
+@property (nonatomic, retain) NSOpenGLContext *openGLContext;
 @property (readonly) CGSize currentSize;
-@property (readonly) KCanvas *canvas;
+
 
 
 // camera features
@@ -36,7 +44,7 @@
 
 @property (readonly) GLuint textureName;
 
-+ (IIDCCameraController *)cameraControllerWithTFLibDC1394CaptureObject: (TFLibDC1394Capture *) captureObject;
++ (IIDCCameraController *)cameraControllerWithTFLibDC1394CaptureObject: (TFLibDC1394Capture *) captureObject openGLContext: (NSOpenGLContext *)context;
 - (void)lockTexture;
 - (void)unlockTexture;
 @end

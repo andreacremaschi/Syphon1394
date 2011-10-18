@@ -35,6 +35,7 @@
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
 		C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
+		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,9 @@
 		C436E59A144C925B00CF26C7 /* KBO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBO.m; sourceTree = "<group>"; };
 		C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCameraController.h; sourceTree = "<group>"; };
 		C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCameraController.m; sourceTree = "<group>"; };
+		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
+		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
+		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +158,9 @@
 			children = (
 				C41957BC144B37B000338631 /* KOpenGLView.h */,
 				C41957BD144B37B000338631 /* KOpenGLView.m */,
+				C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */,
+				C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */,
+				C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -439,6 +446,7 @@
 				C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */,
 				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
 				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
+				C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

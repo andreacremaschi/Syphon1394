@@ -58,7 +58,7 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 - (void) setSize: (CGSize) newSize	{
     [self willChangeValueForKey:@"height"];
     [self willChangeValueForKey:@"width"];
-	isOpenGLContextValid = false;
+	//isOpenGLContextValid = false;
     
     [height release];
     [width release];
@@ -97,12 +97,21 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 
 #pragma mark Constructors
 
-+ (KCanvas *)canvasWithSize: (NSSize)canvasSize{
-	KCanvas *newCanvas = [[KCanvas alloc] init];
++ (KCanvas *)canvasWithSize: (NSSize)canvasSize withOpenGLContext: (NSOpenGLContext*)context;
+{
+	KCanvas *newCanvas = [[KCanvas alloc] initWithOpenGLContext: context];
 	
 	if (nil != newCanvas) {
 		[newCanvas setSize: canvasSize];
 	}	
+	
+	return newCanvas;
+	
+}
+
++ (KCanvas *)canvasWithOpenGLContext: (NSOpenGLContext*)context;
+{
+	KCanvas *newCanvas = [[KCanvas alloc] initWithOpenGLContext: context];
 	
 	return newCanvas;
 	
@@ -119,6 +128,20 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
     }
     return self;
 }
+
+-(id)initWithOpenGLContext:(NSOpenGLContext *)context
+{
+    self = [super init];
+    if (nil != self)
+    {
+        
+        _openGLContext = context;        isOpenGLContextValid = true;
+    }
+    return self;
+}
+
+
+
 #pragma mark openGL methods
 
 - (void) initPBO	{
@@ -142,97 +165,12 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 			default: pboClass = [KCVBufferPool class];break;
 		}
 		
-		_pbo = [[pboClass alloc]  initPBOWithSize: [self size]
-									openGLContext: [[self openGLContext] CGLContextObj]];
+		_pbo = [[pboClass alloc]  initPBOWithSize: self.size
+									openGLContext: self.openGLContext.CGLContextObj];
         
 
 	}
 	CGLUnlockContext(cgl_ctx);
-	
-}
-
-
-
-- (NSOpenGLPixelFormat *)defaultPixelFormat	{
-	NSOpenGLPixelFormatAttribute	attributes[] = {
-		//NSOpenGLPFAPixelBuffer,
-		NSOpenGLPFADoubleBuffer,
-		NSOpenGLPFANoRecovery,
-		NSOpenGLPFAAccelerated,
-		NSOpenGLPFADepthSize,8,
-		(NSOpenGLPixelFormatAttribute) 0
-	};
-	
-
-	return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
-	
-}
-
-
-- (bool) initOpenGLContextWithError: (NSError **)error 
-						   shareContext: (NSOpenGLContext *)shareContext {
-	
-	
-    NSOpenGLPixelFormat *format = pixelFormat;
-	if (nil==format) format = [self defaultPixelFormat];
-	int width = [self.width intValue];
-	int height = [self.height intValue];
-	
-	//Check parameters - Rendering at sizes smaller than 16x16 will likely produce garbage
-	if((width < 16) || (height < 16)) {
-		//TODO: error management
-		return false;
-	}
-
-    CGLContextObj cgl_ctx = _openGLContext.CGLContextObj;
-    if(_texture)
-    {
-        glDeleteTextures(1, &_texture);
-    }
-    
-	if (nil != _openGLContext) [_openGLContext release];
-	
-
-    
-	//Create the OpenGL context to render with (with color and depth buffers)
-	_openGLContext = [[NSOpenGLContext alloc] 
-					  initWithFormat:format 
-					  shareContext: shareContext];
-	
-	if(_openGLContext == nil) {
-		//TODO: error management
-		NSLog(@"Cannot create OpenGL context");
-		return false;
-	}
-	
-    cgl_ctx = _openGLContext.CGLContextObj;
-	CGLLockContext( cgl_ctx );	
-	{		
-        
-		glViewport(0, 0, width, height);
-		
-		glMatrixMode(GL_MODELVIEW);    // select the modelview matrix
-		glLoadIdentity();              // reset it
-		
-		glMatrixMode(GL_PROJECTION);   // select the projection matrix
-		glLoadIdentity();              // reset it
-		
-		glOrtho(0, width, 0, height, -1.0, 1.0);// define a 2-D orthographic projection matrix
-		
-        // texture / color attachment
-		glGenTextures(1, &_texture);
-		glEnable(GL_TEXTURE_RECTANGLE_EXT);
-		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _texture);
-		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
-        
-        
-	}
-	CGLUnlockContext( cgl_ctx );
-	
-	//[self initPBO];
-	
-	return true;
 	
 }
 
@@ -282,50 +220,6 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 
 }
 
-
-- (CIContext *)ciContext	{
-	
-	if (nil!=_ciContext) return _ciContext;
-	
-	NSOpenGLContext *openGLContext = [self openGLContext];
-	NSOpenGLPixelFormat *pixelFormat = [self pixelFormat];
-	
-	CGLLockContext([openGLContext CGLContextObj]);
-	{
-		// create CGColorSpaceRef needed for the contextWithCGLContext method
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); //CGColorSpaceCreateWithName( kCGColorSpaceGenericRGB); // sballa i colori
-		
-		// create CIContext -- the CIContext object provides an evaluation context for
-		// rendering a Core Image image (CIImage) through Quartz 2D or OpenGL
-		_ciContext = [[CIContext contextWithCGLContext: [openGLContext CGLContextObj]	// Core Image draws all output into the surface attached to this OpenGL context
-										   pixelFormat: [pixelFormat CGLPixelFormatObj]					// must be the same pixel format used to create the cgl context
-											colorSpace: colorSpace
-											   options: [NSDictionary dictionaryWithObjectsAndKeys:(id)colorSpace, kCIContextOutputColorSpace,	 // dictionary containing color space information
-														 (id)colorSpace, kCIContextWorkingColorSpace, nil]] retain];
-		
-		// release the colorspace we don't need it anymore
-		CGColorSpaceRelease(colorSpace);
-	}
-	CGLUnlockContext([openGLContext CGLContextObj]);
-
-	/*CGLayerRelease(_cgLayer);
-	_cgLayer = [_ciContext	createCGLayerWithSize: CGSizeMake([[self width] floatValue], [[self height] floatValue])
-												  info: nil] ;*/
-
-	return _ciContext;
-}
-
-/*- (CGLayerRef) cgLayer	{		
-	if (nil != _cgLayer) return _cgLayer;
-	_cgLayer = [[self ciContext]	createCGLayerWithSize: CGSizeMake([[self width] floatValue], [[self height] floatValue])
-													  info: nil] ;
-	return _cgLayer;
-}*/
-
-/*
-- (GLuint) textureName	{
-	return _textureName;
-}*/
 
 - (CIImage *)image	{
 

@@ -9,10 +9,10 @@
 #import <Cocoa/Cocoa.h>
 #import <Syphon/Syphon.h>
 
-@class IIDCCameraController, KOpenGLView;
+@class IIDCCameraController, SimpleServerGLView;
 @interface MainWindowController : NSWindowController {
     SyphonServer *syServer;
-    IBOutlet KOpenGLView *previewGLView;
+    IBOutlet SimpleServerGLView *previewGLView;
 }
 
 @property (readonly) NSArray * IIDCCameraList;

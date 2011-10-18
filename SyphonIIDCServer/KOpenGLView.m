@@ -197,6 +197,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	CGLLockContext ( cgl_ctx );
 	
 	{
+        
+        
 		// clear to black if nothing else
 		glClearColor(1, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -309,12 +311,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     // Activate the display link
     CVDisplayLinkStart(displayLink);*/
 
-		CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
+	/*	CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
 
     	glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glViewport (0, 0, 640, 400);
+		glViewport (0, 0, 640, 400);*/
 	/* glMatrixMode (GL_PROJECTION);
 	 glLoadIdentity ();
 	 glOrtho (0, 640, 0, 400, -1, 1);
