@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString *selectedCameraUUID;
 @property (nonatomic, retain) IIDCCameraController *captureObject;
 
+@property (assign) IBOutlet NSScrollView *controlsBox;
 
 
 @end

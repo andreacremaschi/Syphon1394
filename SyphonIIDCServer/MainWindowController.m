@@ -17,6 +17,7 @@
 @implementation MainWindowController
 @synthesize selectedCameraUUID;
 @synthesize captureObject;
+@synthesize controlsBox;
 
 -(id)init
 {
@@ -141,6 +142,108 @@
     return context;
 }
 
+- (void)loadControls {
+    
+    //[controlsBox setSubviews: [NSArray array]];
+    
+    NSDictionary * features = self.captureObject.features;
+    NSView*controlsView = [[[NSView alloc] initWithFrame: controlsBox.bounds] autorelease];
+    
+    int i=1;
+    int marginY = 15;
+    int marginX = 15;
+    int cellHeight = 60;
+
+    controlsView.frame = NSMakeRect(controlsView.bounds.origin.x, controlsView.bounds.origin.y, controlsView.bounds.size.width, features.allKeys.count*cellHeight);
+
+    for (NSString *featureKey in features.allKeys) {
+        
+        
+        NSDictionary * curFDict = [features valueForKey:featureKey];
+        
+        NSRect uiFrame = NSMakeRect(marginX, controlsView.bounds.size.height - cellHeight  * i, controlsView.bounds.size.width - marginX * 2, cellHeight);
+        
+        
+        NSView *cell = [[NSView alloc]initWithFrame:uiFrame];        
+        
+        // label
+        uiFrame = NSMakeRect(0, 0, cell.bounds.size.width, 20);
+        NSTextField * label = [[[NSTextField alloc] initWithFrame: uiFrame] autorelease];
+        label.stringValue = featureKey;
+        label.editable=NO;
+        label.selectable=NO;
+        label.bezeled=NO;
+        label.bordered=NO;
+        label.backgroundColor = [NSColor clearColor];
+        [cell addSubview: label];
+
+        // Slider
+        uiFrame = NSMakeRect(0, 20, cell.bounds.size.width, 20);
+        NSSlider * slider = [[[NSSlider alloc] initWithFrame: uiFrame] autorelease];
+        slider.maxValue = [[curFDict valueForKey: @"max_value"] doubleValue];
+        slider.minValue = [[curFDict valueForKey: @"min_value"] doubleValue];
+        slider.doubleValue = [[curFDict valueForKey: @"value"] doubleValue];
+
+        [slider bind:@"value"
+            toObject:self.captureObject
+         withKeyPath:featureKey
+             options: nil]; 
+
+        [cell addSubview: slider];
+        
+        // checkBox
+        if ([[curFDict allKeys] containsObject: @"auto"]) {
+            uiFrame = NSMakeRect(0, 40, 18, 18);
+            NSButton * autoCheckBox = [[[NSButton alloc] initWithFrame: uiFrame] autorelease];
+            autoCheckBox.buttonType=NSSwitchButton;
+            autoCheckBox.state  = [[curFDict valueForKey: @"auto"] boolValue] ? NSOnState : NSOffState;
+        
+            [autoCheckBox bind: @"value"
+                      toObject: self.captureObject
+                   withKeyPath: [NSString stringWithFormat: @"auto_%@", featureKey]
+             options: nil];
+             /*[NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSValueTransformer valueTransformerForName:@""], NSValueTransformerBindingOption,
+                                 , nil];*/
+            [cell addSubview: autoCheckBox];
+            
+            [slider bind: @"enabled"
+                      toObject: self.captureObject
+                   withKeyPath: [NSString stringWithFormat: @"auto_%@", featureKey]
+                 options: [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSValueTransformer valueTransformerForName:@"NSNegateBoolean"], NSValueTransformerBindingOption,
+                            nil]];
+
+        }
+      
+        // one push auto button
+        if ([[curFDict allKeys] containsObject: @"onePushAuto"]) {
+            uiFrame = NSMakeRect(20, 40, 40, 18);
+            NSButton * autoCheckBox = [[[NSButton alloc] initWithFrame: uiFrame] autorelease];
+            autoCheckBox.buttonType=NSPushOnPushOffButton;      
+            autoCheckBox.title = @"PUSH AUTO";
+            autoCheckBox.tag = [[captureObject featureIndexForKey: featureKey] intValue];
+            autoCheckBox.action = @selector(pushAuto:);
+            /*[NSDictionary dictionaryWithObjectsAndKeys:
+             [NSValueTransformer valueTransformerForName:@""], NSValueTransformerBindingOption,
+             , nil];*/
+            
+            
+            [cell addSubview: autoCheckBox];
+            
+        }
+        
+        [controlsView addSubview: cell];
+        
+        
+        i ++;
+    }
+    [controlsBox setDocumentView:  controlsView];
+
+        
+    
+}
+
 - (void)setSelectedCameraUUID:(NSString *)UUID 
 {
     NSError * error;
@@ -170,16 +273,26 @@
         self.captureObject.delegate = self;
     
     //init syphon server if needed
-
     if (nil==syServer) {
         syServer = [[SyphonServer alloc] initWithName:nil context: openGLContext.CGLContextObj options:nil];
     }
+    
+    //load controls
+    [self loadControls];
     
     previewGLView.source = captureObject;
     return;
 }
 
+#pragma mark Actions
 
+
+- (void) pushAuto: (id) sender {
+    NSUInteger featureIndex = [sender tag];
+    [captureObject.dc1394Camera pushToAutoFeatureWithIndex: (dc1394feature_t) featureIndex];
+    
+    
+}
 #pragma mark IIDCCameraController delegates
 
 - (void)captureObject:(IIDCCameraController*)capture

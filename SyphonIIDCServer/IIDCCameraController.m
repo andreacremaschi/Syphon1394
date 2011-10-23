@@ -14,6 +14,11 @@
 #import "KBO.h"
 #import <OpenGL/CGLMacro.h>
 
+
+@interface IIDCCameraController (PrivateMethods)
+- (NSNumber *)featureIndexForKey: (NSString *)key;
+@end
+
 @implementation IIDCCameraController
 
 @synthesize delegate;
@@ -21,19 +26,11 @@
 @synthesize openGLContext;
 
 @synthesize features;
-@dynamic brightness;
-@dynamic gain;
-@dynamic focus;
-@dynamic exposure;
-@dynamic shutter;
+@synthesize videoModes  ;
+@synthesize colorModes;
 
 
 
-
-+ (NSArray *)featuresKeys {
-    
-    return [NSArray arrayWithObjects: @"brightness", @"gain", @"focus", @"shutter", @"exposure", nil];
-}
 
 - (id) initWithTFLibDC1394CaptureObject: (TFLibDC1394Capture *) captureObject openGLContext: (NSOpenGLContext *)context{
     self = [super init];
@@ -41,22 +38,19 @@
 
         self.openGLContext = context;
         
-        NSArray *featuresKeys = [IIDCCameraController featuresKeys];
-        features = [[NSMutableDictionary dictionary] retain];
-        int i=0;
-        for (NSString* key in featuresKeys)
-        {
-            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithBool: [captureObject featureIsMutable: i]], @"mutable",
-                                  [NSNumber numberWithBool: [captureObject featureSupportsAutoMode: i]], @"supportsAutoMode",
-                                  [NSNumber numberWithBool: [captureObject featureInAutoMode: i]], @"autoMode",                                  
-                                  [NSNumber numberWithFloat: [captureObject valueForFeature: i]], @"value",
-                                  nil];
-            [features setValue: dict forKey: key];
-            i++;
-        }
+        features = [[[captureObject featuresDictionary] mutableCopy] retain];
+        videoModes = [[captureObject videomodes] retain];
         
-        dc1394camera_t *camera_struct = [captureObject cameraStruct];
+        NSMutableArray *colModes = [NSMutableArray array];
+        for (NSDictionary *dict in videoModes) {
+            id col_mode = [dict valueForKey: @"color_mode"];
+            if (![colModes containsObject: col_mode])
+                [colModes addObject: col_mode];
+            
+        }
+        colorModes = [colModes retain];
+        
+//        dc1394camera_t *camera_struct = [captureObject cameraStruct];
         captureObject.delegate = self;
         dc1394Camera = captureObject;
         
@@ -74,6 +68,7 @@
     
     return [[IIDCCameraController alloc] initWithTFLibDC1394CaptureObject: captureObject openGLContext: context];
 }
+
 #pragma mark - Accessors
 
 -(GLuint)textureName
@@ -86,6 +81,16 @@
     return _bufferSize;
 }
 
+- (void) setVideoMode:(NSNumber *)videoMode 
+{
+    [dc1394Camera setVideoMode: [videoMode intValue]];
+}
+
+-(NSNumber *)videoMode
+{
+    return [NSNumber numberWithInt: selectedVideoMode];    
+}
+
 #pragma mark - Lock/unlock texture
 - (void)lockTexture
 {
@@ -96,6 +101,8 @@
 {
 	CGLUnlockContext(openGLContext.CGLContextObj);
 }
+
+
 
 #pragma mark libdc1394 delegate
 - (void)capture:(TFLibDC1394Capture*)capture
@@ -243,20 +250,80 @@ didCaptureFrame:(dc1394video_frame_t*)frame
 
 #pragma mark property setter
 - (void) setValue:(id)value forKey:(NSString *)key  {
-    NSArray *featuresKeys = [IIDCCameraController featuresKeys];
-    if (![featuresKeys containsObject: key]) return;
+    NSArray *featuresKeys = [features allKeys];
+
+    if ((key.length >   5) && [[key substringWithRange: NSMakeRange(0, 5)] isEqualToString: @"auto_"]) {
+        NSString *featureKey = [key substringWithRange: NSMakeRange(5, key.length-5)];
+        if (![featuresKeys containsObject: featureKey]) 
+            [super setValue:value forKey:key]; 
+        
+        NSUInteger i = [[self featureIndexForKey: featureKey] intValue];
+        if ([dc1394Camera setFeatureWithIndex: (dc1394feature_t) i toAutoMode: [value boolValue]]) {
+            [self willChangeValueForKey: [NSString stringWithFormat: @"auto_%@", featureKey]];
+            [[features valueForKey: featureKey] setValue: value forKey: @"auto"];
+            [self didChangeValueForKey: [NSString stringWithFormat: @"auto_%@", featureKey]];            
+        };
+        
+        
+    } else
+        if (![featuresKeys containsObject: key]) [super setValue:value forKey:key]; ;
     
-    NSUInteger i = [featuresKeys indexOfObject: key];
-    [dc1394Camera setFeature: i toValue: [value floatValue]];
+    NSUInteger i = [[self featureIndexForKey: key] intValue];
+    [dc1394Camera setFeatureWithIndex: i toValue: [value floatValue]];
 }
 
 
 - (id)valueForKey:(NSString *)key
 {
-        if ([[features allKeys] containsObject: key])
-            return [[features valueForKey: key] valueForKey: @"value"];
+
+    //check if we want to set an "auto" property
+    if ((key.length > 5) && [[key substringWithRange: NSMakeRange(0, 5)] isEqualToString: @"auto_"]) {
+        NSString *featureKey = [key substringWithRange: NSMakeRange(5, key.length-5)];
+        return [[features valueForKey: featureKey] valueForKey: @"auto"];
+        
+    } else if ([[features allKeys] containsObject: key])
+        return [[features valueForKey: key] valueForKey: @"value"];
     if ([key isEqualToString:@"features"]) return features;
     return [super valueForKey: key];
+    
+}
+
+#pragma mark TFLibDC1394 methods
+
+
+- (NSNumber *)featureIndexForKey: (NSString *)key {
+    return [[features valueForKey: key] valueForKey:@"feature_index"];
+    
+}
+
+- (BOOL)setFeature:(NSString *)featureKey toValue:(float)val {
+    NSNumber *featureIndex = [self featureIndexForKey: featureKey];
+    if (!featureIndex) return false;
+    NSUInteger feature = [featureIndex intValue];
+    return [dc1394Camera setFeatureWithIndex:(dc1394feature_t)feature toValue: val];
+    
+}
+
+- (BOOL)setFeature:(NSString *)featureKey toAutoMode:(BOOL)val {
+    NSNumber *featureIndex = [self featureIndexForKey: featureKey];
+    if (!featureIndex) return false;
+    NSUInteger feature = [featureIndex intValue];
+    return [dc1394Camera setFeatureWithIndex:(dc1394feature_t)feature toAutoMode: val];
+    
+}
+- (float)valueForFeature:(NSString *)featureKey {
+    NSNumber *featureIndex = [self featureIndexForKey: featureKey];
+    if (!featureIndex) return -1.0;
+    NSUInteger feature = [featureIndex intValue];
+    return [dc1394Camera valueForFeatureWithIndex:(dc1394feature_t)feature];
+    
+    
+}
+- (float)pushToAutoFeatureWithKey: (NSString *)featureKey {
+    NSNumber *featureIndex = [self featureIndexForKey: featureKey];
+    if (!featureIndex) return;
+    NSUInteger feature = [featureIndex intValue];
+    return [dc1394Camera pushToAutoFeatureWithIndex:(dc1394feature_t)feature];
     
 }
 

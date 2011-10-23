@@ -45,10 +45,12 @@ struct TFLibDC1394CaptureConversionContext;
 	dc1394camera_t*		_camera;
 	NSThread*			_thread;
 	
-	BOOL				_supportedFeatures[TFLibDC1394CaptureNumFeatures];
+/*	BOOL				_supportedFeatures[TFLibDC1394CaptureNumFeatures];
 	BOOL				_automodeFeatures[TFLibDC1394CaptureNumFeatures];
-	NSInteger			_featureMinMax[TFLibDC1394CaptureNumFeatures][2];
+	NSInteger			_featureMinMax[TFLibDC1394CaptureNumFeatures][2];*/
 	
+    NSMutableDictionary *_featuresDictionary;
+    
 	dc1394video_mode_t	_currentVideoMode;
 	dc1394framerates_t	_frameratesForCurrentVideoMode;
 	dc1394framerate_t	_currentFrameRate;
@@ -72,14 +74,25 @@ struct TFLibDC1394CaptureConversionContext;
 - (NSNumber*)cameraUniqueId;
 - (NSString*)cameraDisplayName;
 - (BOOL)setCameraToCameraWithUniqueId:(NSNumber*)uid error:(NSError**)error;
-- (BOOL)featureIsMutable:(NSInteger)feature;
-- (BOOL)featureSupportsAutoMode:(NSInteger)feature;
-- (BOOL)featureInAutoMode:(NSInteger)feature;
-- (BOOL)setFeature:(NSInteger)feature toAutoMode:(BOOL)val;
+- (BOOL)featureIsMutable:(dc1394feature_t)feature;
+- (BOOL)featureSupportsAutoMode:(dc1394feature_t)feature;
+- (BOOL)featureInAutoMode:(dc1394feature_t)feature;
+- (BOOL)pushToAutoFeatureWithIndex:(dc1394feature_t)f;
+
+- (BOOL)setVideoMode: (dc1394video_mode_t)videoMode ;
+
+- (NSDictionary *)featuresDictionary;
+- (NSArray *)videomodes;
+/*- (BOOL)setFeature:(NSInteger)feature toAutoMode:(BOOL)val;
 - (float)valueForFeature:(NSInteger)feature;
 - (BOOL)setFeature:(NSInteger)feature toValue:(float)val;
 - (BOOL)setMinimumFramerate:(NSUInteger)frameRate;
+*/
 
+- (BOOL)setFeatureWithIndex:(dc1394feature_t)f toAutoMode:(BOOL)val;
+- (float)valueForFeatureWithIndex:(dc1394feature_t)f;
+- (BOOL)setFeatureWithIndex:(NSInteger)feature toValue:(float)val;
+    
 - (CGSize)frameSize;
 - (BOOL)setFrameSize:(CGSize)size error:(NSError**)error;
 - (BOOL)supportsFrameSize:(CGSize)size;

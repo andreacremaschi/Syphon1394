@@ -44,7 +44,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 + (BOOL)_camera:(dc1394camera_t*)camera supportsResolution:(CGSize)resolution;
 - (void)_freeCamera;
 + (NSString*)_displayNameForCamera:(dc1394camera_t*)camera;
-- (dc1394feature_t)_featureFromKey:(NSInteger)featureKey;
+//- (dc1394feature_t)_featureFromKey:(NSInteger)featureKey;
 + (NSArray*)_supportedVideoModesForFrameSize:(CGSize)frameSize forCamera:(dc1394camera_t*)cam error:(NSError**)error;
 + (BOOL)_getFrameRatesForCamera:(dc1394camera_t*)cam atVideoMode:(dc1394video_mode_t)videoMode intoFramerates:(dc1394framerates_t*)frameRates;
 + (NSNumber*)_bestVideoModeForCamera:(dc1394camera_t*)cam frameSize:(CGSize)frameSize frameRate:(dc1394framerate_t*)frameRate error:(NSError**)error;
@@ -259,35 +259,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	if (isoSpeed < DC1394_ISO_SPEED_400)
 		dc1394_video_set_iso_speed(_camera, DC1394_ISO_SPEED_400);
 	
-	int i;
-	for (i=0; i<=MAX_FEATURE_KEY; i++) {
-		dc1394feature_t currentFeature = [self _featureFromKey:i];
-		
-		dc1394feature_info_t featureInfo;
-		featureInfo.id = currentFeature;
-		
-		_supportedFeatures[i] = NO;
-		_automodeFeatures[i] = NO;
-		
-		if (DC1394_SUCCESS != dc1394_feature_get(_camera, &featureInfo))
-			continue;
-		
-		int j;
-		for (j=0; j<featureInfo.modes.num; j++)
-			if (DC1394_FEATURE_MODE_MANUAL == featureInfo.modes.modes[j])
-				_supportedFeatures[i] = YES;
-			else if (DC1394_FEATURE_MODE_AUTO == featureInfo.modes.modes[j])
-				_automodeFeatures[i] = YES;
-		
-		if (_supportedFeatures[i]) {
-			_featureMinMax[i][0] = featureInfo.min;
-			_featureMinMax[i][1] = featureInfo.max;
-		}
-		
-		// we try setting to 'auto' even if this feature doesn't have a manual mode on this camera
-		[self setFeature:i toAutoMode:YES];
-	}
 	
+    
 	// store self, so we can access this camera's properties via class methods, too
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
 		// we go via NSValue because we do not want to be retained ourselves...
@@ -311,7 +284,175 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	return success;
 }
 
-- (BOOL)featureIsMutable:(NSInteger)feature
+
+- (NSDictionary *)featuresDictionary {
+    int i;
+    NSMutableDictionary *featuresDict = [[NSMutableDictionary dictionary] retain];
+	for (i=DC1394_FEATURE_MIN; i<=DC1394_FEATURE_MAX; i++) {
+        
+        
+		dc1394feature_t currentFeature = i; //[self _featureFromKey:i];
+		
+        NSString *key = @"";
+        switch (i) {                
+            case DC1394_FEATURE_BRIGHTNESS: key= @"brightness"; break;
+            case DC1394_FEATURE_EXPOSURE: key= @"exposure"; break;
+            case DC1394_FEATURE_SHARPNESS: key= @"sharpness"; break;
+            case DC1394_FEATURE_WHITE_BALANCE: key= @"white_balance"; break;
+            case DC1394_FEATURE_HUE: key= @"hue"; break;
+            case DC1394_FEATURE_SATURATION: key= @"saturation"; break;
+            case DC1394_FEATURE_GAMMA: key= @"gamma"; break;
+            case DC1394_FEATURE_SHUTTER: key= @"shutter"; break;
+            case DC1394_FEATURE_GAIN: key= @"gain"; break;
+            case DC1394_FEATURE_IRIS: key= @"iris"; break;
+            case DC1394_FEATURE_FOCUS: key= @"focus"; break;
+            case DC1394_FEATURE_TEMPERATURE: key= @"temperature"; break;
+            case DC1394_FEATURE_TRIGGER: key= @"trigger"; break;
+            case DC1394_FEATURE_TRIGGER_DELAY: key= @"trigger_delay"; break;
+            case DC1394_FEATURE_WHITE_SHADING: key= @"white_shading"; break;
+            case DC1394_FEATURE_FRAME_RATE: key= @"frame_rate"; break;
+            case DC1394_FEATURE_ZOOM: key= @"zoom"; break;
+            case DC1394_FEATURE_PAN: key= @"pan"; break;
+            case DC1394_FEATURE_TILT: key= @"tilt"; break;
+            case DC1394_FEATURE_OPTICAL_FILTER: key= @"optical_filter"; break;
+            case DC1394_FEATURE_CAPTURE_SIZE: key= @"capture_size"; break;
+            case DC1394_FEATURE_CAPTURE_QUALITY: key= @"capture_quality"; break;
+                
+            default:
+                break;
+        }
+        
+		dc1394feature_info_t featureInfo;
+		featureInfo.id = currentFeature;
+		
+        /*	_supportedFeatures[i] = NO;
+         _automodeFeatures[i] = NO;
+         */	
+		if (DC1394_SUCCESS != dc1394_feature_get(_camera, &featureInfo))
+			continue;
+		
+        NSMutableDictionary *curFeatureDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                               [NSNumber numberWithInt: i], @"feature_index",
+                                               /*  [NSNumber numberWithBool: featureInfo.available], @"available",*/
+                                               [NSNumber numberWithInt: featureInfo.min], @"min_value",
+                                               [NSNumber numberWithInt: featureInfo.max], @"max_value",
+                                               [NSNumber numberWithInt: featureInfo.value], @"value",
+                                               nil];
+        
+        
+		int j;
+        
+        bool supported = false, automode=false, oneShotAuto = false;
+		for (j=0; j<featureInfo.modes.num; j++) {
+			if (DC1394_FEATURE_MODE_MANUAL == featureInfo.modes.modes[j]) {
+                supported = true;
+            }
+			else if (DC1394_FEATURE_MODE_AUTO == featureInfo.modes.modes[j]) {
+                automode=true;
+            } else if (DC1394_FEATURE_MODE_ONE_PUSH_AUTO == featureInfo.modes.modes[j]) {
+                oneShotAuto=true;
+            }
+		}
+        
+        if ((featureInfo.available == 1) && supported) {
+            if (automode) {
+                bool curMode= featureInfo.current_mode == DC1394_FEATURE_MODE_AUTO;
+                [curFeatureDict setValue: [NSNumber numberWithBool:curMode] forKey: @"auto"];
+            }
+            if (oneShotAuto) {
+                [curFeatureDict setValue: [NSNumber numberWithBool:YES] forKey: @"onePushAuto"];                
+            }
+            [featuresDict setValue: curFeatureDict forKey: key];
+        }
+		// we try setting to 'auto' even if this feature doesn't have a manual mode on this camera
+		//[self setFeatureWithIndex:i toAutoMode:YES];
+	}
+
+    return [featuresDict autorelease];
+}
+
+NSMutableDictionary *resolutionDict (float width, float height, NSString* color_mode)
+{
+    return [NSMutableDictionary dictionaryWithObjectsAndKeys:
+            [NSNumber numberWithFloat: width], @"width",
+            [NSNumber numberWithFloat: height], @"height",
+            color_mode, @"color_mode",
+            nil];
+}
+
+- (NSArray *)videomodes 
+{
+    int i;
+    
+    dc1394video_modes_t list;
+    
+    if (DC1394_SUCCESS != dc1394_video_get_supported_modes(_camera, &list))
+        return nil;
+
+    NSMutableArray *videomodesArray = [[NSMutableArray array] retain];
+    
+
+        
+    int j;
+		for (j=0; j<list.num; j++) {
+            NSMutableDictionary *curResolutionDict;
+                switch(list.modes[j]) {
+					case DC1394_VIDEO_MODE_320x240_YUV422:
+                        curResolutionDict = resolutionDict (320., 240., @"YUV422"); break;
+                        break;
+					case DC1394_VIDEO_MODE_640x480_RGB8:
+                        curResolutionDict = resolutionDict (640., 480., @"RGB8"); break;
+					case DC1394_VIDEO_MODE_640x480_MONO8:
+                        curResolutionDict = resolutionDict (640., 480., @"MONO8"); break;
+					case DC1394_VIDEO_MODE_640x480_MONO16:
+                        curResolutionDict = resolutionDict (640., 480., @"MONO16"); break;
+					case DC1394_VIDEO_MODE_640x480_YUV422:
+                        curResolutionDict = resolutionDict (640., 480., @"YUV422"); break;
+					case DC1394_VIDEO_MODE_640x480_YUV411:
+                        curResolutionDict = resolutionDict (640., 480., @"YUV411"); break;
+					case DC1394_VIDEO_MODE_160x120_YUV444:
+                        curResolutionDict = resolutionDict (160., 120., @"YUV444"); break;
+					case DC1394_VIDEO_MODE_800x600_RGB8:
+                        curResolutionDict = resolutionDict (800., 600., @"RGB8"); break;
+					case DC1394_VIDEO_MODE_800x600_MONO8:
+                        curResolutionDict = resolutionDict (800., 600., @"MONO8"); break;
+					case DC1394_VIDEO_MODE_800x600_MONO16:
+                        curResolutionDict = resolutionDict (800., 600., @"MONO16"); break;
+					case DC1394_VIDEO_MODE_800x600_YUV422:
+                        curResolutionDict = resolutionDict (800., 600., @"YUV422"); break;
+					case DC1394_VIDEO_MODE_1024x768_RGB8:
+                        curResolutionDict = resolutionDict (1024., 768., @"RGB8"); break;
+					case DC1394_VIDEO_MODE_1024x768_MONO8:
+                        curResolutionDict = resolutionDict (1024., 768., @"MONO8"); break;
+					case DC1394_VIDEO_MODE_1024x768_MONO16:
+                        curResolutionDict = resolutionDict (1024., 768., @"MONO16"); break;
+					case DC1394_VIDEO_MODE_1024x768_YUV422:
+                        curResolutionDict = resolutionDict (1024., 768., @"YUV422"); break;
+					case DC1394_VIDEO_MODE_1280x960_RGB8:
+                        curResolutionDict = resolutionDict (1280., 960., @"RGB8"); break;
+					case DC1394_VIDEO_MODE_1280x960_MONO8:
+                        curResolutionDict = resolutionDict (1280., 960., @"MONO8"); break;
+					case DC1394_VIDEO_MODE_1280x960_MONO16:
+                        curResolutionDict = resolutionDict (1280., 960., @"MONO16"); break;
+					case DC1394_VIDEO_MODE_1280x960_YUV422:
+                        curResolutionDict = resolutionDict (1280., 960., @"YUV422"); break;
+					case DC1394_VIDEO_MODE_1600x1200_RGB8:
+                        curResolutionDict = resolutionDict (1600., 1200., @"RGB8"); break;
+					case DC1394_VIDEO_MODE_1600x1200_MONO8:
+                        curResolutionDict = resolutionDict (1600., 1200., @"MONO8"); break;
+					case DC1394_VIDEO_MODE_1600x1200_MONO16:
+                        curResolutionDict = resolutionDict (1600., 1200., @"MONO16"); break;
+					case DC1394_VIDEO_MODE_1600x1200_YUV422:
+                        curResolutionDict = resolutionDict (1600., 1200., @"YUV422"); break;
+				}
+            [curResolutionDict setValue: [NSNumber numberWithInt: list.modes[j]] forKey:@"dc1394_videomode"];
+            [curResolutionDict setValue: [NSString stringWithFormat: @"%@ %@x%@", [curResolutionDict valueForKey:@"color_mode"], [curResolutionDict valueForKey:@"width"], [curResolutionDict valueForKey:@"height"] ] forKey:@"description"];
+            [videomodesArray addObject: curResolutionDict];
+			}
+
+    return [videomodesArray autorelease];
+}
+/*- (BOOL)featureIsMutable:(NSInteger)feature
 {
 	if (feature <= MAX_FEATURE_KEY)
 		return _supportedFeatures[feature];
@@ -325,11 +466,10 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return _automodeFeatures[feature];
 	
 	return NO;
-}
+}*/
 
-- (BOOL)featureInAutoMode:(NSInteger)feature
+- (BOOL)featureInAutoMode:(dc1394feature_t)f
 {
-	dc1394feature_t f = [self _featureFromKey:feature];
 	dc1394feature_mode_t mode;
 	
 	if (DC1394_SUCCESS != dc1394_feature_get_mode(_camera, f, &mode))
@@ -338,32 +478,37 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	return (DC1394_FEATURE_MODE_AUTO == mode);
 }
 
-- (BOOL)setFeature:(NSInteger)feature toAutoMode:(BOOL)val
+- (BOOL)setFeatureWithIndex:(dc1394feature_t)f toAutoMode:(BOOL)val
 {
-	dc1394feature_t f = [self _featureFromKey:feature];
 	dc1394feature_mode_t mode = val ? DC1394_FEATURE_MODE_AUTO : DC1394_FEATURE_MODE_MANUAL;
 	
 	return (DC1394_SUCCESS == dc1394_feature_set_mode(_camera, f, mode));
 }
 
-- (float)valueForFeature:(NSInteger)feature
+- (BOOL)pushToAutoFeatureWithIndex:(dc1394feature_t)f 
 {
-	dc1394feature_t f = [self _featureFromKey:feature];
+	dc1394feature_mode_t mode = DC1394_FEATURE_MODE_ONE_PUSH_AUTO;
+	return (DC1394_SUCCESS == dc1394_feature_set_mode(_camera, f, mode));
+}
+
+- (float)valueForFeatureWithIndex:(dc1394feature_t)f
+{
 	unsigned val;
 	
 	if (DC1394_SUCCESS != dc1394_feature_get_value(_camera, f, (void*)&val))
 		return 0.0f;
 	
-	return ((float)val - (float)_featureMinMax[feature][0]) /
-			((float)_featureMinMax[feature][1] - (float)_featureMinMax[feature][0]);
+	return val;
+            
 }
 
-- (BOOL)setFeature:(NSInteger)feature toValue:(float)val
+- (BOOL)setFeatureWithIndex:(NSInteger)feature toValue:(float)val
 {
-	if (!_supportedFeatures[feature])
+	/*if (!_supportedFeatures[feature])
 		return NO;
-	
-	dc1394feature_t f = [self _featureFromKey:feature];
+	*/
+    
+	dc1394feature_t f = feature; //[self _featureFromKey:feature];
 	dc1394feature_mode_t mode;
 	dc1394bool_t isSwitchable;
 	
@@ -391,9 +536,9 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		DC1394_SUCCESS != dc1394_feature_set_mode(_camera, f, DC1394_FEATURE_MODE_MANUAL))
 		return NO;
 	
-	UInt32 newVal = _featureMinMax[feature][0] + val*(_featureMinMax[feature][1]-_featureMinMax[feature][0]);
-	
-	if (DC1394_SUCCESS != dc1394_feature_set_value(_camera, f, newVal))
+	/*UInt32 newVal = _featureMinMax[feature][0] + val*(_featureMinMax[feature][1]-_featureMinMax[feature][0]);
+	*/
+	if (DC1394_SUCCESS != dc1394_feature_set_value(_camera, f, val)) //newVal))
 		return NO;
 	
 	return YES;
@@ -660,6 +805,12 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	return CGSizeMake(0.0f, 0.0f);
 }
 
+- (BOOL)setVideoMode: (dc1394video_mode_t)videoMode 
+{
+    dc1394error_t err = dc1394_video_set_mode(_camera, videoMode);
+	return (DC1394_SUCCESS == err);
+}
+    
 - (BOOL)setFrameSize:(CGSize)size error:(NSError**)error
 {
 	dc1394framerate_t newFrameRate = _currentFrameRate;
