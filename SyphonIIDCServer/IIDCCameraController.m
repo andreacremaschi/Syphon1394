@@ -218,7 +218,7 @@ didCaptureFrame:(dc1394video_frame_t*)frame
         
         //direct copy CPU memory -> texture
         glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _texture);
-        glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, size.width, size.height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, frame->image);
+        glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, size.width, size.height, 0,frame->data_depth == 8 ? GL_LUMINANCE : GL_LUMINANCE, frame->data_depth == 8 ? GL_UNSIGNED_BYTE : GL_UNSIGNED_SHORT, frame->image);
         glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
         
         

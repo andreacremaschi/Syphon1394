@@ -444,6 +444,8 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
                         curResolutionDict = resolutionDict (1600., 1200., @"MONO16"); break;
 					case DC1394_VIDEO_MODE_1600x1200_YUV422:
                         curResolutionDict = resolutionDict (1600., 1200., @"YUV422"); break;
+                    default:
+                        curResolutionDict = resolutionDict (0., 0., @"Not supported yet"); break;
 				}
             [curResolutionDict setValue: [NSNumber numberWithInt: list.modes[j]] forKey:@"dc1394_videomode"];
             [curResolutionDict setValue: [NSString stringWithFormat: @"%@ %@x%@", [curResolutionDict valueForKey:@"color_mode"], [curResolutionDict valueForKey:@"width"], [curResolutionDict valueForKey:@"height"] ] forKey:@"description"];
@@ -807,7 +809,15 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 
 - (BOOL)setVideoMode: (dc1394video_mode_t)videoMode 
 {
+    BOOL wasRunning = [self isCapturing];
+	if (wasRunning)
+		if (![self stopCapturing:nil])
+			return NO;
     dc1394error_t err = dc1394_video_set_mode(_camera, videoMode);
+    if (wasRunning) {
+		if (![self startCapturing:nil])
+			return NO;
+	}
 	return (DC1394_SUCCESS == err);
 }
     
