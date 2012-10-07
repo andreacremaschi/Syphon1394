@@ -12,7 +12,6 @@
 		C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */; };
 		C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
 		C4121A66144B3F150088F701 /* SICError.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A65144B3F150088F701 /* SICError.m */; };
-		C4121A6D144B3FB30088F701 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A6C144B3FB30088F701 /* Accelerate.framework */; };
 		C4121A74144B41020088F701 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4121A73144B41020088F701 /* MainWindowController.xib */; };
 		C4121A78144B41740088F701 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A77144B41740088F701 /* MainWindowController.m */; };
 		C4195787144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
@@ -25,7 +24,6 @@
 		C41957A6144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
 		C41957AE144B376700338631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C41957AC144B376700338631 /* InfoPlist.strings */; };
 		C41957B1144B376700338631 /* SyphonIIDCServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957B0144B376700338631 /* SyphonIIDCServerTests.m */; };
-		C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957BA144B378D00338631 /* QuartzCore.framework */; };
 		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
 		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
 		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
@@ -36,6 +34,9 @@
 		C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
+		CD52686B1511E2FF00D1D1F2 /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A53144B3E960088F701 /* libdc1394.dylib */; };
+		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
+		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */,
+				CD52686B1511E2FF00D1D1F2 /* libdc1394.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,14 +77,12 @@
 		C4121A5F144B3EFD0088F701 /* TFLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLocalization.h; sourceTree = "<group>"; };
 		C4121A64144B3F150088F701 /* SICError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SICError.h; sourceTree = "<group>"; };
 		C4121A65144B3F150088F701 /* SICError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SICError.m; sourceTree = "<group>"; };
-		C4121A6C144B3FB30088F701 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C4121A73144B41020088F701 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
 		C4121A76144B41740088F701 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		C4121A77144B41740088F701 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		C4195782144B376700338631 /* SyphonIIDCServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SyphonIIDCServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4195786144B376700338631 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C4195789144B376700338631 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		C419578A144B376700338631 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C419578B144B376700338631 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C419578E144B376700338631 /* SyphonIIDCServer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SyphonIIDCServer-Info.plist"; sourceTree = "<group>"; };
 		C4195790144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -98,7 +98,6 @@
 		C41957AD144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C41957AF144B376700338631 /* SyphonIIDCServerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonIIDCServerTests.h; sourceTree = "<group>"; };
 		C41957B0144B376700338631 /* SyphonIIDCServerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonIIDCServerTests.m; sourceTree = "<group>"; };
-		C41957BA144B378D00338631 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C41957BC144B37B000338631 /* KOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KOpenGLView.h; sourceTree = "<group>"; };
 		C41957BD144B37B000338631 /* KOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KOpenGLView.m; sourceTree = "<group>"; };
 		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
@@ -116,6 +115,9 @@
 		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
 		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
+		CD79EF141510991A00D3AC18 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,10 +125,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
+				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
 				C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */,
-				C4121A6D144B3FB30088F701 /* Accelerate.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
-				C41957BB144B378D00338631 /* QuartzCore.framework in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
 				C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */,
 			);
@@ -234,11 +236,11 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C41E3AA6144CB89500FB4A29 /* New Group */,
+				CD79EF181510994100D3AC18 /* Accelerate.framework */,
+				CD79EF161510992600D3AC18 /* QuartzCore.framework */,
+				CD79EF141510991A00D3AC18 /* Quartz.framework */,
 				C41E3AA4144CB89200FB4A29 /* Syphon.framework */,
-				C4121A6C144B3FB30088F701 /* Accelerate.framework */,
 				C41957C2144B380900338631 /* OpenGL.framework */,
-				C41957BA144B378D00338631 /* QuartzCore.framework */,
 				C4195786144B376700338631 /* Cocoa.framework */,
 				C41957A4144B376700338631 /* SenTestingKit.framework */,
 				C4195788144B376700338631 /* Other Frameworks */,
@@ -250,7 +252,6 @@
 			isa = PBXGroup;
 			children = (
 				C4195789144B376700338631 /* AppKit.framework */,
-				C419578A144B376700338631 /* CoreData.framework */,
 				C419578B144B376700338631 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -302,13 +303,6 @@
 				C41957AC144B376700338631 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C41E3AA6144CB89500FB4A29 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
 			sourceTree = "<group>";
 		};
 		C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */ = {
@@ -553,7 +547,7 @@
 		C41957B5144B376700338631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -565,6 +559,8 @@
 				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
 				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -572,7 +568,7 @@
 		C41957B6144B376700338631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -584,6 +580,8 @@
 				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
 				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

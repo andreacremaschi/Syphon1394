@@ -13,6 +13,10 @@
 @interface MainWindowController : NSWindowController {
     SyphonServer *syServer;
     IBOutlet SimpleServerGLView *previewGLView;
+    
+    NSString *selectedCameraUUID;
+    IIDCCameraController * captureObject;
+    NSScrollView *controlsBox;
 }
 
 @property (readonly) NSArray * IIDCCameraList;

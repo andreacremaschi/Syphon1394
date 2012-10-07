@@ -102,7 +102,7 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 	KCanvas *newCanvas = [[KCanvas alloc] initWithOpenGLContext: context];
 	
 	if (nil != newCanvas) {
-		[newCanvas setSize: canvasSize];
+		[newCanvas setSize: NSSizeToCGSize( canvasSize )];
 	}	
 	
 	return newCanvas;
@@ -210,7 +210,7 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 		
 		[[self ciContext] drawImage: image
 							atPoint: CGPointZero
-						   fromRect: NSRectToCGRect([image extent])];
+						   fromRect: [image extent] ];
 		[self flush];
 
 		[[self bo] detachPBO];

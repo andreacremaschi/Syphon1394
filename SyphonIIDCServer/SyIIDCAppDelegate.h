@@ -9,7 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 @class MainWindowController;
-@interface SyIIDCAppDelegate : NSObject <NSApplicationDelegate>
+@interface SyIIDCAppDelegate : NSObject <NSApplicationDelegate> {
+    MainWindowController *mainWindowController;
+}
 
 @property (retain) MainWindowController *mainWindowController;
 

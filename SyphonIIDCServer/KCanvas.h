@@ -31,6 +31,9 @@ typedef enum
     NSNumber *maxFPS;
     NSNumber *canvasType;
     GLuint _texture;
+    
+    NSOpenGLContext * sharedContext;
+    NSOpenGLPixelFormat * pixelFormat;
 }
 
 @property (nonatomic, retain) NSNumber * height;

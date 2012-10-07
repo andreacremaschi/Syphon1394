@@ -29,6 +29,9 @@
     bool uploadingData;
     
     int selectedVideoMode;
+    
+    id delegate;
+    NSOpenGLContext *openGLContext;
 }
 
 
