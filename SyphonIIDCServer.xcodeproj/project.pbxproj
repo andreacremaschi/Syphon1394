@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A53144B3E960088F701 /* libdc1394.dylib */; };
 		C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */; };
 		C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */; };
 		C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
@@ -31,12 +30,13 @@
 		C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E596144C91DE00CF26C7 /* KCVBufferPool.m */; };
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
-		C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
-		C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C41E3AA4144CB89200FB4A29 /* Syphon.framework */; };
 		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
-		CD52686B1511E2FF00D1D1F2 /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = C4121A53144B3E960088F701 /* libdc1394.dylib */; };
+		CD2F959F192D10EB001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F959C192D10D2001CB609 /* Syphon.framework */; };
+		CD2F95A0192D110B001CB609 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F959C192D10D2001CB609 /* Syphon.framework */; };
+		CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
+		CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +47,20 @@
 			remoteGlobalIDString = C4195781144B376700338631;
 			remoteInfo = SyphonIIDCServer;
 		};
+		CD2F959B192D10D2001CB609 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Syphon;
+		};
+		CD2F959D192D10E0001CB609 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Syphon;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,8 +70,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C48705CB144CC2B300B5A460 /* Syphon.framework in Copy Frameworks */,
-				CD52686B1511E2FF00D1D1F2 /* libdc1394.dylib in Copy Frameworks */,
+				CD2F959F192D10EB001CB609 /* Syphon.framework in Copy Frameworks */,
+				CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,7 +79,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C4121A53144B3E960088F701 /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = /usr/local/lib/libdc1394.dylib; sourceTree = "<absolute>"; };
 		C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFCapturePixelFormatConversions.c; sourceTree = "<group>"; };
 		C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapturePixelFormatConversions.h; sourceTree = "<group>"; };
 		C4121A59144B3EFD0088F701 /* TFExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFExceptions.h; sourceTree = "<group>"; };
@@ -103,7 +116,6 @@
 		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
 		C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
 		C41957C2144B380900338631 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		C41E3AA4144CB89200FB4A29 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		C436E593144C91DE00CF26C7 /* KCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCanvas.h; sourceTree = "<group>"; };
 		C436E594144C91DE00CF26C7 /* KCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCanvas.m; sourceTree = "<group>"; };
 		C436E595144C91DE00CF26C7 /* KCVBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCVBufferPool.h; sourceTree = "<group>"; };
@@ -115,9 +127,11 @@
 		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
 		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
+		CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Syphon.xcodeproj; path = "Frameworks/Syphon-Framework/Syphon.xcodeproj"; sourceTree = "<group>"; };
 		CD79EF141510991A00D3AC18 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,12 +139,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD2F95A0192D110B001CB609 /* Syphon.framework in Frameworks */,
 				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
 				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
-				C48705C6144CBB0000B5A460 /* Syphon.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
+				CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
-				C4121A54144B3E960088F701 /* libdc1394.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,7 +193,7 @@
 		C4121A71144B3FE00088F701 /* IIDC protocol management */ = {
 			isa = PBXGroup;
 			children = (
-				C4121A53144B3E960088F701 /* libdc1394.dylib */,
+				CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */,
 				C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */,
 				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
 				C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */,
@@ -236,10 +250,10 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */,
 				CD79EF181510994100D3AC18 /* Accelerate.framework */,
 				CD79EF161510992600D3AC18 /* QuartzCore.framework */,
 				CD79EF141510991A00D3AC18 /* Quartz.framework */,
-				C41E3AA4144CB89200FB4A29 /* Syphon.framework */,
 				C41957C2144B380900338631 /* OpenGL.framework */,
 				C4195786144B376700338631 /* Cocoa.framework */,
 				C41957A4144B376700338631 /* SenTestingKit.framework */,
@@ -318,6 +332,14 @@
 			name = "CoreVideo and OpenGL convenience classes";
 			sourceTree = "<group>";
 		};
+		CD2F9597192D10D2001CB609 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD2F959C192D10D2001CB609 /* Syphon.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -333,6 +355,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CD2F959E192D10E0001CB609 /* PBXTargetDependency */,
 			);
 			name = SyphonIIDCServer;
 			productName = SyphonIIDCServer;
@@ -364,7 +387,8 @@
 		C4195779144B376600338631 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastTestingUpgradeCheck = 0510;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = C419577C144B376600338631 /* Build configuration list for PBXProject "SyphonIIDCServer" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -376,6 +400,12 @@
 			mainGroup = C4195777144B376600338631;
 			productRefGroup = C4195783144B376700338631 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CD2F9597192D10D2001CB609 /* Products */;
+					ProjectRef = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C4195781144B376700338631 /* SyphonIIDCServer */,
@@ -383,6 +413,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CD2F959C192D10D2001CB609 /* Syphon.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Syphon.framework;
+			remoteRef = CD2F959B192D10D2001CB609 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C4195780144B376700338631 /* Resources */ = {
@@ -460,6 +500,11 @@
 			target = C4195781144B376700338631 /* SyphonIIDCServer */;
 			targetProxy = C41957A7144B376700338631 /* PBXContainerItemProxy */;
 		};
+		CD2F959E192D10E0001CB609 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Syphon;
+			targetProxy = CD2F959D192D10E0001CB609 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -503,7 +548,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -514,12 +564,15 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -529,17 +582,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -547,19 +608,23 @@
 		C41957B5144B376700338631 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../Syphon SDK Public Beta 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/usr/local/include/**";
 				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"$(PROJECT_DIR)/Frameworks/libdc1394",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "";
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
@@ -568,19 +633,23 @@
 		C41957B6144B376700338631 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../Syphon SDK Public Beta 2\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
-				HEADER_SEARCH_PATHS = "/usr/local/include/**";
 				INFOPLIST_FILE = "SyphonIIDCServer/SyphonIIDCServer-Info.plist";
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Frameworks\"",
+					"$(PROJECT_DIR)/Frameworks/libdc1394",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "";
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
@@ -590,6 +659,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SyphonIIDCServer.app/Contents/MacOS/SyphonIIDCServer";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
@@ -604,6 +674,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SyphonIIDCServer.app/Contents/MacOS/SyphonIIDCServer";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";

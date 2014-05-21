@@ -21,7 +21,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
-    mainWindowController = [[[MainWindowController alloc] init] retain];
+    mainWindowController = [[MainWindowController alloc] init] ;
     [mainWindowController showWindow: self];
 }
 
