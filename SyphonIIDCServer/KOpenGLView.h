@@ -22,10 +22,10 @@
 	
 	
 }
-@property (retain) CIImage* imageToShow;
-@property (readonly) CIContext *ciContext;
-@property (retain) NSNumber* pixelAspectRatio;
-@property (retain) NSString* identifier;
+@property (strong) CIImage* imageToShow;
+@property (weak, readonly) CIContext *ciContext;
+@property (strong) NSNumber* pixelAspectRatio;
+@property (strong) NSString* identifier;
 
 
 - (void) setGlContextToShare: (NSOpenGLContext *)context;

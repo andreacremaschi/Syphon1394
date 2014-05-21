@@ -35,7 +35,7 @@
 		
 		theError = CVOpenGLBufferPoolCreate(kCFAllocatorDefault, 
 											NULL, 
-											(CFDictionaryRef)attributes, 
+											(__bridge CFDictionaryRef)attributes, 
 											&_bufferPool);
 		if(theError) {
 			NSLog(@"CVPixelBufferPoolCreate() failed with error %i", theError);
@@ -57,7 +57,6 @@
 	
 	//invalidate cached image
 	if (nil != _cachedImage) {
-		[_cachedImage release];
 		_cachedImage = nil;
 	}
 	
@@ -108,7 +107,6 @@
 	
 	CGLLockContext(cgl_ctx);
 	
-	[_cachedImage release];
 	CVOpenGLBufferRelease(_CVPixelBuffer );
 	CVOpenGLBufferPoolRelease(_bufferPool);	
 	
@@ -125,7 +123,7 @@
 		return _cachedImage;
 
 	CGLLockContext( context );	
-		_cachedImage = [[CIImage imageWithCVImageBuffer: _CVPixelBuffer] retain]; 
+		_cachedImage = [CIImage imageWithCVImageBuffer: _CVPixelBuffer]; 
 	CGLUnlockContext( context );
 	return _cachedImage;
 	

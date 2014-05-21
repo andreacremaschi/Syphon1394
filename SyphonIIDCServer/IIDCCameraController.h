@@ -18,7 +18,7 @@
     NSArray* videoModes;
     NSArray* colorModes;
     
-    TFLibDC1394Capture *dc1394Camera;
+    TFLibDC1394Capture *__weak dc1394Camera;
     CGSize _bufferSize;
     	
     GLuint _texture;
@@ -30,20 +30,20 @@
     
     int selectedVideoMode;
     
-    id delegate;
+    id __unsafe_unretained delegate;
     NSOpenGLContext *openGLContext;
 }
 
 
 
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, unsafe_unretained) id delegate;
 
-@property (readonly) TFLibDC1394Capture * dc1394Camera;
+@property (weak, readonly) TFLibDC1394Capture * dc1394Camera;
 
-@property (nonatomic, retain) NSOpenGLContext *openGLContext;
+@property (nonatomic, strong) NSOpenGLContext *openGLContext;
 @property (readonly) CGSize currentSize;
 
-@property (nonatomic, retain) NSNumber *videoMode;
+@property (nonatomic, strong) NSNumber *videoMode;
 
 - (BOOL)setFeature:(NSString *)featureKey toValue:(float)val;
 - (BOOL)setFeature:(NSString *)featureKey toAutoMode:(BOOL)val;

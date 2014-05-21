@@ -35,9 +35,9 @@
 @interface SimpleServerGLView : NSOpenGLView 
 {	
 	BOOL needsRebuild;
-	id <SimpleServerTextureSource> _source;
+	id <SimpleServerTextureSource> __unsafe_unretained _source;
 }
 
-@property (assign, readwrite) id <SimpleServerTextureSource> source;
+@property (unsafe_unretained, readwrite) id <SimpleServerTextureSource> source;
 
 @end

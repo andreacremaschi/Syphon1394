@@ -38,8 +38,8 @@
 
         self.openGLContext = context;
         
-        features = [[[captureObject featuresDictionary] mutableCopy] retain];
-        videoModes = [[captureObject videomodes] retain];
+        features = [[captureObject featuresDictionary] mutableCopy];
+        videoModes = [captureObject videomodes];
         
         NSMutableArray *colModes = [NSMutableArray array];
         for (NSDictionary *dict in videoModes) {
@@ -48,7 +48,7 @@
                 [colModes addObject: col_mode];
             
         }
-        colorModes = [colModes retain];
+        colorModes = colModes;
         
 //        dc1394camera_t *camera_struct = [captureObject cameraStruct];
         captureObject.delegate = self;
@@ -58,11 +58,6 @@
     return self;
 }
 
--(void)dealloc
-{
-    [features release];
-    [super dealloc];
-}
 
 + (IIDCCameraController *)cameraControllerWithTFLibDC1394CaptureObject: (TFLibDC1394Capture *) captureObject openGLContext: (NSOpenGLContext *)context {
     
@@ -88,7 +83,7 @@
 
 -(NSNumber *)videoMode
 {
-    return [NSNumber numberWithInt: selectedVideoMode];    
+    return @(selectedVideoMode);    
 }
 
 #pragma mark - Lock/unlock texture

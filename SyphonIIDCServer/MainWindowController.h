@@ -16,14 +16,14 @@
     
     NSString *selectedCameraUUID;
     IIDCCameraController * captureObject;
-    NSScrollView *controlsBox;
+    NSScrollView *__weak controlsBox;
 }
 
-@property (readonly) NSArray * IIDCCameraList;
-@property (nonatomic, retain) NSString *selectedCameraUUID;
-@property (nonatomic, retain) IIDCCameraController *captureObject;
+@property (weak, readonly) NSArray * IIDCCameraList;
+@property (nonatomic, strong) NSString *selectedCameraUUID;
+@property (nonatomic, strong) IIDCCameraController *captureObject;
 
-@property (assign) IBOutlet NSScrollView *controlsBox;
+@property (weak) IBOutlet NSScrollView *controlsBox;
 
 
 @end

@@ -32,11 +32,6 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 @synthesize canvasType;
 
 
-- (void) dealloc {
-	[_ciContext release];
-
-	[super dealloc];
-}
 
 
 #pragma mark Accessors
@@ -60,10 +55,8 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
     [self willChangeValueForKey:@"width"];
 	//isOpenGLContextValid = false;
     
-    [height release];
-    [width release];
-    height = [[NSNumber numberWithFloat: newSize.height] retain];
-    width = [[NSNumber numberWithFloat: newSize.width] retain];
+    height = [NSNumber numberWithFloat: newSize.height];
+    width = [NSNumber numberWithFloat: newSize.width];
 	
 	[self initPBO];
 		
@@ -76,8 +69,7 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 {
     [self willChangeValueForKey:@"canvasType"];
 
-    [canvasType release];
-    canvasType = [value retain];
+    canvasType = value;
 	
 	[self initPBO]; // maybe should init opengl context too TODO!
     [self didChangeValueForKey:@"canvasType"];
@@ -149,7 +141,6 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 	CGLLockContext(cgl_ctx);
 	{
 		if (nil !=_pbo) {
-			[_pbo release];
 			_pbo=nil;
 		}        
 
@@ -226,12 +217,12 @@ NSString *CanvasAssetNameDefaultValue = @"Canvas";
 	if (nil == _pbo) return [CIImage emptyImage];
 
 	CGLLockContext([_openGLContext CGLContextObj]);
-	CIImage *canvasImage = [[_pbo image] retain];
+	CIImage *canvasImage = [_pbo image];
 	CGLUnlockContext([_openGLContext CGLContextObj]);
 
 	
 	
-	return [canvasImage autorelease];
+	return canvasImage;
 
 //	return [CIImage imageWithCGLayer: _cgLayer];
 	

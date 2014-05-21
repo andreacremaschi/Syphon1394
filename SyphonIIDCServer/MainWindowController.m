@@ -50,7 +50,6 @@
         previewGLView.source = nil;
         if ([captureObject.dc1394Camera isCapturing]) 
             [captureObject.dc1394Camera stopCapturing: nil]; 
-        [captureObject release];
     }
 
 }
@@ -61,7 +60,6 @@
     [self stopSyphon];
     [self stopCamera];
     
-    [super dealloc];
 }
 
 #pragma OpenGLContext
@@ -77,7 +75,7 @@
 	};
 	
     
-	NSOpenGLPixelFormat *format = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
+	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes];
     
 	//Create the OpenGL context to render with (with color and depth buffers)
 	NSOpenGLContext * openGLContext = [[NSOpenGLContext alloc] 
@@ -124,10 +122,8 @@
     NSMutableArray *cameraList = [NSMutableArray array];
     
     for (NSString *key in [cameraListDict allKeys])
-    {   NSDictionary *cameraDict =     [NSDictionary dictionaryWithObjectsAndKeys: 
-                                        key, @"UUID",
-                                        [cameraListDict valueForKey: key], @"cameraName",
-                                        nil];
+    {   NSDictionary *cameraDict =     @{@"UUID": key,
+                                        @"cameraName": [cameraListDict valueForKey: key]};
         [cameraList addObject: cameraDict];
     }
     return cameraList;
@@ -147,7 +143,7 @@
     //[controlsBox setSubviews: [NSArray array]];
     
     NSDictionary * features = self.captureObject.features;
-    NSView*controlsView = [[[NSView alloc] initWithFrame: controlsBox.bounds] autorelease];
+    NSView*controlsView = [[NSView alloc] initWithFrame: controlsBox.bounds];
     
     int i=1;
     int marginY = 15;
@@ -168,7 +164,7 @@
         
         // label
         uiFrame = NSMakeRect(0, 0, cell.bounds.size.width, 20);
-        NSTextField * label = [[[NSTextField alloc] initWithFrame: uiFrame] autorelease];
+        NSTextField * label = [[NSTextField alloc] initWithFrame: uiFrame];
         label.stringValue = featureKey;
         label.editable=NO;
         label.selectable=NO;
@@ -179,7 +175,7 @@
 
         // Slider
         uiFrame = NSMakeRect(0, 20, cell.bounds.size.width, 20);
-        NSSlider * slider = [[[NSSlider alloc] initWithFrame: uiFrame] autorelease];
+        NSSlider * slider = [[NSSlider alloc] initWithFrame: uiFrame];
         slider.maxValue = [[curFDict valueForKey: @"max_value"] doubleValue];
         slider.minValue = [[curFDict valueForKey: @"min_value"] doubleValue];
         slider.doubleValue = [[curFDict valueForKey: @"value"] doubleValue];
@@ -194,7 +190,7 @@
         // checkBox
         if ([[curFDict allKeys] containsObject: @"auto"]) {
             uiFrame = NSMakeRect(0, 40, 18, 18);
-            NSButton * autoCheckBox = [[[NSButton alloc] initWithFrame: uiFrame] autorelease];
+            NSButton * autoCheckBox = [[NSButton alloc] initWithFrame: uiFrame];
             autoCheckBox.buttonType=NSSwitchButton;
             autoCheckBox.state  = [[curFDict valueForKey: @"auto"] boolValue] ? NSOnState : NSOffState;
         
@@ -210,16 +206,14 @@
             [slider bind: @"enabled"
                       toObject: self.captureObject
                    withKeyPath: [NSString stringWithFormat: @"auto_%@", featureKey]
-                 options: [NSDictionary dictionaryWithObjectsAndKeys:
-                           [NSValueTransformer valueTransformerForName:@"NSNegateBoolean"], NSValueTransformerBindingOption,
-                            nil]];
+                 options: @{NSValueTransformerBindingOption: [NSValueTransformer valueTransformerForName:@"NSNegateBoolean"]}];
 
         }
       
         // one push auto button
         if ([[curFDict allKeys] containsObject: @"onePushAuto"]) {
             uiFrame = NSMakeRect(20, 40, 40, 18);
-            NSButton * autoCheckBox = [[[NSButton alloc] initWithFrame: uiFrame] autorelease];
+            NSButton * autoCheckBox = [[NSButton alloc] initWithFrame: uiFrame];
             autoCheckBox.buttonType=NSPushOnPushOffButton;      
             autoCheckBox.title = @"PUSH AUTO";
             autoCheckBox.tag = [[captureObject featureIndexForKey: featureKey] intValue];
@@ -250,7 +244,7 @@
     
     [self stopCamera];
     
-    TFLibDC1394Capture *dc1394Camera = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:[NSNumber numberWithLongLong: [UUID longLongValue]]
+    TFLibDC1394Capture *dc1394Camera = [[TFLibDC1394Capture alloc ]initWithCameraUniqueId:@([UUID longLongValue])
                                                                  error:&error];
     if (nil==dc1394Camera)
     {

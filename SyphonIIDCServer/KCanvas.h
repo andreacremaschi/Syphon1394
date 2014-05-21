@@ -32,20 +32,20 @@ typedef enum
     NSNumber *canvasType;
     GLuint _texture;
     
-    NSOpenGLContext * sharedContext;
-    NSOpenGLPixelFormat * pixelFormat;
+    NSOpenGLContext * __weak sharedContext;
+    NSOpenGLPixelFormat * __weak pixelFormat;
 }
 
-@property (nonatomic, retain) NSNumber * height;
-@property (nonatomic, retain) NSNumber * width;
-@property (nonatomic, retain) NSNumber * maxFPS;
-@property (nonatomic, retain) NSNumber * canvasType;
-@property (nonatomic, assign) NSOpenGLContext * sharedContext;
-@property (nonatomic, assign) NSOpenGLPixelFormat * pixelFormat;
+@property (nonatomic, strong) NSNumber * height;
+@property (nonatomic, strong) NSNumber * width;
+@property (nonatomic, strong) NSNumber * maxFPS;
+@property (nonatomic, strong) NSNumber * canvasType;
+@property (nonatomic, weak) NSOpenGLContext * sharedContext;
+@property (nonatomic, weak) NSOpenGLPixelFormat * pixelFormat;
 
 @property (readonly) GLuint textureName;
 
-@property (readonly) KBO* bo;
+@property (weak, readonly) KBO* bo;
 
 + (KCanvas *)canvasWithSize: (NSSize)canvasSize withOpenGLContext: (NSOpenGLContext*)context;
 + (KCanvas *)canvasWithOpenGLContext: (NSOpenGLContext*)context;

@@ -31,9 +31,9 @@
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
 		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
-		CD2F959F192D10EB001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F959C192D10D2001CB609 /* Syphon.framework */; };
-		CD2F95A0192D110B001CB609 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F959C192D10D2001CB609 /* Syphon.framework */; };
 		CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
+		CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
+		CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
 		CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
@@ -47,30 +47,16 @@
 			remoteGlobalIDString = C4195781144B376700338631;
 			remoteInfo = SyphonIIDCServer;
 		};
-		CD2F959B192D10D2001CB609 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Syphon;
-		};
-		CD2F959D192D10E0001CB609 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = Syphon;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C48705C5144CBAE700B5A460 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD2F959F192D10EB001CB609 /* Syphon.framework in Copy Frameworks */,
+				CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */,
 				CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
@@ -127,7 +113,7 @@
 		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
 		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
-		CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Syphon.xcodeproj; path = "Frameworks/Syphon-Framework/Syphon.xcodeproj"; sourceTree = "<group>"; };
+		CD2F95A7192D1773001CB609 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = Frameworks/Syphon.framework; sourceTree = "<group>"; };
 		CD79EF141510991A00D3AC18 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -139,9 +125,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD2F95A0192D110B001CB609 /* Syphon.framework in Frameworks */,
 				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
 				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
+				CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
 				CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
@@ -250,7 +236,7 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */,
+				CD2F95A7192D1773001CB609 /* Syphon.framework */,
 				CD79EF181510994100D3AC18 /* Accelerate.framework */,
 				CD79EF161510992600D3AC18 /* QuartzCore.framework */,
 				CD79EF141510991A00D3AC18 /* Quartz.framework */,
@@ -332,14 +318,6 @@
 			name = "CoreVideo and OpenGL convenience classes";
 			sourceTree = "<group>";
 		};
-		CD2F9597192D10D2001CB609 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CD2F959C192D10D2001CB609 /* Syphon.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -355,7 +333,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				CD2F959E192D10E0001CB609 /* PBXTargetDependency */,
 			);
 			name = SyphonIIDCServer;
 			productName = SyphonIIDCServer;
@@ -400,12 +377,6 @@
 			mainGroup = C4195777144B376600338631;
 			productRefGroup = C4195783144B376700338631 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = CD2F9597192D10D2001CB609 /* Products */;
-					ProjectRef = CD2F9596192D10D2001CB609 /* Syphon.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C4195781144B376700338631 /* SyphonIIDCServer */,
@@ -413,16 +384,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		CD2F959C192D10D2001CB609 /* Syphon.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Syphon.framework;
-			remoteRef = CD2F959B192D10D2001CB609 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C4195780144B376700338631 /* Resources */ = {
@@ -499,11 +460,6 @@
 			isa = PBXTargetDependency;
 			target = C4195781144B376700338631 /* SyphonIIDCServer */;
 			targetProxy = C41957A7144B376700338631 /* PBXContainerItemProxy */;
-		};
-		CD2F959E192D10E0001CB609 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Syphon;
-			targetProxy = CD2F959D192D10E0001CB609 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -609,10 +565,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
@@ -624,7 +583,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
@@ -634,10 +593,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SyphonIIDCServer/SyphonIIDCServer-Prefix.pch";
@@ -649,7 +611,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};

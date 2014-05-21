@@ -50,7 +50,6 @@
 	if (![self _primitiveInitBOWithSize: size 
 						  openGLContext: cgl_ctx]) {
 		NSLog(@"Cannot create Buffer object"); 
-		[self release];
 		return nil ;
 	}	
 	// setup openGL viewport
@@ -79,7 +78,6 @@
 - (void) dealloc {
 	
 	[self cleanupGL];
-	[super dealloc];
 }
 
 

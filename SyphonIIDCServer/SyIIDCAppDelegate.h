@@ -13,6 +13,6 @@
     MainWindowController *mainWindowController;
 }
 
-@property (retain) MainWindowController *mainWindowController;
+@property (strong) MainWindowController *mainWindowController;
 
 @end

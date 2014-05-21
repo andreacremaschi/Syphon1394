@@ -34,12 +34,7 @@
 	
 	[self cleanUp];  
 	
-	[lock release];
-	[imageToShow release];
-	[pixelAspectRatio release];
-	[identifier release];
 	
-	[super dealloc];
 	
 }
 
@@ -57,7 +52,6 @@
 
     // release the Core Image Context
     if (_ciContext) {
-    	[_ciContext release];
         _ciContext = nil;
     }
 
@@ -82,10 +76,10 @@
                                            colorSpace:NULL 
                                               options:nil];
 */                               
-        _ciContext = [[CIContext contextWithCGLContext: contextObj		// Core Image draws all output into the surface attached to this OpenGL context
+        _ciContext = [CIContext contextWithCGLContext: contextObj		// Core Image draws all output into the surface attached to this OpenGL context
                                            pixelFormat: pixelFormatObj		// must be the same pixel format used to create the cgl context
                                             colorSpace: colorSpace
-                                               options: nil] retain];
+                                               options: nil];
         
         // release the colorspace we don't need it anymore
        CGColorSpaceRelease(colorSpace);
@@ -98,9 +92,7 @@
 	
 	@synchronized (self)	{
         CGLLockContext(self.openGLContext.CGLContextObj);
-        [newImage retain];
 		[self renderImage: newImage];
-        [newImage release];
         CGLUnlockContext(self.openGLContext.CGLContextObj);
         /*		if ([self isProcessing])	{
 			[_renderingQueue enqueue: newImage];
@@ -117,7 +109,7 @@
 static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeStamp* now, const CVTimeStamp* outputTime, CVOptionFlags flagsIn, CVOptionFlags* flagsOut, void* displayLinkContext)
 {
     
-	return [(KOpenGLView*)displayLinkContext renderTime:outputTime];
+	return [(__bridge KOpenGLView*)displayLinkContext renderTime:outputTime];
 }
 	
 	
@@ -225,10 +217,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 - (CVReturn)renderTime:(const CVTimeStamp *)timeStamp
 {
     CVReturn rv = kCVReturnError;
-    NSAutoreleasePool *pool;
     CFDataRef movieTimeData;
     
-    pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
     
     /*if([self getFrameForTime:timeStamp]) {
         [self drawRect:NSZeroRect];     // refresh the whole view
@@ -239,18 +230,18 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	
 //	[self renderImage];
 	
-	if ( needsToFlush) 		{
-		CGLLockContext ( [[self openGLContext] CGLContextObj] );
-		[[self openGLContext] flushBuffer];
-		CGLUnlockContext ( [[self openGLContext] CGLContextObj] );
-		needsToFlush = NO;
-	}
-	
-	
+		if ( needsToFlush) 		{
+			CGLLockContext ( [[self openGLContext] CGLContextObj] );
+			[[self openGLContext] flushBuffer];
+			CGLUnlockContext ( [[self openGLContext] CGLContextObj] );
+			needsToFlush = NO;
+		}
+		
+		
     
-    [pool release];
     
     return rv;
+    }
 }
 
 
@@ -275,7 +266,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 		NSOpenGLPFADepthSize, 32, 
 		0};
 	
-	return  [[[NSOpenGLPixelFormat alloc] initWithAttributes:attr] autorelease];
+	return  [[NSOpenGLPixelFormat alloc] initWithAttributes:attr];
 	
 }
 
@@ -388,7 +379,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 		
 		
 		if (nil != _ciContext) {
-			[_ciContext release];
             _ciContext = nil;
         }
 	}

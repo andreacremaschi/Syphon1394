@@ -31,7 +31,6 @@
 - (id)init
 {
 	if (!(self == [super init])) {
-		[self release];
 		
 		return nil;
 	}
@@ -42,13 +41,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_queueElements release];
-	[_lock release];
-	
-	[super dealloc];
-}
 
 - (void)enqueue:(id)object
 {
@@ -64,7 +56,7 @@
 {
 	[_lock lockWhenCondition:1];
 	
-	id el = [[[_queueElements objectAtIndex:0] retain] autorelease];
+	id el = _queueElements[0];
 	[_queueElements removeObjectAtIndex:0];
 	
 	[_lock unlockWithCondition:([_queueElements count] > 0) ? 1 : 0];

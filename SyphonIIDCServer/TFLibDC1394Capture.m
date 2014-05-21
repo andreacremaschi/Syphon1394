@@ -72,10 +72,8 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 	[self _freeCamera];
 	
-	[_threadLock release];
 	_threadLock = nil;
 	
-	[_cameraLock release];
 	_cameraLock = nil;
 	
 	if (NULL != _pixelBufferPool) {
@@ -90,7 +88,6 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	[self cleanUpCIImageCreator];
 	
-	[super dealloc];
 }
 
 - (id)initWithCameraUniqueId:(NSNumber*)uid
@@ -101,7 +98,6 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 - (id)initWithCameraUniqueId:(NSNumber*)uid error:(NSError**)error
 {
 	if (!(self = [super init])) {
-		[self release];
 		return nil;
 	}
 
@@ -112,18 +108,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394NoDeviceFound
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394NoDeviceErrorDesc", @"TFDc1394NoDeviceErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394NoDeviceErrorReason", @"TFDc1394NoDeviceErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394NoDeviceErrorRecovery", @"TFDc1394NoDeviceErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394NoDeviceErrorDesc", @"TFDc1394NoDeviceErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394NoDeviceErrorReason", @"TFDc1394NoDeviceErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394NoDeviceErrorRecovery", @"TFDc1394NoDeviceErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
-		[self release];
 		return nil;
 	}
 	
@@ -132,18 +121,11 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394LibInstantiationFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorDesc", @"TFDc1394LibInstantiationFailedErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorReason", @"TFDc1394LibInstantiationFailedErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorRecovery", @"TFDc1394LibInstantiationFailedErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorDesc", @"TFDc1394LibInstantiationFailedErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorReason", @"TFDc1394LibInstantiationFailedErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorRecovery", @"TFDc1394LibInstantiationFailedErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
-		[self release];
 		return nil;
 	}
 	
@@ -154,7 +136,6 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	_cameraLock = [[NSLock alloc] init];
 	
 	if (![self setCameraToCameraWithUniqueId:uid error:error]) {
-		[self release];
 		return nil;
 	}
 	
@@ -171,7 +152,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		return;
 
 	if (NULL != _camera) {
-		NSNumber* guid = [NSNumber numberWithUnsignedLongLong:_camera->guid];
+		NSNumber* guid = @(_camera->guid);
 		
 		@synchronized(_cameraLock) {
 			dc1394_camera_reset(_camera);
@@ -207,23 +188,17 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	
 	id c;
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
-		c = [_allocatedTFLibDc1394CaptureObjects objectForKey:uid];
+		c = _allocatedTFLibDc1394CaptureObjects[uid];
 	}
 	
 	if (nil != c) {
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394CameraAlreadyInUse
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394CameraInUseErrorDesc", @"TFDc1394CameraInUseErrorDesc"),
-											   NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394CameraInUseErrorReason", @"TFDc1394CameraInUseErrorReason"),
-											   NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394CameraInUseErrorRecovery", @"TFDc1394CameraInUseErrorRecovery"),
-											   NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-											   NSStringEncodingErrorKey,
-											   nil]];
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394CameraInUseErrorDesc", @"TFDc1394CameraInUseErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394CameraInUseErrorReason", @"TFDc1394CameraInUseErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394CameraInUseErrorRecovery", @"TFDc1394CameraInUseErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
 		return NO;
 	}
@@ -233,16 +208,10 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394CameraCreationFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394CameraCreationErrorDesc", @"TFDc1394CameraCreationErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394CameraCreationErrorReason", @"TFDc1394CameraCreationErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394CameraCreationErrorRecovery", @"TFDc1394CameraCreationErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394CameraCreationErrorDesc", @"TFDc1394CameraCreationErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394CameraCreationErrorReason", @"TFDc1394CameraCreationErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394CameraCreationErrorRecovery", @"TFDc1394CameraCreationErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 	
 		return NO;
 	}
@@ -264,7 +233,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 	// store self, so we can access this camera's properties via class methods, too
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
 		// we go via NSValue because we do not want to be retained ourselves...
-		[_allocatedTFLibDc1394CaptureObjects setObject:[NSValue valueWithPointer:self] forKey:uid];
+		_allocatedTFLibDc1394CaptureObjects[uid] = [NSValue valueWithPointer:(__bridge const void *)(self)];
 	}
 	
 	// get the default video mode and supported framerates for this mode (no error if we fail here...)
@@ -287,7 +256,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 
 - (NSDictionary *)featuresDictionary {
     int i;
-    NSMutableDictionary *featuresDict = [[NSMutableDictionary dictionary] retain];
+    NSMutableDictionary *featuresDict = [NSMutableDictionary dictionary];
 	for (i=DC1394_FEATURE_MIN; i<=DC1394_FEATURE_MAX; i++) {
         
         
@@ -332,7 +301,7 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 			continue;
 		
         NSMutableDictionary *curFeatureDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                               [NSNumber numberWithInt: i], @"feature_index",
+                                               @(i), @"feature_index",
                                                /*  [NSNumber numberWithBool: featureInfo.available], @"available",*/
                                                [NSNumber numberWithInt: featureInfo.min], @"min_value",
                                                [NSNumber numberWithInt: featureInfo.max], @"max_value",
@@ -357,10 +326,10 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
         if ((featureInfo.available == 1) && supported) {
             if (automode) {
                 bool curMode= featureInfo.current_mode == DC1394_FEATURE_MODE_AUTO;
-                [curFeatureDict setValue: [NSNumber numberWithBool:curMode] forKey: @"auto"];
+                [curFeatureDict setValue: @(curMode) forKey: @"auto"];
             }
             if (oneShotAuto) {
-                [curFeatureDict setValue: [NSNumber numberWithBool:YES] forKey: @"onePushAuto"];                
+                [curFeatureDict setValue: @YES forKey: @"onePushAuto"];                
             }
             [featuresDict setValue: curFeatureDict forKey: key];
         }
@@ -368,14 +337,14 @@ static NSMutableDictionary* _allocatedTFLibDc1394CaptureObjects = nil;
 		//[self setFeatureWithIndex:i toAutoMode:YES];
 	}
 
-    return [featuresDict autorelease];
+    return featuresDict;
 }
 
 NSMutableDictionary *resolutionDict (float width, float height, NSString* color_mode)
 {
     return [NSMutableDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithFloat: width], @"width",
-            [NSNumber numberWithFloat: height], @"height",
+            @(width), @"width",
+            @(height), @"height",
             color_mode, @"color_mode",
             nil];
 }
@@ -389,7 +358,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
     if (DC1394_SUCCESS != dc1394_video_get_supported_modes(_camera, &list))
         return nil;
 
-    NSMutableArray *videomodesArray = [[NSMutableArray array] retain];
+    NSMutableArray *videomodesArray = [NSMutableArray array];
     
 
         
@@ -452,7 +421,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
             [videomodesArray addObject: curResolutionDict];
 			}
 
-    return [videomodesArray autorelease];
+    return videomodesArray;
 }
 /*- (BOOL)featureIsMutable:(NSInteger)feature
 {
@@ -556,7 +525,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	NSNumber* uid = nil;
 	
 	if (NULL != _camera)
-		uid = [NSNumber numberWithUnsignedLongLong:_camera->guid];
+		uid = @(_camera->guid);
 	
 	return uid;
 }
@@ -581,10 +550,6 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 - (BOOL)startCapturing:(NSError**)error
 {
 	NSError* dummy;
-	if (NULL != error)
-		*error = nil;
-	else
-		error = &dummy;
 	
 	@synchronized(_cameraLock) {
 		if (nil != _thread || [self isCapturing])
@@ -602,10 +567,8 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		
 		if (nil != *error) {
 			[_thread cancel];
-			[_thread release];
 			_thread = nil;
 			
-			[*error autorelease];
 			return NO;
 		}
 	}
@@ -616,10 +579,6 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 - (BOOL)stopCapturing:(NSError**)error
 {
 	NSError* dummy;
-	if (NULL != error)
-		*error = nil;
-	else
-		error = &dummy;
 
 	@synchronized(_cameraLock) {
 		if (nil == _thread || ![self isCapturing])
@@ -632,7 +591,6 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		
 		// wait for the thread to exit
 		@synchronized (_threadLock) {
-			[_thread release];
 			_thread = nil;
 		}
 	}
@@ -640,19 +598,15 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	BOOL success = YES;
 				
 	if (nil != *error) {
-		[*error autorelease];
+
 		return NO;
 	}
 		
 	return success;
 }
 
-- (void)_setupCapture:(NSValue*)errPointer
+- (void)_setupCapture:(NSError**)error
 {	
-	NSError** error = [errPointer pointerValue];
-	
-	if (NULL != error)
-		*error = nil;
 
 	// just to be sure!
 	dc1394video_mode_t mode;
@@ -665,7 +619,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	dc1394_capture_schedule_with_runloop(_camera,
 										 [[NSRunLoop currentRunLoop] getCFRunLoop],
 										 kCFRunLoopDefaultMode);
-	dc1394_capture_set_callback(_camera, libdc1394_frame_callback, self);
+	dc1394_capture_set_callback(_camera, libdc1394_frame_callback, (__bridge void *)(self));
 
 	dc1394error_t err;
 	err = dc1394_capture_setup(_camera,
@@ -674,18 +628,12 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		
 	if (err != DC1394_SUCCESS) {
 		if (NULL != error)
-			*error = [[NSError errorWithDomain:SICErrorDomain
+			*error = [NSError errorWithDomain:SICErrorDomain
 										  code:SICErrorDc1394CaptureSetupFailed
-									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-												TFLocalizedString(@"TFDc1394CaptureSetupErrorDesc", @"TFDc1394CaptureSetupErrorDesc"),
-													NSLocalizedDescriptionKey,
-												TFLocalizedString(@"TFDc1394CaptureSetupErrorReason", @"TFDc1394CaptureSetupErrorReason"),
-													NSLocalizedFailureReasonErrorKey,
-												TFLocalizedString(@"TFDc1394CaptureSetupErrorRecovery", @"TFDc1394CaptureSetupErrorRecovery"),
-													NSLocalizedRecoverySuggestionErrorKey,
-												[NSNumber numberWithInteger:NSUTF8StringEncoding],
-													NSStringEncodingErrorKey,
-												nil]] retain];
+									  userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorDesc", @"TFDc1394CaptureSetupErrorDesc"),
+												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorReason", @"TFDc1394CaptureSetupErrorReason"),
+												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorRecovery", @"TFDc1394CaptureSetupErrorRecovery"),
+												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 		
 		return;
 	}
@@ -694,30 +642,20 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		dc1394_capture_stop(_camera);
 		
 		if (NULL != error)
-			*error = [[NSError errorWithDomain:SICErrorDomain
+			*error = [NSError errorWithDomain:SICErrorDomain
 										  code:SICErrorDc1394SetTransmissionFailed
-									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-												TFLocalizedString(@"TFDc1394SetTransmissionErrorDesc", @"TFDc1394SetTransmissionErrorDesc"),
-													NSLocalizedDescriptionKey,
-												TFLocalizedString(@"TFDc1394SetTransmissionErrorReason", @"TFDc1394SetTransmissionErrorReason"),
-													NSLocalizedFailureReasonErrorKey,
-												TFLocalizedString(@"TFDc1394SetTransmissionErrorRecovery", @"TFDc1394SetTransmissionErrorRecovery"),
-													NSLocalizedRecoverySuggestionErrorKey,
-												[NSNumber numberWithInteger:NSUTF8StringEncoding],
-													NSStringEncodingErrorKey,
-											   nil]] retain];
+									  userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394SetTransmissionErrorDesc", @"TFDc1394SetTransmissionErrorDesc"),
+												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394SetTransmissionErrorReason", @"TFDc1394SetTransmissionErrorReason"),
+												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394SetTransmissionErrorRecovery", @"TFDc1394SetTransmissionErrorRecovery"),
+												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 		
 		return;
 	}
 }
 
-- (void)_stopCapture:(NSValue*)errPointer
+- (void)_stopCapture:(NSError**)error
 {
-	NSError** error = [errPointer pointerValue];
 	
-	if (NULL != error)
-		*error = nil;
-		
 	[_thread cancel];
 	
 	dc1394error_t transmissionErr, captureErr;
@@ -728,36 +666,24 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		
 	if (DC1394_SUCCESS != transmissionErr) {
 		if (NULL != error)
-			*error = [[NSError errorWithDomain:SICErrorDomain
+			*error = [NSError errorWithDomain:SICErrorDomain
 										  code:SICErrorDc1394StopTransmissionFailed
-									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-												TFLocalizedString(@"TFDc1394StopTransmissionErrorDesc", @"TFDc1394StopTransmissionErrorDesc"),
-													NSLocalizedDescriptionKey,
-												TFLocalizedString(@"TFDc1394StopTransmissionErrorReason", @"TFDc1394StopTransmissionErrorReason"),
-													NSLocalizedFailureReasonErrorKey,
-												TFLocalizedString(@"TFDc1394StopTransmissionErrorRecovery", @"TFDc1394StopTransmissionErrorRecovery"),
-													NSLocalizedRecoverySuggestionErrorKey,
-												[NSNumber numberWithInteger:NSUTF8StringEncoding],
-													NSStringEncodingErrorKey,
-											   nil]] retain];
+									  userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorDesc", @"TFDc1394StopTransmissionErrorDesc"),
+												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorReason", @"TFDc1394StopTransmissionErrorReason"),
+												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorRecovery", @"TFDc1394StopTransmissionErrorRecovery"),
+												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
 		return;
 	}
 	
 	if (DC1394_SUCCESS != captureErr) {
 		if (NULL != error)
-			*error = [[NSError errorWithDomain:SICErrorDomain
+			*error = [NSError errorWithDomain:SICErrorDomain
 										  code:SICErrorDc1394StopCapturingFailed
-									  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-												TFLocalizedString(@"TFDc1394StopCapturingErrorDesc", @"TFDc1394StopCapturingErrorDesc"),
-													NSLocalizedDescriptionKey,
-												TFLocalizedString(@"TFDc1394StopCapturingErrorReason", @"TFDc1394StopCapturingErrorReason"),
-													NSLocalizedFailureReasonErrorKey,
-												TFLocalizedString(@"TFDc1394StopCapturingErrorRecovery", @"TFDc1394StopCapturingErrorRecovery"),
-													NSLocalizedRecoverySuggestionErrorKey,
-												[NSNumber numberWithInteger:NSUTF8StringEncoding],
-													NSStringEncodingErrorKey,
-											   nil]] retain];
+									  userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394StopCapturingErrorDesc", @"TFDc1394StopCapturingErrorDesc"),
+												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394StopCapturingErrorReason", @"TFDc1394StopCapturingErrorReason"),
+												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394StopCapturingErrorRecovery", @"TFDc1394StopCapturingErrorRecovery"),
+												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 		
 		return;
 	}
@@ -833,17 +759,11 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394ResolutionChangeFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394ResolutionChangeErrorDesc", @"TFDc1394ResolutionChangeErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   [NSString stringWithFormat:TFLocalizedString(@"TFDc1394ResolutionChangeErrorReason", @"TFDc1394ResolutionChangeErrorReason"),
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394ResolutionChangeErrorDesc", @"TFDc1394ResolutionChangeErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:TFLocalizedString(@"TFDc1394ResolutionChangeErrorReason", @"TFDc1394ResolutionChangeErrorReason"),
 												size.width, size.height],
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394ResolutionChangeErrorRecovery", @"TFDc1394ResolutionChangeErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394ResolutionChangeErrorRecovery", @"TFDc1394ResolutionChangeErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
 		return NO;
 	}
@@ -858,17 +778,11 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394ResolutionChangeFailedInternalError
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorDesc", @"TFDc1394ResolutionChangeInternalErrorDesc"),
-											   NSLocalizedDescriptionKey,
-											   [NSString stringWithFormat:TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorReason", @"TFDc1394ResolutionChangeInternalErrorReason"),
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorDesc", @"TFDc1394ResolutionChangeInternalErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorReason", @"TFDc1394ResolutionChangeInternalErrorReason"),
 												size.width, size.height],
-											   NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorRecovery", @"TFDc1394ResolutionChangeInternalErrorRecovery"),
-											   NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-											   NSStringEncodingErrorKey,
-											   nil]];
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394ResolutionChangeInternalErrorRecovery", @"TFDc1394ResolutionChangeInternalErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
 		return NO;
 	}
@@ -955,7 +869,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	if (NULL == _camera)
 		return NO;
 
-	return [[self class] cameraWithUniqueId:[NSNumber numberWithUnsignedLongLong:_camera->guid]
+	return [[self class] cameraWithUniqueId:@(_camera->guid)
 						 supportsResolution:size];
 }
 
@@ -987,18 +901,17 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 - (void)_videoCaptureThread
 {
 	@synchronized(_threadLock) {
-		NSAutoreleasePool* threadPool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
 
-		do {
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:SECONDS_IN_RUNLOOP]];
-			[pool release];
-		} while (![[NSThread currentThread] isCancelled]);
+			do {
+				@autoreleasepool {
+					[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:SECONDS_IN_RUNLOOP]];
+				}
+			} while (![[NSThread currentThread] isCancelled]);
 	
-		[_thread release];
-		_thread = nil;
+			_thread = nil;
 		
-		[threadPool release];
+		}
 	}
 }
 
@@ -1012,7 +925,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	if (NULL != camera->model && NULL != camera->vendor)
 		cameraName = [NSString stringWithFormat:@"%s (%s)", camera->model, camera->vendor];
 	else if (NULL != camera->model)
-		cameraName = [NSString stringWithUTF8String:camera->model];
+		cameraName = @(camera->model);
 	else if (NULL != camera->vendor)
 		cameraName = [NSString stringWithFormat:TFLocalizedString(@"UnknownDV1394CameraWithVendor",
 																  @"Unknown camera (%s)"), camera->vendor];
@@ -1028,21 +941,21 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	if (DC1394_SUCCESS != dc1394_camera_enumerate(dc, &list)) {
 		dc1394_free(dc);
 		
-		return [NSDictionary dictionary];
+		return @{};
 	}
 	
 	if (NULL == list || 0 >= list->num) {
 		dc1394_camera_free_list(list);
 		dc1394_free(dc);
 	
-		return [NSDictionary dictionary];
+		return @{};
 	}
 	
 	NSMutableDictionary* cameras = [NSMutableDictionary dictionary];
 	int i;
 	for (i=0; i<list->num; i++) {
 		@synchronized(_allocatedTFLibDc1394CaptureObjects) {
-			if (nil != [_allocatedTFLibDc1394CaptureObjects objectForKey:[NSNumber numberWithUnsignedLongLong:list->ids[i].guid]])
+			if (nil != _allocatedTFLibDc1394CaptureObjects[@(list->ids[i].guid)])
 				continue;
 		}
 		
@@ -1053,7 +966,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 		NSString* camName = [self _displayNameForCamera:cam];
 		
 		if (nil != camName)
-			[cameras setObject:camName forKey: [[NSNumber numberWithUnsignedLongLong:list->ids[i].guid] stringValue]];
+			cameras[[@(list->ids[i].guid) stringValue]] = camName;
 		
 		dc1394_camera_free(cam);
 	}
@@ -1061,10 +974,10 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	// now add the currently running cameras as well...
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
 		for (NSNumber* guid in _allocatedTFLibDc1394CaptureObjects) {
-			TFLibDC1394Capture* c = (TFLibDC1394Capture*)((NSValue*)[[_allocatedTFLibDc1394CaptureObjects objectForKey:guid] pointerValue]);
+			TFLibDC1394Capture* c = (TFLibDC1394Capture*)((NSValue*)[_allocatedTFLibDc1394CaptureObjects[guid] pointerValue]);
 			NSString* camName = [c cameraDisplayName];
 			if (camName)
-				[cameras setObject:camName forKey:[guid stringValue]];
+				cameras[[guid stringValue]] = camName;
 		}
 	}
 	
@@ -1111,7 +1024,7 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 	
 	NSNumber* defaultCamId = nil;
 	if (NULL != list && 0 < list->num)
-		defaultCamId = [NSNumber numberWithUnsignedLongLong:list->ids[0].guid];
+		defaultCamId = @(list->ids[0].guid);
 	
 	dc1394_camera_free_list(list);
 	dc1394_free(dc);
@@ -1121,16 +1034,17 @@ NSMutableDictionary *resolutionDict (float width, float height, NSString* color_
 
 + (CGSize)defaultResolutionForCameraWithUniqueId:(NSNumber*)uid
 {
-	dc1394_t* dc = NULL;
-	dc1394camera_t* cam = NULL;
 
 	if (nil == uid)
-		goto errorReturn;
-	
+        return CGSizeMake(0.0f, 0.0f);
+
+    dc1394_t* dc = NULL;
+	dc1394camera_t* cam = NULL;
+
 	dc1394video_modes_t list;
 	TFLibDC1394Capture* c = nil;
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
-		c = (TFLibDC1394Capture*)((NSValue*)[[_allocatedTFLibDc1394CaptureObjects objectForKey:uid] pointerValue]);
+		c = (TFLibDC1394Capture*)((NSValue*)[_allocatedTFLibDc1394CaptureObjects[uid] pointerValue]);
 	}
 	
 	if (nil != c) {
@@ -1247,7 +1161,7 @@ errorReturn:
 	
 	TFLibDC1394Capture* c = nil;
 	@synchronized(_allocatedTFLibDc1394CaptureObjects) {
-		c = (TFLibDC1394Capture*)((NSValue*)[[_allocatedTFLibDc1394CaptureObjects objectForKey:uid] pointerValue]);
+		c = (TFLibDC1394Capture*)((NSValue*)[_allocatedTFLibDc1394CaptureObjects[uid] pointerValue]);
 	}
 	
 	if (nil != c) {
@@ -1288,18 +1202,11 @@ errorReturn:
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394LibInstantiationFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorDesc", @"TFDc1394LibInstantiationFailedErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorReason", @"TFDc1394LibInstantiationFailedErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorRecovery", @"TFDc1394LibInstantiationFailedErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
-
-		goto errorReturn;
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorDesc", @"TFDc1394LibInstantiationFailedErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorReason", @"TFDc1394LibInstantiationFailedErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394LibInstantiationFailedErrorRecovery", @"TFDc1394LibInstantiationFailedErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
+        return nil;
 	}
 	
 	dc1394video_modes_t list;
@@ -1308,18 +1215,13 @@ errorReturn:
 		if (NULL != error)
 			*error = [NSError errorWithDomain:SICErrorDomain
 										 code:SICErrorDc1394GettingVideoModesFailed
-									 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-											   TFLocalizedString(@"TFDc1394GettingVideoModesErrorDesc", @"TFDc1394GettingVideoModesErrorDesc"),
-												NSLocalizedDescriptionKey,
-											   TFLocalizedString(@"TFDc1394GettingVideoModesErrorReason", @"TFDc1394GettingVideoModesErrorReason"),
-												NSLocalizedFailureReasonErrorKey,
-											   TFLocalizedString(@"TFDc1394GettingVideoModesErrorRecovery", @"TFDc1394GettingVideoModesErrorRecovery"),
-												NSLocalizedRecoverySuggestionErrorKey,
-											   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-												NSStringEncodingErrorKey,
-											   nil]];
+									 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394GettingVideoModesErrorDesc", @"TFDc1394GettingVideoModesErrorDesc"),
+											   NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394GettingVideoModesErrorReason", @"TFDc1394GettingVideoModesErrorReason"),
+											   NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394GettingVideoModesErrorRecovery", @"TFDc1394GettingVideoModesErrorRecovery"),
+											   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
-		goto errorReturn2;
+        dc1394_free(dc);
+        return nil;
 	}
 	
 	NSMutableArray* modes = [NSMutableArray array];
@@ -1363,9 +1265,7 @@ errorReturn:
 	
 	retval = [NSArray arrayWithArray:modes];
 	
-errorReturn2:
 	dc1394_free(dc);
-errorReturn:
 	return retval;
 }
 
@@ -1415,8 +1315,8 @@ errorReturn:
 	if (nil == modes || 0 >= [modes count])
 		return nil;
 	
-	dc1394video_mode_t chosenVideoMode = [[modes objectAtIndex:0] intValue];
-	dc1394framerate_t chosenFrameRate = [[self _fastestFrameRateForCamera:cam videoMode:[[modes objectAtIndex:0] intValue]] intValue];
+	dc1394video_mode_t chosenVideoMode = [modes[0] intValue];
+	dc1394framerate_t chosenFrameRate = [[self _fastestFrameRateForCamera:cam videoMode:[modes[0] intValue]] intValue];
 	
 	int ranking = [self rankingForVideoMode:chosenVideoMode];
 	for (NSNumber* mode in modes) {
@@ -1446,27 +1346,26 @@ errorReturn:
 
 static void libdc1394_frame_callback(dc1394camera_t* c, void* data)
 {
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	dc1394video_frame_t* frame;
-	dc1394error_t err = dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
-	
-	if (DC1394_SUCCESS != err || NULL == frame) {
-		[pool release];
-		return;
-	}
-	
-	// if this is not the most recent frame, drop it and continue
-	if (0 < frame->frames_behind) {
-		do {
+    @autoreleasepool {
+		dc1394video_frame_t* frame;
+		dc1394error_t err = dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
+		
+		if (DC1394_SUCCESS != err || NULL == frame) {
+			return;
+		}
+		
+		// if this is not the most recent frame, drop it and continue
+		if (0 < frame->frames_behind) {
+			do {
+				dc1394_capture_enqueue(c, frame);
+				dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
+			} while (NULL != frame && 0 < frame->frames_behind);
+		}
+		
+		if (NULL != frame) {
+			[(__bridge TFLibDC1394Capture*)data dispatchFrame:frame];
 			dc1394_capture_enqueue(c, frame);
-			dc1394_capture_dequeue(c, DC1394_CAPTURE_POLICY_POLL, &frame);
-		} while (NULL != frame && 0 < frame->frames_behind);
-	}
+		}
 	
-	if (NULL != frame) {
-		[(TFLibDC1394Capture*)data dispatchFrame:frame];
-		dc1394_capture_enqueue(c, frame);
 	}
-	
-	[pool release];
 }

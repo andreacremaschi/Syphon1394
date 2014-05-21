@@ -62,10 +62,10 @@ struct TFLibDC1394CaptureConversionContext;
 	
 	struct TFLibDC1394CaptureConversionContext* _pixelConversionContext;
     
-    id		delegate;
+    id		__unsafe_unretained delegate;
 }
 
-@property (assign) id delegate;
+@property (unsafe_unretained) id delegate;
 
 - (id)initWithCameraUniqueId:(NSNumber*)uid;
 - (id)initWithCameraUniqueId:(NSNumber*)uid error:(NSError**)error;
@@ -106,6 +106,10 @@ struct TFLibDC1394CaptureConversionContext;
 + (NSArray*)supportedVideoModesForFrameSize:(CGSize)frameSize 
                                   forCamera:(dc1394camera_t*)cam 
                                       error:(NSError**)error;
+
+- (BOOL)stopCapturing:(NSError**)error;
+- (BOOL)startCapturing:(NSError**)error;
+- (BOOL)isCapturing;
 
 @end
 

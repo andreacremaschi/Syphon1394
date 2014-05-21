@@ -248,7 +248,7 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
             CGSize size = CGSizeMake(frame->size[0], frame->size[1]);
             static KCanvas *canvas = nil;
             if (nil==canvas) {
-                canvas = [KCanvas canvasWithSize: size];
+                canvas = [KCanvas canvasWithSize: size withOpenGLContext:nil];
             }
                 
             if (!CGSizeEqualToSize(size, canvas.size)) [canvas setSize: size];
@@ -279,16 +279,10 @@ void _TFLibDC1394CaptureFreePixelFormatConversionContext(TFLibDC1394CaptureConve
 	if (NULL != error)
 		*error = [NSError errorWithDomain:SICErrorDomain
 									 code:SICErrorDc1394UnsupportedPixelFormat
-								 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-										   NSLocalizedString(@"TFDc1394PixelFormatErrorDesc", @"TFDc1394PixelFormatErrorDesc"),
-										   NSLocalizedDescriptionKey,
-										   NSLocalizedString(@"TFDc1394PixelFormatErrorReason", @"TFDc1394PixelFormatErrorReason"),
-										   NSLocalizedFailureReasonErrorKey,
-										   NSLocalizedString(@"TFDc1394PixelFormatErrorRecovery", @"TFDc1394PixelFormatErrorRecovery"),
-										   NSLocalizedRecoverySuggestionErrorKey,
-										   [NSNumber numberWithInteger:NSUTF8StringEncoding],
-										   NSStringEncodingErrorKey,
-										   nil]];
+								 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"TFDc1394PixelFormatErrorDesc", @"TFDc1394PixelFormatErrorDesc"),
+										   NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"TFDc1394PixelFormatErrorReason", @"TFDc1394PixelFormatErrorReason"),
+										   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(@"TFDc1394PixelFormatErrorRecovery", @"TFDc1394PixelFormatErrorRecovery"),
+										   NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
 
 	return nil;
 }

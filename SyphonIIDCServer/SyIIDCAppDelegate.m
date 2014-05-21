@@ -12,11 +12,6 @@
 @implementation SyIIDCAppDelegate
 @synthesize mainWindowController;
 
-- (void)dealloc
-{
-    [mainWindowController release];
-    [super dealloc];
-}
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
