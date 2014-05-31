@@ -2,7 +2,7 @@
 //  main.m
 //  SyphonIIDCServer
 //
-//  Created by Michele Cremaschi on 16/10/11.
+//  Created by Andrea Cremaschi on 16/10/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
