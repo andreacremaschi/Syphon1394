@@ -9,6 +9,9 @@
 #import "IIDCContext.h"
 #import <dc1394/dc1394.h>
 
+#import <camwire.h>
+#import <camwirebus.h>
+
 #import "IIDCCamera.h"
 
 @interface IIDCCamera (PrivateMethods)
@@ -30,7 +33,20 @@
     if (self==nil) return nil;
 
     _context = dc1394_new();
-
+    
+    NSError *error;
+    NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+    libraryPath = [libraryPath stringByAppendingPathComponent: appName];
+    NSString *configurationsPath = [libraryPath stringByAppendingPathComponent: @"Configurations"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:libraryPath])
+        [[NSFileManager defaultManager] createDirectoryAtPath:libraryPath withIntermediateDirectories:NO attributes:nil error:&error];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:configurationsPath])
+        [[NSFileManager defaultManager] createDirectoryAtPath:configurationsPath withIntermediateDirectories:NO attributes:nil error:&error];
+    
+    setenv("CAMWIRE_CONF", configurationsPath.UTF8String, 1);
+    
    /* ioKitNotificationPort = IONotificationPortCreate(kIOMasterPortDefault);
     notificationRunLoopSource = IONotificationPortGetRunLoopSource(ioKitNotificationPort);
     
@@ -51,6 +67,9 @@
     dc1394_free(_context);
     _context = nil;
 }
+
+
+static Camwire_handle * handle_array = 0;
 
 -(NSDictionary *)availableCameras {
 

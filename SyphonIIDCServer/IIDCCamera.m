@@ -24,6 +24,8 @@
 #define NUM_DMA_BUFFERS					(10)
 #define MAX_FEATURE_KEY					(4)
 #define SECONDS_IN_RUNLOOP				(1)
+#define BUF_LOW_MARK		0.1
+#define BUF_HIGH_MARK		0.9
 
 @implementation IIDCCamera
 
@@ -31,7 +33,7 @@
     self = [super init];
     if (self) {
         
-        Camwire_handle camwire_handle =  (Camwire_bus_handle *) malloc(sizeof(Camwire_bus_handle));
+        Camwire_handle camwire_handle =  (Camwire_handle ) malloc(sizeof(Camwire_handle));
         camwire_handle->camera = camera;
         camwire_handle->userdata = 0;
 
@@ -380,8 +382,13 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
 - (void)_setupCapture:(NSError**)error
 {
     dc1394camera_t *c_handle = self.cameraHandler->camera;
+
+    dc1394_capture_schedule_with_runloop(c_handle,
+										 [[NSRunLoop currentRunLoop] getCFRunLoop],
+										 kCFRunLoopDefaultMode);
     
-    if (camwire_create(c_handle) != CAMWIRE_SUCCESS)
+    // TODO: before calling camwire_create we should be sure that a config file already exist
+    if (camwire_create(self.cameraHandler) != CAMWIRE_SUCCESS)
     { // TODO: error handling
 /*        *error = [NSError errorWithDomain:SICErrorDomain
                                      code:SICErrorDc1394CaptureSetupFailed
@@ -392,6 +399,10 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
         return;
     
     }
+
+	dc1394_capture_set_callback(c_handle, libdc1394_frame_callback, (__bridge void *)(self));
+
+    camwire_set_run_stop(self.cameraHandler, 1);
     
     // TODO:
     
@@ -400,11 +411,6 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     
     //Sets default values to the non-camera paramenters
     // default_noncamera_settings(&settings);
-    
-	dc1394_capture_schedule_with_runloop(c_handle,
-										 [[NSRunLoop currentRunLoop] getCFRunLoop],
-										 kCFRunLoopDefaultMode);
-    
 
 }
 
@@ -481,33 +487,75 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     }
 }
 
+static void manage_buffer_level(const Camwire_handle c_handle,
+                                FILE *logfile)
+{
+    int total_frames, current_level, num_to_flush;
+    
+    camwire_get_num_framebuffers(c_handle, &total_frames);
+    if (total_frames < 3)  return;
+    camwire_get_framebuffer_lag(c_handle, &current_level);
+    ++current_level; 	// Buffer lag does not count current frame.
+    
+    // It seems that the DMA buffers sometimes do not fill up
+    // completely, hence the extra -1 in the if expression below:
+    if (current_level >= total_frames - 1)
+    {
+        // Hit the ceiling.
+        num_to_flush = total_frames;
+        if (camwire_flush_framebuffers(c_handle, num_to_flush, NULL, NULL) !=
+            CAMWIRE_SUCCESS)
+            fprintf(stderr,
+                    "Could not flush all buffers in manage_buffer_level().\n");
+        if (logfile != NULL)
+        {
+            fprintf(logfile, "Frame buffers overflowed.  "
+                    "Frame numbers may no longer be in synch.\n");
+            fflush(logfile);
+        }
+    }
+    else if (current_level + 0.5 >= BUF_HIGH_MARK*total_frames)
+    {
+        num_to_flush = current_level - BUF_LOW_MARK*total_frames;
+        if (camwire_flush_framebuffers(c_handle, num_to_flush, NULL, NULL) !=
+            CAMWIRE_SUCCESS)
+            fprintf(stderr,
+                    "Could not flush %d buffers in manage_buffer_level().\n",
+                    num_to_flush);
+    }
+    // else don't flush.
+}
+
+
 static void libdc1394_frame_callback(dc1394camera_t* c_handle, void* data)
 {
     void *capturebuffer = NULL;
     @autoreleasepool {
         
-        /* Get and display the next frame:*/
-        /* Avoid getting blocked if not running.*/
-     if (camwire_point_next_frame(c_handle, &capturebuffer,
-                                  NULL) != CAMWIRE_SUCCESS) {
-         // TODO: error handling
-         
-     }
-           /* errorexit(c_handle, current_cam,
-                      "Could not point to the next frame.");*/
+        IIDCCamera *camera = (__bridge IIDCCamera*)data;
+        Camwire_handle camwireHandle = camera.cameraHandler;
         
-/*        // Display:
-        if (NULL != frame) {
-            [(__bridge IIDCCamera*)data dispatchFrame:frame];
-            dc1394_capture_enqueue(c, frame);
-        }*/
+        // Get and display the next frame:
+        if (camwire_point_next_frame(camwireHandle, &capturebuffer,
+                                     NULL) != CAMWIRE_SUCCESS) {
+            // TODO: error handling
+            
+        }
+        /* errorexit(c_handle, current_cam,
+         "Could not point to the next frame.");*/
         
-        camwire_unpoint_frame(c_handle);
-        manage_buffer_level(c_handle, NULL);
+        /*        // Display:
+         if (NULL != frame) {
+         [(__bridge IIDCCamera*)data dispatchFrame:frame];
+         dc1394_capture_enqueue(c, frame);
+         }*/
+        
+        camwire_unpoint_frame(camwireHandle);
+        manage_buffer_level(camwireHandle, NULL);
         
     }
     
-
+    
 }
 
 @end
