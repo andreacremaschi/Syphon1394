@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class IIDCContext;
+
 @interface IIDCCamera : NSObject
 
-@property (readonly) NSString *deviceIdentifier;
+@property (readonly) NSString *deviceName;
+@property (readonly) NSNumber *deviceIdentifier;
 
 // Settings save/restore
 -(void)saveSettingsInMemoryBank: (int) channel;
@@ -28,7 +31,11 @@
 @property (nonatomic, readonly) NSDictionary *features;
 @property (nonatomic, readonly) NSArray *videomodes;
 
-- (BOOL)startCapturing:(NSError**)error;
-- (BOOL)stopCapturing:(NSError**)error;
+@property (nonatomic, readwrite) NSInteger videomode;
+
+@property (readonly) IIDCContext *context;
+
+- (BOOL)isCapturing;
 
 @end
+

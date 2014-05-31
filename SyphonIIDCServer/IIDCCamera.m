@@ -8,45 +8,49 @@
 
 #import "IIDCCamera.h"
 #import <dc1394/dc1394.h>
+#import <dc1394/capture.h>
+#import <dc1394/macosx/capture.h>
 
 #import <camwire/camwire.h>
 
+#import "IIDCContext.h"
+
 @interface IIDCCamera ()
-@property Camwire_handle cameraHandler;
-@property (strong) NSLock *cameraLock;
-@property (strong) NSThread *captureThread;
+@property dc1394camera_t *cameraHandler;
 @property (nonatomic, readwrite, strong) NSDictionary *features;
 @property (nonatomic, readwrite, strong) NSArray *videomodes;
-@property (strong) NSThread *thread;
 
 @end
 
-#define NUM_DMA_BUFFERS					(10)
-#define MAX_FEATURE_KEY					(4)
-#define SECONDS_IN_RUNLOOP				(1)
-#define BUF_LOW_MARK		0.1
-#define BUF_HIGH_MARK		0.9
-
 @implementation IIDCCamera
 
-- (id) initWithCameraOpaqueObject: (dc1394camera_t *)camera {
+- (id) initWithCameraOpaqueObject: (dc1394camera_t *)camera context: (IIDCContext *)context {
     self = [super init];
     if (self) {
         
-        Camwire_handle camwire_handle =  (Camwire_handle ) malloc(sizeof(Camwire_handle));
-        camwire_handle->camera = camera;
-        camwire_handle->userdata = 0;
+        _cameraHandler = camera;
+        
+        dc1394_camera_reset(camera);
+        dc1394_camera_set_power(camera, DC1394_ON);
+        
+        // turn off the camera's ISO if it's running
+        dc1394_video_set_transmission(camera, DC1394_OFF);
+        
+        // if the camera's currently set ISO speed is < 400MB/S, we set it to 400MB/S
+        dc1394speed_t isoSpeed;
+        dc1394_video_get_iso_speed(camera, &isoSpeed);
+        if (isoSpeed < DC1394_ISO_SPEED_400)
+            dc1394_video_set_iso_speed(camera, DC1394_ISO_SPEED_400);
 
-        _cameraHandler = camwire_handle;
-        _cameraLock = [[NSLock alloc] init];
+        _context = context;
+
     }
     return self;
 }
 
 -(void)dealloc {
     self.features = nil;
-    dc1394_camera_free(_cameraHandler->camera);
-    free(_cameraHandler);
+    dc1394_camera_free(_cameraHandler);
 }
 
 - (void) didDisconnect {
@@ -58,13 +62,13 @@
 
 -(BOOL)isSaving {
     dc1394bool_t value;
-    dc1394_memory_busy(_cameraHandler->camera, &value);
+    dc1394_memory_busy(_cameraHandler, &value);
     return value;
 }
 
 - (void) saveSettingsInCameraMemoryBank: (int) channel {
     
-    dc1394error_t dcError = dc1394_memory_save(_cameraHandler->camera, channel);
+    dc1394error_t dcError = dc1394_memory_save(_cameraHandler, channel);
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
     }
@@ -72,7 +76,7 @@
 }
 
 - (void) restoreSettingsFromMemoryBank: (int) channel {
-    dc1394error_t dcError = dc1394_memory_load(_cameraHandler->camera, channel);
+    dc1394error_t dcError = dc1394_memory_load(_cameraHandler, channel);
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
     }
@@ -81,11 +85,11 @@
 
 - (void) broadcast: (void(^)())block {
     
-    dc1394error_t dcError = dc1394_camera_set_broadcast(_cameraHandler->camera, YES);
+    dc1394error_t dcError = dc1394_camera_set_broadcast(_cameraHandler, YES);
     if (dcError == DC1394_SUCCESS) {
         block();
         
-        dcError = dc1394_camera_set_broadcast(_cameraHandler->camera, NO);
+        dcError = dc1394_camera_set_broadcast(_cameraHandler, NO);
     }
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
@@ -93,18 +97,17 @@
 }
 
 - (void) setPower: (BOOL) power {
-    dc1394error_t dcError = dc1394_camera_set_power(_cameraHandler->camera, power);
+    dc1394error_t dcError = dc1394_camera_set_power(_cameraHandler, power);
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
     }
 }
 
 - (void) reset {
-    dc1394error_t dcError = dc1394_camera_reset(_cameraHandler->camera);
+    dc1394error_t dcError = dc1394_camera_reset(_cameraHandler);
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
     }
-    
 }
 
 
@@ -117,7 +120,7 @@
     NSMutableDictionary *featuresDict = [NSMutableDictionary dictionary];
     
     dc1394featureset_t features;
-    dc1394error_t dcError = dc1394_feature_get_all(_cameraHandler->camera, &features);
+    dc1394error_t dcError = dc1394_feature_get_all(_cameraHandler, &features);
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
         return @{};
@@ -210,9 +213,9 @@
 
 #pragma mark - properties
 
--(NSString *)deviceIdentifier {
+-(NSString *)deviceName {
 	
-    dc1394camera_t *camera = self.cameraHandler->camera;
+    dc1394camera_t *camera = self.cameraHandler;
     
 	NSString* cameraName = nil;
 	if (NULL != camera->model && NULL != camera->vendor)
@@ -224,6 +227,12 @@
 	
 	return cameraName;
 
+}
+
+-(NSNumber *)deviceIdentifier {
+    dc1394camera_t *camera = self.cameraHandler;
+    
+    return @(camera->guid);
 }
 
 NSDictionary *resolutionDictionary (float width, float height, NSString* color_mode)
@@ -242,14 +251,12 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     int i;
     
     dc1394video_modes_t list;
-    dc1394camera_t *camera = self.cameraHandler->camera;
+    dc1394camera_t *camera = self.cameraHandler;
 
     if (DC1394_SUCCESS != dc1394_video_get_supported_modes(camera, &list))
         return nil;
     
     NSMutableArray *videomodesArray = [NSMutableArray array];
-    
-    
     
     int j;
     for (j=0; j<list.num; j++) {
@@ -321,241 +328,29 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
 		return NO;
 	
 	dc1394switch_t status;
-	if (DC1394_SUCCESS != dc1394_video_get_transmission(self.cameraHandler->camera, &status))
+	if (DC1394_SUCCESS != dc1394_video_get_transmission(self.cameraHandler, &status))
 		return NO;
 	
 	return (DC1394_ON == status);
 }
 
-- (BOOL)setVideoMode: (dc1394video_mode_t)videoMode
+- (BOOL)setVideomode: (dc1394video_mode_t)videoMode
 {
-    BOOL wasRunning = [self isCapturing];
-	if (wasRunning)
-		if (![self stopCapturing:nil])
-			return NO;
-    dc1394error_t err = dc1394_video_set_mode(self.cameraHandler->camera, videoMode);
-    if (wasRunning) {
-		if (![self startCapturing:nil])
-			return NO;
-	}
+    dc1394error_t err = dc1394_video_set_mode(self.cameraHandler, videoMode);
+
 	return (DC1394_SUCCESS == err);
 }
 
-- (BOOL)startCapturing:(NSError**)error
-{
-	NSError* dummy;
-	
-	@synchronized(_cameraLock) {
-		if (nil != _thread || [self isCapturing])
-			return YES;
-        
-		_thread = [[NSThread alloc] initWithTarget:self
-										  selector:@selector(_videoCaptureThread)
-											object:nil];
-		[_thread start];
-        
-		[self performSelector:@selector(_setupCapture:)
-					 onThread:_thread
-				   withObject:[NSValue valueWithPointer:error]
-				waitUntilDone:YES];
-		
-		if (nil != *error) {
-			[_thread cancel];
-			_thread = nil;
-			
-			return NO;
-		}
-	}
-    
-	return YES;
-}
-
-- (BOOL)stopCapturing:(NSError**)error
-{
-    if (![self isCapturing])
-        return YES;
-    
-	return YES;
-}
-
-
-- (void)_setupCapture:(NSError**)error
-{
-    dc1394camera_t *c_handle = self.cameraHandler->camera;
-
-    dc1394_capture_schedule_with_runloop(c_handle,
-										 [[NSRunLoop currentRunLoop] getCFRunLoop],
-										 kCFRunLoopDefaultMode);
-    
-    // TODO: before calling camwire_create we should be sure that a config file already exist
-    if (camwire_create(self.cameraHandler) != CAMWIRE_SUCCESS)
-    { // TODO: error handling
-/*        *error = [NSError errorWithDomain:SICErrorDomain
-                                     code:SICErrorDc1394CaptureSetupFailed
-                                 userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorDesc", @"TFDc1394CaptureSetupErrorDesc"),
-                                            NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorReason", @"TFDc1394CaptureSetupErrorReason"),
-                                            NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394CaptureSetupErrorRecovery", @"TFDc1394CaptureSetupErrorRecovery"),
-                                            NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];*/
-        return;
-    
+- (dc1394video_mode_t)videomode {
+    dc1394video_mode_t videoMode;
+    dc1394error_t err = dc1394_video_get_mode(self.cameraHandler, &videoMode);
+    if (err) {
+        // TODO: Error handling
     }
-
-	dc1394_capture_set_callback(c_handle, libdc1394_frame_callback, (__bridge void *)(self));
-
-    camwire_set_run_stop(self.cameraHandler, 1);
-    
-    // TODO:
-    
-    // Reads the camera's parameters and default values
-    // get_camera_settings(c_handle, &settings);
-    
-    //Sets default values to the non-camera paramenters
-    // default_noncamera_settings(&settings);
-
-}
-
-- (void)_stopCapture:(NSError**)error
-{
-    dc1394camera_t *camera = self.cameraHandler->camera;
-	
-	dc1394error_t transmissionErr, captureErr;
-	transmissionErr = dc1394_video_set_transmission(camera, DC1394_OFF);
-	captureErr = dc1394_capture_stop(camera);
-	
-	dc1394_iso_release_all(camera);
-    
-/*	if (DC1394_SUCCESS != transmissionErr) {
-		if (NULL != error)
-			*error = [NSError errorWithDomain:SICErrorDomain
-                                         code:SICErrorDc1394StopTransmissionFailed
-                                     userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorDesc", @"TFDc1394StopTransmissionErrorDesc"),
-												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorReason", @"TFDc1394StopTransmissionErrorReason"),
-												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394StopTransmissionErrorRecovery", @"TFDc1394StopTransmissionErrorRecovery"),
-												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
-        
-		return;
-	}
-	
-	if (DC1394_SUCCESS != captureErr) {
-		if (NULL != error)
-			*error = [NSError errorWithDomain:SICErrorDomain
-                                         code:SICErrorDc1394StopCapturingFailed
-                                     userInfo:@{NSLocalizedDescriptionKey: TFLocalizedString(@"TFDc1394StopCapturingErrorDesc", @"TFDc1394StopCapturingErrorDesc"),
-												NSLocalizedFailureReasonErrorKey: TFLocalizedString(@"TFDc1394StopCapturingErrorReason", @"TFDc1394StopCapturingErrorReason"),
-												NSLocalizedRecoverySuggestionErrorKey: TFLocalizedString(@"TFDc1394StopCapturingErrorRecovery", @"TFDc1394StopCapturingErrorRecovery"),
-												NSStringEncodingErrorKey: @(NSUTF8StringEncoding)}];
-		
-		return;
-	}*/
-}
-
-- (void)_videoCaptureThread
-{
-    @autoreleasepool {
-        
-        do {
-            @autoreleasepool {
-                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:SECONDS_IN_RUNLOOP]];
-                
-/*                retry = 0;
-                over_run = 1;
-                while (over_run && retry < 10)
-                {
-                    if (camwire_get_run_stop(c_handle, &runsts) !=
-                        CAMWIRE_SUCCESS)
-                    {
-                        fprintf(stderr, "Could not get activity status.\n");
-                    }
-                    if (runsts != 0)  settings.activity = running;
-                    else              settings.activity = stopped;
-                    over_run =
-                    (settings.acqtype == single && settings.activity == running);
-                    if (over_run)
-                    {  // Wait for camera to stop after single-shot.
-                        nap.tv_sec = 0;
-                        nap.tv_nsec = 1000000;  // 1 ms.
-                        nanosleep(&nap, NULL);
-                    }
-                    ++retry;
-                }*/
-
-            }
-        } while (![[NSThread currentThread] isCancelled]);
-        
-        _thread = nil;
-        
-    }
-}
-
-static void manage_buffer_level(const Camwire_handle c_handle,
-                                FILE *logfile)
-{
-    int total_frames, current_level, num_to_flush;
-    
-    camwire_get_num_framebuffers(c_handle, &total_frames);
-    if (total_frames < 3)  return;
-    camwire_get_framebuffer_lag(c_handle, &current_level);
-    ++current_level; 	// Buffer lag does not count current frame.
-    
-    // It seems that the DMA buffers sometimes do not fill up
-    // completely, hence the extra -1 in the if expression below:
-    if (current_level >= total_frames - 1)
-    {
-        // Hit the ceiling.
-        num_to_flush = total_frames;
-        if (camwire_flush_framebuffers(c_handle, num_to_flush, NULL, NULL) !=
-            CAMWIRE_SUCCESS)
-            fprintf(stderr,
-                    "Could not flush all buffers in manage_buffer_level().\n");
-        if (logfile != NULL)
-        {
-            fprintf(logfile, "Frame buffers overflowed.  "
-                    "Frame numbers may no longer be in synch.\n");
-            fflush(logfile);
-        }
-    }
-    else if (current_level + 0.5 >= BUF_HIGH_MARK*total_frames)
-    {
-        num_to_flush = current_level - BUF_LOW_MARK*total_frames;
-        if (camwire_flush_framebuffers(c_handle, num_to_flush, NULL, NULL) !=
-            CAMWIRE_SUCCESS)
-            fprintf(stderr,
-                    "Could not flush %d buffers in manage_buffer_level().\n",
-                    num_to_flush);
-    }
-    // else don't flush.
-}
-
-
-static void libdc1394_frame_callback(dc1394camera_t* c_handle, void* data)
-{
-    void *capturebuffer = NULL;
-    @autoreleasepool {
-        
-        IIDCCamera *camera = (__bridge IIDCCamera*)data;
-        Camwire_handle camwireHandle = camera.cameraHandler;
-        
-        // Get and display the next frame:
-        if (camwire_point_next_frame(camwireHandle, &capturebuffer,
-                                     NULL) != CAMWIRE_SUCCESS) {
-            // TODO: error handling
-            
-        }
-        /* errorexit(c_handle, current_cam,
-         "Could not point to the next frame.");*/
-        
-        /*        // Display:
-         if (NULL != frame) {
-         [(__bridge IIDCCamera*)data dispatchFrame:frame];
-         dc1394_capture_enqueue(c, frame);
-         }*/
-        
-        camwire_unpoint_frame(camwireHandle);
-        manage_buffer_level(camwireHandle, NULL);
-        
-    }
-    
+    return videoMode;
     
 }
+
+
 
 @end

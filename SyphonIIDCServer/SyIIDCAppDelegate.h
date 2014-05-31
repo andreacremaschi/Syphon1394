@@ -8,11 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class MainWindowController;
+@class MainWindowController, IIDCCaptureSessionController;
 @interface SyIIDCAppDelegate : NSObject <NSApplicationDelegate> {
     MainWindowController *mainWindowController;
 }
 
 @property (strong) MainWindowController *mainWindowController;
+
+// Menu actions
+- (IBAction) selectVideoModeOfCamera: (id)sender;
+- (IBAction) disconnectCamera: (id)sender;
+- (IBAction) enableSyphonServer: (id)sender;
+- (IBAction) setupCameraSettings: (id)sender;
+
 
 @end

@@ -22,10 +22,11 @@
 
 @protocol StatusItemManagerDatasource <NSObject>
 @required
-- (BOOL) isCameraConnected;
 
 - (NSDictionary *)dictionaryRepresentingAvailableDevices;
-- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSString *)guid;
+- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSNumber *)guid;
+- (NSNumber *)activeCameraGUID;
+- (NSNumber *)currentResolutionID;
 
 - (void) updateAvailableDevicesListIfNeeded;
 

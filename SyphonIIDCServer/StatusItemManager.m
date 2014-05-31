@@ -82,7 +82,10 @@
         
         NSDictionary *availableDevices = [self.dataSource dictionaryRepresentingAvailableDevices];
         NSInteger availableCamerasCount = availableDevices.count;
-        BOOL isCameraConnected = [self.dataSource isCameraConnected];
+        NSNumber *activeCameraGUID = [self.dataSource activeCameraGUID];
+        NSNumber *currentResolutionID = [self.dataSource currentResolutionID];
+        
+        BOOL isCameraConnected = activeCameraGUID != nil;
         
         // Show label status
         self.connectionStatusMenuItem.title = !isCameraConnected ? NSLocalizedString( @"No camera connected", @"") : NSLocalizedString( @"Camera connected", @"");
@@ -111,13 +114,16 @@
         int i=0;
         
         // Create a menu item for every available video device
-        for (NSString *key in orderedKeys) {
+        for (NSNumber *key in orderedKeys) {
             
             NSString *deviceName = availableDevices[key];
             
+            BOOL isActiveCamera = (activeCameraGUID ? [key isEqualToNumber: activeCameraGUID] : 0);
             NSMenuItem *deviceItem = [NSMenuItem new];
             deviceItem.title = deviceName;
             deviceItem.representedObject = key;
+            [deviceItem setState: isActiveCamera];
+            
             deviceItem.submenu = ({
                 NSMenu *submenu = [NSMenu new];
 
@@ -125,9 +131,14 @@
                 [self.dataSource arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID: key];
 
                 for (NSDictionary *videoModeDict in videomodes) {
+                    
+                    NSNumber *videoModeId = videoModeDict[@"id"];
+                    BOOL isActiveVideoMode = isActiveCamera && currentResolutionID && [currentResolutionID isEqualToNumber: videoModeId];
+                    
                     NSMenuItem *videoModeMenuItem = [NSMenuItem new];
                     videoModeMenuItem.title = videoModeDict[@"name"];
-                    videoModeMenuItem.representedObject = videoModeDict[@"id"];
+                    [videoModeMenuItem setState: isActiveVideoMode];
+                    videoModeMenuItem.representedObject = videoModeId;
                     videoModeMenuItem.target = nil;
                     videoModeMenuItem.action = @selector(selectVideoModeOfCamera:);
                     [submenu addItem: videoModeMenuItem];

@@ -16,7 +16,7 @@
 
 @interface IIDCCamera (PrivateMethods)
 
-- (id) initWithCameraOpaqueObject: (dc1394camera_t *)camera;
+- (id) initWithCameraOpaqueObject: (dc1394camera_t *)camera context: (IIDCContext *)context;
 - (void) didDisconnect;
 @end
 
@@ -106,7 +106,7 @@ static Camwire_handle * handle_array = 0;
                 }
 
                 // create an Objective-C controller for each new connected camera
-                IIDCCamera *camera = [[IIDCCamera alloc] initWithCameraOpaqueObject:cam];
+                IIDCCamera *camera = [[IIDCCamera alloc] initWithCameraOpaqueObject:cam context: self];
                 [cameras setObject: camera forKey: cameraGUID];
             }
             

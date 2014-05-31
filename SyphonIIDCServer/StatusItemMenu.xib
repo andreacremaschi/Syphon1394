@@ -25,6 +25,9 @@
                 </menuItem>
                 <menuItem title="Disconnect video device" id="LeV-wH-LCO">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="disconnectCamera:" target="-1" id="aLT-qD-Z3R"/>
+                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" tag="-1" id="EJZ-n7-eLJ"/>
                 <menuItem title="Connect to video device:" enabled="NO" id="EQs-fk-mOq">
@@ -33,9 +36,15 @@
                 <menuItem isSeparatorItem="YES" id="PfB-Ug-a6j"/>
                 <menuItem title="Enable Syphon server" id="sdD-hq-YOX">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="enableSyphonServer:" target="-1" id="ado-cm-nJP"/>
+                    </connections>
                 </menuItem>
                 <menuItem title="Setup camera settings..." id="MCW-Ps-Vbu">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="setupCameraSettings:" target="-1" id="Gta-2W-OkB"/>
+                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="i4K-zT-Nmk"/>
                 <menuItem title="About..." id="bTg-vj-Why">
