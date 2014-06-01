@@ -27,17 +27,15 @@
 - (id) initWithCameraOpaqueObject: (dc1394camera_t *)camera context: (IIDCContext *)context {
     self = [super init];
     if (self) {
-        
         _cameraHandler = camera;
-        
         _context = context;
-
     }
     return self;
 }
 
 -(void)dealloc {
     self.features = nil;
+    dc1394_iso_release_all(_cameraHandler);
     dc1394_camera_free(_cameraHandler);
 }
 
@@ -104,10 +102,10 @@
     dc1394_video_set_transmission(_cameraHandler, DC1394_OFF);
     
     // if the camera's currently set ISO speed is < 400MB/S, we set it to 400MB/S
-    dc1394speed_t isoSpeed;
+ /*   dc1394speed_t isoSpeed;
     dc1394_video_get_iso_speed(_cameraHandler, &isoSpeed);
     if (isoSpeed < DC1394_ISO_SPEED_400)
-        dc1394_video_set_iso_speed(_cameraHandler, DC1394_ISO_SPEED_400);
+        dc1394_video_set_iso_speed(_cameraHandler, DC1394_ISO_SPEED_400);*/
 
 }
 
