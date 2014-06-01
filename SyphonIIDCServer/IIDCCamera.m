@@ -230,10 +230,10 @@
 
 }
 
--(NSNumber *)deviceIdentifier {
+-(NSString *)deviceIdentifier {
     dc1394camera_t *camera = self.cameraHandler;
     
-    return @(camera->guid);
+    return [NSString stringWithFormat:@"%"PRIx64"", camera->guid];
 }
 
 NSDictionary *resolutionDictionary (float width, float height, NSString* color_mode)

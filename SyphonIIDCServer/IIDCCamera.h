@@ -13,7 +13,7 @@
 @interface IIDCCamera : NSObject
 
 @property (readonly) NSString *deviceName;
-@property (readonly) NSNumber *deviceIdentifier;
+@property (readonly) NSString *deviceIdentifier;
 
 // Settings save/restore
 -(void)saveSettingsInMemoryBank: (int) channel;

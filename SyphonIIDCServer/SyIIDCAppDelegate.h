@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class MainWindowController, IIDCCaptureSessionController;
+@class MainWindowController, IIDCCaptureSession;
 @interface SyIIDCAppDelegate : NSObject <NSApplicationDelegate> {
     MainWindowController *mainWindowController;
 }

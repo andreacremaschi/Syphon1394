@@ -24,8 +24,8 @@
 @required
 
 - (NSDictionary *)dictionaryRepresentingAvailableDevices;
-- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSNumber *)guid;
-- (NSNumber *)activeCameraGUID;
+- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSString *)guid;
+- (NSString *)activeCameraGUID;
 - (NSNumber *)currentResolutionID;
 
 - (void) updateAvailableDevicesListIfNeeded;

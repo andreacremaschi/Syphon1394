@@ -46,7 +46,7 @@
 		CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD4D15231937A25900443E81 /* CMakeLists.txt */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
-		CDD9D3D4193A11EF008DB524 /* IIDCCaptureSessionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD9D3D3193A11EF008DB524 /* IIDCCaptureSessionController.m */; };
+		CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,8 +147,8 @@
 		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = SOURCE_ROOT; };
-		CDD9D3D2193A11EF008DB524 /* IIDCCaptureSessionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCaptureSessionController.h; sourceTree = "<group>"; };
-		CDD9D3D3193A11EF008DB524 /* IIDCCaptureSessionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCaptureSessionController.m; sourceTree = "<group>"; };
+		CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCaptureSession.h; sourceTree = "<group>"; };
+		CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCaptureSession.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,8 +209,8 @@
 				CD4D13B91933D85000443E81 /* IIDCContext.m */,
 				CD4D13BB1933DCC100443E81 /* IIDCCamera.h */,
 				CD4D13BC1933DCC100443E81 /* IIDCCamera.m */,
-				CDD9D3D2193A11EF008DB524 /* IIDCCaptureSessionController.h */,
-				CDD9D3D3193A11EF008DB524 /* IIDCCaptureSessionController.m */,
+				CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */,
+				CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */,
 			);
 			name = "DC1394 controllers";
 			sourceTree = "<group>";
@@ -507,7 +507,7 @@
 				C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */,
 				CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */,
 				C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */,
-				CDD9D3D4193A11EF008DB524 /* IIDCCaptureSessionController.m in Sources */,
+				CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */,
 				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
 				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
 				CD4D15261937A25900443E81 /* camwirebus.c in Sources */,

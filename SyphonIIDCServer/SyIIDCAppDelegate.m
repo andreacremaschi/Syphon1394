@@ -12,10 +12,10 @@
 #import "StatusItemManager.h"
 #import "IIDCContext.h"
 #import "IIDCCamera.h"
-#import "IIDCCaptureSessionController.h"
+#import "IIDCCaptureSession.h"
 
 @interface SyIIDCAppDelegate () <StatusItemManagerDatasource, IIDCCaptureSessionDelegate>
-@property (strong ) IIDCCaptureSessionController *captureSession;
+@property (strong ) IIDCCaptureSession *captureSession;
 @property (nonatomic, strong) NSArray *orderedArrayOfDevicesGUIDs;
 @property (nonatomic, strong) IIDCContext *iidcContext;
 
@@ -77,14 +77,14 @@
     
     NSMutableDictionary *mDict = [NSMutableDictionary dictionary];
     for (NSString *deviceGUID in [self orderedArrayOfDevicesGUIDs]) {
-        IIDCCamera *camera = self.iidcContext.availableCameras[deviceGUID];
-        [mDict setObject:camera.deviceName forKey:deviceGUID];
+        NSString *cameraName = self.iidcContext.availableCameras[deviceGUID];
+        [mDict setObject: cameraName forKey:deviceGUID];
     }
     return [mDict copy];
 }
 
-- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSNumber *)guid {
-    IIDCCamera *camera = self.iidcContext.availableCameras[guid];
+- (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSString *)guid {
+    IIDCCamera *camera = [self.iidcContext cameraWithGUID: guid];
     
     NSArray *orderedVideoModes = [camera.videomodes sortedArrayUsingDescriptors: @[
                                                                                    [NSSortDescriptor sortDescriptorWithKey:@"color_mode" ascending:YES],
@@ -108,9 +108,9 @@
     NSMenuItem *parentItem = menuItem.parentItem;
     
     NSString *videoModeId = menuItem.representedObject;
-    NSNumber *deviceId = parentItem.representedObject;
+    NSString *deviceGUID = parentItem.representedObject;
     
-    IIDCCamera *camera = [self.iidcContext availableCameras][deviceId];
+    IIDCCamera *camera = [self.iidcContext cameraWithGUID:deviceGUID];
     if (!camera) {
         // TODO: error handling (the camera has been disconnected)
     }
@@ -127,8 +127,9 @@
         self.captureSession = nil;
         
         [camera reset];
+        [camera setVideomode: videoModeId.integerValue];
         
-        IIDCCaptureSessionController *captureSession = [[IIDCCaptureSessionController alloc] initWithCamera: camera];
+        IIDCCaptureSession *captureSession = [[IIDCCaptureSession alloc] initWithCamera: camera];
         NSError *error;
         BOOL result = [captureSession startCapturing: &error];
         if (!result) {
@@ -142,7 +143,7 @@
 }
 
 - (void) disconnectCamera: (id)sender {
-    IIDCCaptureSessionController *captureSession = self.captureSession;
+    IIDCCaptureSession *captureSession = self.captureSession;
     [captureSession stopCapturing: nil];
     self.captureSession = nil;
 }
@@ -150,7 +151,7 @@
 
 
 #pragma mark -Capture session delegate
--(void)captureSession:(IIDCCaptureSessionController *)captureSession didCaptureFrame:(void *)capturedFrame {
+-(void)captureSession:(IIDCCaptureSession *)captureSession didCaptureFrame:(void *)capturedFrame {
     
 }
 

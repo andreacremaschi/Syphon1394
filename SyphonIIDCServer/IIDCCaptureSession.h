@@ -11,7 +11,7 @@
 @class IIDCCamera;
 @protocol IIDCCaptureSessionDelegate;
 
-@interface IIDCCaptureSessionController : NSObject
+@interface IIDCCaptureSession : NSObject
 
 @property (readonly) IIDCCamera *camera;
 @property (weak) id <IIDCCaptureSessionDelegate> delegate;
@@ -24,5 +24,5 @@
 @end
 
 @protocol IIDCCaptureSessionDelegate
-- (void)captureSession:(IIDCCaptureSessionController*)captureSession didCaptureFrame:(void*)capturedFrame;
+- (void)captureSession:(IIDCCaptureSession*)captureSession didCaptureFrame:(void*)capturedFrame;
 @end

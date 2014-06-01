@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class IIDCCamera;
 @interface IIDCContext : NSObject
 
 - (void *)context;
 
 @property (nonatomic, readonly) NSDictionary *availableCameras;
+- (IIDCCamera*) cameraWithGUID: (NSString *)GUID;
 
 @end

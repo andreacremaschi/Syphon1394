@@ -82,7 +82,7 @@
         
         NSDictionary *availableDevices = [self.dataSource dictionaryRepresentingAvailableDevices];
         NSInteger availableCamerasCount = availableDevices.count;
-        NSNumber *activeCameraGUID = [self.dataSource activeCameraGUID];
+        NSString *activeCameraGUID = [self.dataSource activeCameraGUID];
         NSNumber *currentResolutionID = [self.dataSource currentResolutionID];
         
         BOOL isCameraConnected = activeCameraGUID != nil;
@@ -114,11 +114,11 @@
         int i=0;
         
         // Create a menu item for every available video device
-        for (NSNumber *key in orderedKeys) {
+        for (NSString *key in orderedKeys) {
             
             NSString *deviceName = availableDevices[key];
             
-            BOOL isActiveCamera = (activeCameraGUID ? [key isEqualToNumber: activeCameraGUID] : 0);
+            BOOL isActiveCamera = (activeCameraGUID ? [key isEqualToString: activeCameraGUID] : 0);
             NSMenuItem *deviceItem = [NSMenuItem new];
             deviceItem.title = deviceName;
             deviceItem.representedObject = key;

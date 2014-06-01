@@ -23,6 +23,7 @@
 @interface IIDCContext ()
 @property (readwrite)  dc1394_t* context;
 @property (readwrite) NSDictionary *availableCameras;
+@property (readwrite) NSMapTable *connectedCamerasMapTable;
 
 @end
 
@@ -34,19 +35,7 @@
 
     _context = dc1394_new();
     
-    NSError *error;
-    NSString* libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-    libraryPath = [libraryPath stringByAppendingPathComponent: appName];
-    NSString *configurationsPath = [libraryPath stringByAppendingPathComponent: @"Configurations"];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:libraryPath])
-        [[NSFileManager defaultManager] createDirectoryAtPath:libraryPath withIntermediateDirectories:NO attributes:nil error:&error];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:configurationsPath])
-        [[NSFileManager defaultManager] createDirectoryAtPath:configurationsPath withIntermediateDirectories:NO attributes:nil error:&error];
-    
-    setenv("CAMWIRE_CONF", configurationsPath.UTF8String, 1);
-    
+    _connectedCamerasMapTable = [NSMapTable strongToWeakObjectsMapTable];
    /* ioKitNotificationPort = IONotificationPortCreate(kIOMasterPortDefault);
     notificationRunLoopSource = IONotificationPortGetRunLoopSource(ioKitNotificationPort);
     
@@ -88,7 +77,7 @@ static Camwire_handle * handle_array = 0;
             int i;
             for (i=0; i<list->num; i++) {
 
-                NSNumber *cameraGUID = @(list->ids[i].guid);
+                NSString *cameraGUID = [NSString stringWithFormat:@"%"PRIx64"", list->ids[i].guid];
                 if ([existingCamerasGUIDs containsObject: cameraGUID]) {
                     [cameras setObject: _availableCameras[cameraGUID] forKey:cameraGUID];
 
@@ -106,8 +95,10 @@ static Camwire_handle * handle_array = 0;
                 }
 
                 // create an Objective-C controller for each new connected camera
+                // get the camera name and then discard the object
                 IIDCCamera *camera = [[IIDCCamera alloc] initWithCameraOpaqueObject:cam context: self];
-                [cameras setObject: camera forKey: cameraGUID];
+                NSString *cameraName = camera.deviceName;
+                [cameras setObject: cameraName forKey: cameraGUID];
             }
             
         }
@@ -129,6 +120,42 @@ static Camwire_handle * handle_array = 0;
 }
 
 
+- (IIDCCamera*) cameraWithGUID: (NSString *)wantedGUID {
+
+    // check if an handler for this camera has already been created
+    IIDCCamera *camera = [self.connectedCamerasMapTable objectForKey: wantedGUID];
+    if (camera) return camera;
+    
+    dc1394camera_list_t* list;
+    dc1394_t *context = _context;
+
+    dc1394camera_t *matchingCameraHandler = NULL;
+    if (DC1394_SUCCESS == dc1394_camera_enumerate(context, &list)) {
+        if (list && list->num > 0) {
+            
+            int i;
+            for (i=0; i<list->num; i++) {
+                NSString *cameraGUID = [NSString stringWithFormat:@"%"PRIx64"", list->ids[i].guid];
+                if ([cameraGUID isEqualToString:wantedGUID]) {
+                    dc1394camera_t* cam = dc1394_camera_new(context, list->ids[i].guid);
+                    matchingCameraHandler = cam;
+                    break;
+                }
+            }
+        }
+
+        dc1394_camera_free_list(list);
+    }
+    
+    // if the camera has been found, return it
+    if (matchingCameraHandler) {
+        IIDCCamera *camera = [[IIDCCamera alloc] initWithCameraOpaqueObject:matchingCameraHandler context: self];
+        [self.connectedCamerasMapTable setObject: camera forKey: wantedGUID];
+        return camera;
+    }
+    
+    return nil;
+}
 
 
 @end
