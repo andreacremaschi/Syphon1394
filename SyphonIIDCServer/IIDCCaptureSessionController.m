@@ -17,6 +17,7 @@
 @property (strong) NSLock *cameraLock;
 @property (strong) NSLock *threadLock;
 @property (strong) NSThread *thread;
+@property dispatch_queue_t captureQueue;
 
 @end
 
@@ -154,6 +155,7 @@
 		return;
 	}
     
+    [self flushDMABuffer];
     
     // TODO:
     
@@ -170,10 +172,12 @@
 	dc1394camera_t *camera = self.cameraHandler;
 	[self.thread cancel];
 	
+    [self flushDMABuffer];
+
 	dc1394error_t transmissionErr, captureErr;
 	transmissionErr = dc1394_video_set_transmission(camera, DC1394_OFF);
 	captureErr = dc1394_capture_stop(camera);
-	
+    
 	dc1394_iso_release_all(camera);
     
 	if (DC1394_SUCCESS != transmissionErr) {
@@ -253,6 +257,28 @@
     }
 }
 
+- (void) flushDMABuffer {
+#define RETRY NUM_DMA_BUFFERS+2  /* BUF_SIZE is the number of frames in the buffer, as used when capture was initialized*/
+    
+    dc1394camera_t *camera = self.camera.cameraHandler;
+    dc1394video_frame_t *img;
+    
+    int i=RETRY;
+    int rtn=dc1394_capture_dequeue (camera, DC1394_CAPTURE_POLICY_POLL, &img);
+    while (rtn==DC1394_SUCCESS && img!=NULL && i>0) {
+        dc1394_capture_enqueue(camera, img);
+        rtn=dc1394_capture_dequeue (camera, DC1394_CAPTURE_POLICY_POLL, &img);
+        i--;
+    }
+    if (i==0 && img!=NULL) {
+        fprintf(stderr,"Frames coming in too fast, can't flush the buffer!\n");
+        dc1394_capture_enqueue(camera, img);
+    }
+    if (rtn!=DC1394_SUCCESS)
+        fprintf(stderr,"Error flushing buffer\n");
+    /*if (i==RETRY)
+        fprintf(stderr,"Buffer was already empty\n");*/
+}
 
 static void libdc1394_frame_callback(dc1394camera_t* c, void* data)
 {

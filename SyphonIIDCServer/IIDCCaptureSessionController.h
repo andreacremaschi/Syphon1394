@@ -21,8 +21,6 @@
 - (BOOL)startCapturing:(NSError**)error;
 - (BOOL)stopCapturing:(NSError**)error;
 
-
-
 @end
 
 @protocol IIDCCaptureSessionDelegate

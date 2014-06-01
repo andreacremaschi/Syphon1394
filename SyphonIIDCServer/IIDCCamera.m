@@ -30,18 +30,6 @@
         
         _cameraHandler = camera;
         
-        dc1394_camera_reset(camera);
-        dc1394_camera_set_power(camera, DC1394_ON);
-        
-        // turn off the camera's ISO if it's running
-        dc1394_video_set_transmission(camera, DC1394_OFF);
-        
-        // if the camera's currently set ISO speed is < 400MB/S, we set it to 400MB/S
-        dc1394speed_t isoSpeed;
-        dc1394_video_get_iso_speed(camera, &isoSpeed);
-        if (isoSpeed < DC1394_ISO_SPEED_400)
-            dc1394_video_set_iso_speed(camera, DC1394_ISO_SPEED_400);
-
         _context = context;
 
     }
@@ -108,6 +96,19 @@
     if (dcError != DC1394_SUCCESS) {
         // TODO: error handling
     }
+    
+    dc1394_camera_reset(_cameraHandler);
+    dc1394_camera_set_power(_cameraHandler, DC1394_ON);
+    
+    // turn off the camera's ISO if it's running
+    dc1394_video_set_transmission(_cameraHandler, DC1394_OFF);
+    
+    // if the camera's currently set ISO speed is < 400MB/S, we set it to 400MB/S
+    dc1394speed_t isoSpeed;
+    dc1394_video_get_iso_speed(_cameraHandler, &isoSpeed);
+    if (isoSpeed < DC1394_ISO_SPEED_400)
+        dc1394_video_set_iso_speed(_cameraHandler, DC1394_ISO_SPEED_400);
+
 }
 
 

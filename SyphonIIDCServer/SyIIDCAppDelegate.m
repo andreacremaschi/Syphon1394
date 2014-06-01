@@ -38,6 +38,13 @@
     [mainWindowController showWindow: self];*/
 }
 
+-(void)applicationWillTerminate:(NSNotification *)notification {
+    if (self.captureSession) {
+        [self.captureSession stopCapturing: nil];
+        self.captureSession = nil;
+    }
+}
+
 #pragma mark - StatusItemManagerDatasource
 
 - (void) updateAvailableDevicesListIfNeeded {
@@ -109,13 +116,18 @@
     }
     
     if (camera == self.captureSession.camera) {
+        NSError *error;
+        [self.captureSession stopCapturing: &error];
         [camera setVideomode: videoModeId.integerValue];
+        [self.captureSession startCapturing: &error];
     } else {
         
         // TODO:
         // [self.captureSession closeSession];
         self.captureSession = nil;
-
+        
+        [camera reset];
+        
         IIDCCaptureSessionController *captureSession = [[IIDCCaptureSessionController alloc] initWithCamera: camera];
         NSError *error;
         BOOL result = [captureSession startCapturing: &error];
