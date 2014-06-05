@@ -11,8 +11,6 @@
 #import <dc1394/capture.h>
 #import <dc1394/macosx/capture.h>
 
-#import <camwire/camwire.h>
-
 #import "IIDCContext.h"
 
 @interface IIDCCamera ()

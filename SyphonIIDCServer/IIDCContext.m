@@ -9,9 +9,6 @@
 #import "IIDCContext.h"
 #import <dc1394/dc1394.h>
 
-#import <camwire.h>
-#import <camwirebus.h>
-
 #import "IIDCCamera.h"
 
 @interface IIDCCamera (PrivateMethods)
@@ -57,8 +54,6 @@
     _context = nil;
 }
 
-
-static Camwire_handle * handle_array = 0;
 
 -(NSDictionary *)availableCameras {
 

@@ -40,10 +40,6 @@
 		CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13BC1933DCC100443E81 /* IIDCCamera.m */; };
 		CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
 		CD4D13C5193678F500443E81 /* libdc1394.22.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
-		CD4D15241937A25900443E81 /* camwire.c in Sources */ = {isa = PBXBuildFile; fileRef = CD4D151B1937A25900443E81 /* camwire.c */; };
-		CD4D15251937A25900443E81 /* camwire_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = CD4D151E1937A25900443E81 /* camwire_config.h.in */; };
-		CD4D15261937A25900443E81 /* camwirebus.c in Sources */ = {isa = PBXBuildFile; fileRef = CD4D15201937A25900443E81 /* camwirebus.c */; };
-		CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD4D15231937A25900443E81 /* CMakeLists.txt */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
 		CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */; };
@@ -488,9 +484,7 @@
 				CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */,
 				C4195797144B376700338631 /* Credits.rtf in Resources */,
 				CD2F95AE192D1930001CB609 /* shape_red.png in Resources */,
-				CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */,
 				C419579D144B376700338631 /* MainMenu.xib in Resources */,
-				CD4D15251937A25900443E81 /* camwire_config.h.in in Resources */,
 				C4121A74144B41020088F701 /* MainWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,9 +541,7 @@
 				CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */,
 				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
 				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
-				CD4D15261937A25900443E81 /* camwirebus.c in Sources */,
 				CDB76EDF193E38CD008E92BD /* DC1394FrameUploader.m in Sources */,
-				CD4D15241937A25900443E81 /* camwire.c in Sources */,
 				C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
