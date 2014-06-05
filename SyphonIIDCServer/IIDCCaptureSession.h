@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *CapturedFrameNotification;
+
 @class IIDCCamera;
 @protocol IIDCCaptureSessionDelegate;
 

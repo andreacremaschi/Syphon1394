@@ -14,17 +14,34 @@
 #import "IIDCCamera.h"
 #import "IIDCCaptureSession.h"
 
+// Interface
+#import "SettingsWindowController.h"
+
+#import "NSStringToNSNumberValueTransformer.h"
+
 @interface SyIIDCAppDelegate () <StatusItemManagerDatasource, IIDCCaptureSessionDelegate>
 @property (strong ) IIDCCaptureSession *captureSession;
 @property (nonatomic, strong) NSArray *orderedArrayOfDevicesGUIDs;
 @property (nonatomic, strong) IIDCContext *iidcContext;
+@property (nonatomic, strong) SettingsWindowController *settingsWindowPanel;
 
 @end
 
 @implementation SyIIDCAppDelegate
 @synthesize mainWindowController;
 
-	
++(void)initialize {
+    
+    [super initialize];
+    
+    // create an autoreleased instance of our value transformer
+    NSStringToNSNumberValueTransformer *transfomer = [[NSStringToNSNumberValueTransformer alloc] init];
+    
+    // register it with the name that we refer to it with
+    [NSValueTransformer setValueTransformer:transfomer
+                                    forName:@"NSStringToNSNumberValueTransformer"];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     
@@ -137,15 +154,33 @@
             NSLog(@"%@", error.localizedDescription);
             return;
         }
+        self.settingsWindowPanel.captureSession = captureSession;
         self.captureSession = captureSession;
     }
 //    [self.dataSource selectVideoModeWithId: videoModeId videoDevice: deviceId];
+}
+
+- (IBAction) setupCameraSettings: (id)sender {
+
+    SettingsWindowController *settingsPanel = self.settingsWindowPanel;
+    if (!settingsPanel)
+        settingsPanel = [[SettingsWindowController alloc] initWithWindowNibName:@"SettingsWindow"];
+    
+    settingsPanel.captureSession = self.captureSession;
+    [settingsPanel.window makeKeyAndOrderFront: self];
+
+    self.settingsWindowPanel = settingsPanel;
 }
 
 - (void) disconnectCamera: (id)sender {
     IIDCCaptureSession *captureSession = self.captureSession;
     [captureSession stopCapturing: nil];
     self.captureSession = nil;
+    
+    // se è aperto, chiudi il pannello delle impostazioni
+    self.settingsWindowPanel.captureSession = nil;
+    [self.settingsWindowPanel close];
+    self.settingsWindowPanel = nil;
 }
 
 

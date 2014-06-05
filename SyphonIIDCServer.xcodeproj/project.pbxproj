@@ -46,6 +46,13 @@
 		CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD4D15231937A25900443E81 /* CMakeLists.txt */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
+		CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */; };
+		CDB76ECD193B87FB008E92BD /* SettingsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB76ECC193B87FB008E92BD /* SettingsWindowController.m */; };
+		CDB76ED3193B9D8C008E92BD /* FeatureControlTableCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB76ED2193B9D8C008E92BD /* FeatureControlTableCellView.m */; };
+		CDB76ED6193BA12D008E92BD /* IIDCCamera+KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB76ED5193BA12D008E92BD /* IIDCCamera+KVO.m */; };
+		CDB76ED9193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB76ED8193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m */; };
+		CDB76EDB193E32CB008E92BD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB76EDA193E32CB008E92BD /* GLKit.framework */; };
+		CDB76EDF193E38CD008E92BD /* DC1394FrameUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = CDB76EDE193E38CD008E92BD /* DC1394FrameUploader.m */; };
 		CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */; };
 /* End PBXBuildFile section */
 
@@ -147,6 +154,18 @@
 		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = SOURCE_ROOT; };
+		CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsWindow.xib; path = SyphonIIDCServer/SettingsWindow.xib; sourceTree = "<group>"; };
+		CDB76ECB193B87FB008E92BD /* SettingsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsWindowController.h; sourceTree = "<group>"; };
+		CDB76ECC193B87FB008E92BD /* SettingsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsWindowController.m; sourceTree = "<group>"; };
+		CDB76ED1193B9D8C008E92BD /* FeatureControlTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeatureControlTableCellView.h; sourceTree = "<group>"; };
+		CDB76ED2193B9D8C008E92BD /* FeatureControlTableCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatureControlTableCellView.m; sourceTree = "<group>"; };
+		CDB76ED4193BA12D008E92BD /* IIDCCamera+KVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IIDCCamera+KVO.h"; sourceTree = "<group>"; };
+		CDB76ED5193BA12D008E92BD /* IIDCCamera+KVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IIDCCamera+KVO.m"; sourceTree = "<group>"; };
+		CDB76ED7193BA51E008E92BD /* NSStringToNSNumberValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringToNSNumberValueTransformer.h; sourceTree = "<group>"; };
+		CDB76ED8193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringToNSNumberValueTransformer.m; sourceTree = "<group>"; };
+		CDB76EDA193E32CB008E92BD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		CDB76EDD193E38CD008E92BD /* DC1394FrameUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DC1394FrameUploader.h; sourceTree = "<group>"; };
+		CDB76EDE193E38CD008E92BD /* DC1394FrameUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DC1394FrameUploader.m; sourceTree = "<group>"; };
 		CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCaptureSession.h; sourceTree = "<group>"; };
 		CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCaptureSession.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDB76EDB193E32CB008E92BD /* GLKit.framework in Frameworks */,
 				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
 				CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */,
 				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
@@ -184,6 +204,8 @@
 				CD2F95AB192D180E001CB609 /* StatusItemManager.m */,
 				C4121A76144B41740088F701 /* MainWindowController.h */,
 				C4121A77144B41740088F701 /* MainWindowController.m */,
+				CDB76ECB193B87FB008E92BD /* SettingsWindowController.h */,
+				CDB76ECC193B87FB008E92BD /* SettingsWindowController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -196,6 +218,8 @@
 				C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */,
 				C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */,
 				C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */,
+				CDB76ED1193B9D8C008E92BD /* FeatureControlTableCellView.h */,
+				CDB76ED2193B9D8C008E92BD /* FeatureControlTableCellView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -211,6 +235,10 @@
 				CD4D13BC1933DCC100443E81 /* IIDCCamera.m */,
 				CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */,
 				CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */,
+				CDB76ED4193BA12D008E92BD /* IIDCCamera+KVO.h */,
+				CDB76ED5193BA12D008E92BD /* IIDCCamera+KVO.m */,
+				CDB76EDD193E38CD008E92BD /* DC1394FrameUploader.h */,
+				CDB76EDE193E38CD008E92BD /* DC1394FrameUploader.m */,
 			);
 			name = "DC1394 controllers";
 			sourceTree = "<group>";
@@ -250,6 +278,7 @@
 				C419579B144B376700338631 /* MainMenu.xib */,
 				C4121A73144B41020088F701 /* MainWindowController.xib */,
 				CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */,
+				CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -277,6 +306,7 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDB76EDA193E32CB008E92BD /* GLKit.framework */,
 				CD4D151A1937A25900443E81 /* camwire */,
 				CD4D13C3193678F000443E81 /* libdc1394.22.dylib */,
 				CD4D13BE193678BB00443E81 /* libdc1394.dylib */,
@@ -313,6 +343,8 @@
 				C4195799144B376700338631 /* SyIIDCAppDelegate.m */,
 				C4121A72144B40090088F701 /* Misc includes */,
 				C419578D144B376700338631 /* Supporting Files */,
+				CDB76ED7193BA51E008E92BD /* NSStringToNSNumberValueTransformer.h */,
+				CDB76ED8193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m */,
 			);
 			name = Source;
 			path = SyphonIIDCServer;
@@ -453,6 +485,7 @@
 			files = (
 				C4195791144B376700338631 /* InfoPlist.strings in Resources */,
 				CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */,
+				CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */,
 				C4195797144B376700338631 /* Credits.rtf in Resources */,
 				CD2F95AE192D1930001CB609 /* shape_red.png in Resources */,
 				CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */,
@@ -493,15 +526,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDB76ED3193B9D8C008E92BD /* FeatureControlTableCellView.m in Sources */,
 				CD2F95AC192D180E001CB609 /* StatusItemManager.m in Sources */,
+				CDB76ED6193BA12D008E92BD /* IIDCCamera+KVO.m in Sources */,
 				C4195793144B376700338631 /* main.m in Sources */,
 				C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */,
 				C41957BE144B37B000338631 /* KOpenGLView.m in Sources */,
 				C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */,
 				C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */,
 				CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */,
+				CDB76ECD193B87FB008E92BD /* SettingsWindowController.m in Sources */,
 				C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */,
 				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
+				CDB76ED9193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m in Sources */,
 				C4121A66144B3F150088F701 /* SICError.m in Sources */,
 				C4121A78144B41740088F701 /* MainWindowController.m in Sources */,
 				C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */,
@@ -511,6 +548,7 @@
 				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
 				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
 				CD4D15261937A25900443E81 /* camwirebus.c in Sources */,
+				CDB76EDF193E38CD008E92BD /* DC1394FrameUploader.m in Sources */,
 				CD4D15241937A25900443E81 /* camwire.c in Sources */,
 				C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */,
 			);

@@ -137,12 +137,14 @@
      dc1394featureset_t features = internal_status->feature_set;
      */
     
-	for (dc1394feature_t i=DC1394_FEATURE_MIN; i<=DC1394_FEATURE_MAX; i++) {
+	for (dc1394feature_t i=0; i<DC1394_FEATURE_NUM; i++) {
         
 		dc1394feature_info_t featureInfo = features.feature[i];
-		
+		if (featureInfo.available == DC1394_FALSE)
+            continue;
+        
         NSString *key = @"";
-        switch (i) {
+        switch (featureInfo.id) {
             case DC1394_FEATURE_BRIGHTNESS: key= @"brightness"; break;
             case DC1394_FEATURE_EXPOSURE: key= @"exposure"; break;
             case DC1394_FEATURE_SHARPNESS: key= @"sharpness"; break;
@@ -169,14 +171,11 @@
             default:
                 break;
         }
-        
-        NSDictionary *curFeatureDict = @{@"feature_index" : @(i),
-                                         @"min_value" : @(featureInfo.min),
-                                         @"max_value" : @(featureInfo.max)};
-        
-        // TODO: save value in another place
-        // @"value" : @(featureInfo.value)
-        
+        NSMutableDictionary *curFeatureDict = [@{@"feature_index" : @(featureInfo.id),
+                                                 @"min_value" : @(featureInfo.min),
+                                                 @"max_value" : @(featureInfo.max),
+                                                 @"value" : @(featureInfo.value)} mutableCopy];
+                
 		int j;
         
         bool supported = false, automode=false, oneShotAuto = false;
@@ -190,6 +189,10 @@
                 oneShotAuto=true;
             }
 		}
+
+        if (featureInfo.on_off_capable == DC1394_TRUE) {
+            [curFeatureDict setValue: @(featureInfo.is_on == DC1394_ON) forKey: @"onOff"];
+        }
         
         if ((featureInfo.available == 1) && supported) {
             if (automode) {
@@ -199,7 +202,8 @@
             if (oneShotAuto) {
                 [curFeatureDict setValue: @YES forKey: @"onePushAuto"];
             }
-            [featuresDict setValue: curFeatureDict forKey: key];
+            [featuresDict setValue: curFeatureDict
+                            forKey: key];
         }
 		// we try setting to 'auto' even if this feature doesn't have a manual mode on this camera
 		//[self setFeatureWithIndex:i toAutoMode:YES];
@@ -208,6 +212,92 @@
     _features = featuresDict;
     
     return _features;
+}
+
+- (BOOL)featureInAutoMode:(dc1394feature_t)f
+{
+	dc1394feature_mode_t mode;
+	dc1394camera_t *cameraHandle = self.cameraHandler;
+    
+	if (DC1394_SUCCESS != dc1394_feature_get_mode(cameraHandle, f, &mode))
+		return NO;
+	
+	return (DC1394_FEATURE_MODE_AUTO == mode);
+}
+
+- (BOOL)setFeatureWithIndex:(dc1394feature_t)f toAutoMode:(BOOL)val
+{
+	dc1394feature_mode_t mode = val ? DC1394_FEATURE_MODE_AUTO : DC1394_FEATURE_MODE_MANUAL;
+	dc1394camera_t *cameraHandle = self.cameraHandler;
+	
+	return (DC1394_SUCCESS == dc1394_feature_set_mode(cameraHandle, f, mode));
+}
+
+- (BOOL)pushToAutoFeatureWithIndex:(dc1394feature_t)f
+{
+	dc1394feature_mode_t mode = DC1394_FEATURE_MODE_ONE_PUSH_AUTO;
+	dc1394camera_t *cameraHandle = self.cameraHandler;
+    return (DC1394_SUCCESS == dc1394_feature_set_mode(cameraHandle, f, mode));
+    /*{
+        float newValue = [self valueForFeatureWithIndex:f];
+        NSLog(@"%.2f", newValue);
+    }
+    return YES;*/
+}
+
+- (float)valueForFeatureWithIndex:(dc1394feature_t)f
+{
+	unsigned val;
+    dc1394camera_t *cameraHandle = self.cameraHandler;
+
+	if (DC1394_SUCCESS != dc1394_feature_get_value(cameraHandle, f, (void*)&val))
+		return 0.0f;
+	
+	return val;
+    
+}
+
+- (BOOL)setFeatureWithIndex:(dc1394feature_t)feature toValue:(uint32_t)val
+{
+	/*if (!_supportedFeatures[feature])
+     return NO;
+     */
+    dc1394camera_t *cameraHandle = self.cameraHandler;
+
+	dc1394feature_t f = feature; //[self _featureFromKey:feature];
+	dc1394feature_mode_t mode;
+	dc1394bool_t isSwitchable;
+	
+	if (DC1394_SUCCESS != dc1394_feature_is_switchable(cameraHandle, f, &isSwitchable))
+		return NO;
+	
+	if (isSwitchable) {
+		dc1394switch_t isSwitched;
+		
+		if (DC1394_SUCCESS != dc1394_feature_get_power(cameraHandle, f, &isSwitched))
+			return NO;
+		
+		if (DC1394_ON != isSwitched) {
+			isSwitched = DC1394_ON;
+			
+			if (DC1394_SUCCESS != dc1394_feature_set_power(cameraHandle, f, DC1394_ON))
+				return NO;
+		}
+	}
+	
+	if (DC1394_SUCCESS != dc1394_feature_get_mode(cameraHandle, f, &mode))
+		return NO;
+	
+	if (DC1394_FEATURE_MODE_MANUAL != mode &&
+		DC1394_SUCCESS != dc1394_feature_set_mode(cameraHandle, f, DC1394_FEATURE_MODE_MANUAL))
+		return NO;
+	
+	/*UInt32 newVal = _featureMinMax[feature][0] + val*(_featureMinMax[feature][1]-_featureMinMax[feature][0]);
+     */
+	if (DC1394_SUCCESS != dc1394_feature_set_value(cameraHandle, f, val)) //newVal))
+		return NO;
+	
+	return YES;
 }
 
 #pragma mark - properties

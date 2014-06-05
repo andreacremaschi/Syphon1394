@@ -36,6 +36,7 @@
 @property (readonly) IIDCContext *context;
 
 - (BOOL)isCapturing;
+- (BOOL)pushToAutoFeatureWithIndex:(int)f;
 
 @end
 

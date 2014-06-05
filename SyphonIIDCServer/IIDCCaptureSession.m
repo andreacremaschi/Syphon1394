@@ -10,12 +10,22 @@
 #import "IIDCContext.h"
 #import "IIDCCamera.h"
 
+#import "DC1394FrameUploader.h"
+
 #import <dc1394/dc1394.h>
 
+#import <OpenGL/CGLMacro.h>
+
+#import <Syphon/Syphon.h>
+
 @interface IIDCCaptureSession ()
+
 @property (strong) IIDCCamera *activeCamera;
 @property dispatch_queue_t captureQueue;
 @property BOOL isRunning;
+@property (strong) DC1394FrameUploader *frameUploader;
+@property (strong) SyphonServer *syphonServer;
+@property (strong) NSOpenGLContext *openGLContext;
 @end
 
 #define NUM_DMA_BUFFERS					(10)
@@ -40,6 +50,9 @@
 {
     if (self.isRunning)
         [self stopCapturing:nil];
+    self.frameUploader = nil;
+    if (_captureQueue)
+        dispatch_release(_captureQueue);
 }
 
 #pragma mark - Accessors
@@ -195,6 +208,7 @@
 
     uint32_t width, height;
     do {
+        
         // Get a frame from the camera
         dc1394video_frame_t *frame = nil;
         retval = dc1394_capture_dequeue(camera, DC1394_CAPTURE_POLICY_WAIT, &frame);
@@ -217,7 +231,7 @@
             }
         }
         
-        NSLog(@"New frame available");
+        // NSLog(@"New frame available");
         if (frame->frames_behind>0)
             NSLog(@"%i frames behind", frame->frames_behind);
         
@@ -225,9 +239,7 @@
         height = frame->size[1];
         
         // Convert to RGB
-        dc1394video_frame_t *newFrame = calloc(1, sizeof(dc1394video_frame_t));
-/*        frame->color_filter = DC1394_COLOR_FILTER_BGGR;
-        frame->color_coding = DC1394_COLOR_CODING_MONO8;*/
+        /*dc1394video_frame_t *newFrame = calloc(1, sizeof(dc1394video_frame_t));
         newFrame->color_coding=DC1394_COLOR_CODING_RGB8;
         
         dc1394_convert_frames(frame, newFrame);
@@ -241,19 +253,158 @@
         // free the new frame
         free(newFrame->image);
         free(newFrame);
+        */
+
+        CGSize frameSize = CGSizeMake(width, height);
+
+        CGLContextObj cgl_ctx = [[self openGLContext] CGLContextObj];
+
         
+        
+        DC1394FrameUploader *frameUploader = self.frameUploader;
+        if (frameUploader == nil || !CGSizeEqualToSize(frameUploader.frameSize, frameSize)) {
+            [frameUploader destroyResources];
+            frameUploader = self.frameUploader = [[DC1394FrameUploader alloc] initWithContext: cgl_ctx
+                                                                                    frameSize: frameSize];
+        }
+        [frameUploader uploadFrame: frame];
+
+        
+        if (cgl_ctx) {
+            
+            // Setup OpenGL states
+            glViewport(0, 0, frameSize.width, frameSize.height);
+            
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0.0, frameSize.width, 0.0, frameSize.height, -1, 1);
+            
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            
+            // glTranslated(frameSize.width * 0.5, frameSize.height * 0.5, 0.0);
+            
+        }
+        // NSDictionary *options = @{SyphonServerOptionDepthBufferResolution: @16};
+        SyphonServer *syphonServer = self.syphonServer;
+        if (syphonServer == nil) {
+            syphonServer = [[SyphonServer alloc] initWithName:nil context:cgl_ctx options:nil];
+            self.syphonServer = syphonServer;
+        }
+        [syphonServer bindToDrawFrameOfSize:frameSize];
+        
+        // Render our QCRenderer
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+	       
+        if (1)
+        {
+            GLfloat tex_coords[] =
+            {
+                0.0,	0.0,
+                frameSize.width,	0.0,
+                frameSize.width,	frameSize.height,
+                0.0,	frameSize.height
+            };
+            
+            
+            float halfw = 1.0; // frameSize.width * 0.5;
+            float halfh = 1.0; //frameSize.height * 0.5;
+            
+            GLfloat verts[] =
+            {
+                -halfw, -halfh,
+                halfw, -halfh,
+                halfw, halfh,
+                -halfw, halfh
+            };
+            
+
+            glEnable(GL_TEXTURE_RECTANGLE_EXT);
+            glBindTexture(GL_TEXTURE_RECTANGLE_EXT, self.frameUploader.textureName);
+            
+            // do a nearest linear interp.
+            glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            
+            //glColor4f(1.0, 1.0, 0.0, 1.0);
+            
+            glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+            glTexCoordPointer(2, GL_FLOAT, 0, tex_coords );
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glVertexPointer(2, GL_FLOAT, 0, verts );
+            glDrawArrays( GL_TRIANGLE_FAN, 0, 4 );
+            glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+            glDisableClientState(GL_VERTEX_ARRAY);
+            
+            glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+
+        }
+        else
+        {
+            glClearColor(1.0, 0.0, 0.0, 0.0);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }
+        
+        // Restore OpenGL states
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+        
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        
+        [self.openGLContext flushBuffer];
+        
+        [syphonServer unbindAndPublish];
+
         dc1394_capture_enqueue(camera, frame);
-        frame = nil;
-        
-        // Send a notification with the new data on another thread
-      /*  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                       ^{
-                           [center postNotificationName:DCAMCapturedFrameNotification object:tempData];
-                       });*/
         
     } while (self.isRunning);
-    
+
+    [self.frameUploader destroyResources];
+    [self.syphonServer stop];
+
     return;
+}
+
+- (NSOpenGLContext *)openGLContext
+{
+    if (_openGLContext) return _openGLContext;
+    
+    static NSOpenGLPixelFormatAttribute attrs[] =
+    {
+//        NSOpenGLPFAPixelBuffer,
+//        NSOpenGLPFAAccelerated,
+//        NSOpenGLPFANoRecovery,
+        NSOpenGLPFAAllowOfflineRenderers,
+        NSOpenGLPFADoubleBuffer,
+//        NSOpenGLPFADepthSize, 24,
+
+        NSOpenGLPFAColorSize, 32,
+        NSOpenGLPFADepthSize, 8,
+        0
+    };
+    NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    
+    NSOpenGLContext *openGLContext = [[NSOpenGLContext alloc] initWithFormat: pixelFormat shareContext:nil];
+    
+    if (openGLContext) {
+        CGLContextObj cgl_ctx = [openGLContext CGLContextObj];
+        
+        // Enable the rectangle texture extenstion
+        glEnable(GL_TEXTURE_RECTANGLE_EXT);
+        //glDisable(GL_DEPTH);
+    }
+    _openGLContext = openGLContext;
+    
+    return _openGLContext;
 }
 
 - (void) flushDMABuffer {
