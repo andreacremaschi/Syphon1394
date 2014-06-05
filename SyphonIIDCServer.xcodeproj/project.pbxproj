@@ -31,12 +31,22 @@
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
 		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
-		CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
 		CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
 		CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
+		CD2F95AC192D180E001CB609 /* StatusItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2F95AB192D180E001CB609 /* StatusItemManager.m */; };
+		CD2F95AE192D1930001CB609 /* shape_red.png in Resources */ = {isa = PBXBuildFile; fileRef = CD2F95AD192D1930001CB609 /* shape_red.png */; };
+		CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */; };
+		CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13B91933D85000443E81 /* IIDCContext.m */; };
+		CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13BC1933DCC100443E81 /* IIDCCamera.m */; };
+		CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
+		CD4D13C5193678F500443E81 /* libdc1394.22.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
+		CD4D15241937A25900443E81 /* camwire.c in Sources */ = {isa = PBXBuildFile; fileRef = CD4D151B1937A25900443E81 /* camwire.c */; };
+		CD4D15251937A25900443E81 /* camwire_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = CD4D151E1937A25900443E81 /* camwire_config.h.in */; };
+		CD4D15261937A25900443E81 /* camwirebus.c in Sources */ = {isa = PBXBuildFile; fileRef = CD4D15201937A25900443E81 /* camwirebus.c */; };
+		CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = CD4D15231937A25900443E81 /* CMakeLists.txt */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
-		CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */; };
+		CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,7 +67,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */,
-				CDA1F3A61621C43D00D6BCEC /* libdc1394.dylib in Copy Frameworks */,
+				CD4D13C5193678F500443E81 /* libdc1394.22.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,10 +124,31 @@
 		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
 		CD2F95A7192D1773001CB609 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = Frameworks/Syphon.framework; sourceTree = "<group>"; };
+		CD2F95AA192D180E001CB609 /* StatusItemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemManager.h; sourceTree = "<group>"; };
+		CD2F95AB192D180E001CB609 /* StatusItemManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemManager.m; sourceTree = "<group>"; };
+		CD2F95AD192D1930001CB609 /* shape_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shape_red.png; sourceTree = "<group>"; };
+		CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StatusItemMenu.xib; path = SyphonIIDCServer/StatusItemMenu.xib; sourceTree = "<group>"; };
+		CD4D13B81933D85000443E81 /* IIDCContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCContext.h; sourceTree = "<group>"; };
+		CD4D13B91933D85000443E81 /* IIDCContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCContext.m; sourceTree = "<group>"; };
+		CD4D13BB1933DCC100443E81 /* IIDCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCamera.h; sourceTree = "<group>"; };
+		CD4D13BC1933DCC100443E81 /* IIDCCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCamera.m; sourceTree = "<group>"; };
+		CD4D13BE193678BB00443E81 /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = "<group>"; };
+		CD4D13C3193678F000443E81 /* libdc1394.22.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.22.dylib; path = Frameworks/libdc1394/libdc1394.22.dylib; sourceTree = "<group>"; };
+		CD4D151B1937A25900443E81 /* camwire.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camwire.c; sourceTree = "<group>"; };
+		CD4D151C1937A25900443E81 /* camwire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwire.h; sourceTree = "<group>"; };
+		CD4D151D1937A25900443E81 /* camwire_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwire_config.h; sourceTree = "<group>"; };
+		CD4D151E1937A25900443E81 /* camwire_config.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = camwire_config.h.in; sourceTree = "<group>"; };
+		CD4D151F1937A25900443E81 /* camwire_handle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwire_handle.h; sourceTree = "<group>"; };
+		CD4D15201937A25900443E81 /* camwirebus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camwirebus.c; sourceTree = "<group>"; };
+		CD4D15211937A25900443E81 /* camwirebus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwirebus.h; sourceTree = "<group>"; };
+		CD4D15221937A25900443E81 /* camwiremacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwiremacros.h; sourceTree = "<group>"; };
+		CD4D15231937A25900443E81 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		CD79EF141510991A00D3AC18 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		CD79EF161510992600D3AC18 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CD79EF181510994100D3AC18 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = SOURCE_ROOT; };
+		CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCaptureSession.h; sourceTree = "<group>"; };
+		CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCaptureSession.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,10 +157,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
+				CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */,
 				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
 				CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
-				CD2F95A1192D118F001CB609 /* libdc1394.dylib in Frameworks */,
 				C4195787144B376700338631 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +180,8 @@
 		C4121A6E144B3FC90088F701 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CD2F95AA192D180E001CB609 /* StatusItemManager.h */,
+				CD2F95AB192D180E001CB609 /* StatusItemManager.m */,
 				C4121A76144B41740088F701 /* MainWindowController.h */,
 				C4121A77144B41740088F701 /* MainWindowController.m */,
 			);
@@ -167,13 +200,19 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		C4121A70144B3FD10088F701 /* Model */ = {
+		C4121A70144B3FD10088F701 /* DC1394 controllers */ = {
 			isa = PBXGroup;
 			children = (
 				C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */,
 				C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */,
+				CD4D13B81933D85000443E81 /* IIDCContext.h */,
+				CD4D13B91933D85000443E81 /* IIDCContext.m */,
+				CD4D13BB1933DCC100443E81 /* IIDCCamera.h */,
+				CD4D13BC1933DCC100443E81 /* IIDCCamera.m */,
+				CDD9D3D2193A11EF008DB524 /* IIDCCaptureSession.h */,
+				CDD9D3D3193A11EF008DB524 /* IIDCCaptureSession.m */,
 			);
-			name = Model;
+			name = "DC1394 controllers";
 			sourceTree = "<group>";
 		};
 		C4121A71144B3FE00088F701 /* IIDC protocol management */ = {
@@ -207,8 +246,10 @@
 		C4121A75144B412A0088F701 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CD2F95AD192D1930001CB609 /* shape_red.png */,
 				C419579B144B376700338631 /* MainMenu.xib */,
 				C4121A73144B41020088F701 /* MainWindowController.xib */,
+				CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -236,6 +277,9 @@
 		C4195785144B376700338631 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD4D151A1937A25900443E81 /* camwire */,
+				CD4D13C3193678F000443E81 /* libdc1394.22.dylib */,
+				CD4D13BE193678BB00443E81 /* libdc1394.dylib */,
 				CD2F95A7192D1773001CB609 /* Syphon.framework */,
 				CD79EF181510994100D3AC18 /* Accelerate.framework */,
 				CD79EF161510992600D3AC18 /* QuartzCore.framework */,
@@ -262,7 +306,7 @@
 			children = (
 				C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */,
 				C4121A71144B3FE00088F701 /* IIDC protocol management */,
-				C4121A70144B3FD10088F701 /* Model */,
+				C4121A70144B3FD10088F701 /* DC1394 controllers */,
 				C4121A6F144B3FCD0088F701 /* View */,
 				C4121A6E144B3FC90088F701 /* Controller */,
 				C4195798144B376700338631 /* SyIIDCAppDelegate.h */,
@@ -316,6 +360,23 @@
 				C436E59A144C925B00CF26C7 /* KBO.m */,
 			);
 			name = "CoreVideo and OpenGL convenience classes";
+			sourceTree = "<group>";
+		};
+		CD4D151A1937A25900443E81 /* camwire */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D151B1937A25900443E81 /* camwire.c */,
+				CD4D151C1937A25900443E81 /* camwire.h */,
+				CD4D151D1937A25900443E81 /* camwire_config.h */,
+				CD4D151E1937A25900443E81 /* camwire_config.h.in */,
+				CD4D151F1937A25900443E81 /* camwire_handle.h */,
+				CD4D15201937A25900443E81 /* camwirebus.c */,
+				CD4D15211937A25900443E81 /* camwirebus.h */,
+				CD4D15221937A25900443E81 /* camwiremacros.h */,
+				CD4D15231937A25900443E81 /* CMakeLists.txt */,
+			);
+			name = camwire;
+			path = Frameworks/camwire/camwire;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -391,8 +452,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4195791144B376700338631 /* InfoPlist.strings in Resources */,
+				CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */,
 				C4195797144B376700338631 /* Credits.rtf in Resources */,
+				CD2F95AE192D1930001CB609 /* shape_red.png in Resources */,
+				CD4D15271937A25900443E81 /* CMakeLists.txt in Resources */,
 				C419579D144B376700338631 /* MainMenu.xib in Resources */,
+				CD4D15251937A25900443E81 /* camwire_config.h.in in Resources */,
 				C4121A74144B41020088F701 /* MainWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,19 +493,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD2F95AC192D180E001CB609 /* StatusItemManager.m in Sources */,
 				C4195793144B376700338631 /* main.m in Sources */,
 				C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */,
 				C41957BE144B37B000338631 /* KOpenGLView.m in Sources */,
 				C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */,
 				C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */,
+				CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */,
 				C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */,
 				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 				C4121A66144B3F150088F701 /* SICError.m in Sources */,
 				C4121A78144B41740088F701 /* MainWindowController.m in Sources */,
 				C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */,
+				CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */,
 				C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */,
+				CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */,
 				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
 				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
+				CD4D15261937A25900443E81 /* camwirebus.c in Sources */,
+				CD4D15241937A25900443E81 /* camwire.c in Sources */,
 				C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -579,11 +650,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
 					"$(PROJECT_DIR)/Frameworks/libdc1394",
+					"$(PROJECT_DIR)/Frameworks/camwire/build/camwire/Debug",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers ${SRCROOT}/Frameworks/camwire";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
@@ -607,11 +679,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Frameworks\"",
 					"$(PROJECT_DIR)/Frameworks/libdc1394",
+					"$(PROJECT_DIR)/Frameworks/camwire/build/camwire/Debug",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers ${SRCROOT}/Frameworks/camwire";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1070" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="StatusItemManager">
+            <connections>
+                <outlet property="actionsSeparatorMenuItem" destination="PfB-Ug-a6j" id="c4I-1g-SYP"/>
+                <outlet property="connectToMenuItem" destination="EQs-fk-mOq" id="m5j-MU-xaH"/>
+                <outlet property="connectToSeparatorMenuItem" destination="EJZ-n7-eLJ" id="EnZ-3R-WLW"/>
+                <outlet property="connectionStatusMenuItem" destination="STN-jG-vWl" id="TjS-Xt-wKv"/>
+                <outlet property="disconnectMenuItem" destination="LeV-wH-LCO" id="QXV-RB-gjz"/>
+                <outlet property="enableSyphonServerMenuItem" destination="sdD-hq-YOX" id="ia5-Jl-TMS"/>
+                <outlet property="setupCameraSettingsMenuItem" destination="MCW-Ps-Vbu" id="bTW-or-tuh"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <menu id="UEe-0H-vd1">
+            <items>
+                <menuItem title="No camera connected" enabled="NO" id="STN-jG-vWl">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Disconnect video device" id="LeV-wH-LCO">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="disconnectCamera:" target="-1" id="aLT-qD-Z3R"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" tag="-1" id="EJZ-n7-eLJ"/>
+                <menuItem title="Connect to video device:" enabled="NO" id="EQs-fk-mOq">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="PfB-Ug-a6j"/>
+                <menuItem title="Enable Syphon server" id="sdD-hq-YOX">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="enableSyphonServer:" target="-1" id="ado-cm-nJP"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Setup camera settings..." id="MCW-Ps-Vbu">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="setupCameraSettings:" target="-1" id="Gta-2W-OkB"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="i4K-zT-Nmk"/>
+                <menuItem title="About..." id="bTg-vj-Why">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="orderFrontStandardAboutPanel:" target="-1" id="xpd-Ky-gLy"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Help on Syphon IIDC Server" id="mAb-qM-3f4">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="showHelp:" target="-1" id="YBN-9t-ZHP"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Preferences..." id="bL8-Fj-18v">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Aiq-Hc-6Bu"/>
+                <menuItem title="Quit Syphon IIDC Server" id="buV-7R-cjl">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="terminate:" target="-1" id="OOM-4B-cF7"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <connections>
+                <outlet property="delegate" destination="-2" id="uie-Dv-DXl"/>
+            </connections>
+        </menu>
+    </objects>
+</document>
