@@ -14,11 +14,11 @@
 
 @interface DC1394FrameUploader () {
     CGLContextObj cgl_ctx;
-    void *_buffer;
-    GLuint _surfaceFBO;
-    GLuint _textureId;
-    GLuint _depthBuffer;
+    GLuint _uploadTextureId;
+    GLint _internalFormat;
+    GLenum _format, _type;
 }
+
 @property (nonatomic) dispatch_queue_t textureLoaderQueue;
 @property CGSize frameSize;
 @end
@@ -32,55 +32,101 @@
     return _textureLoaderQueue;
 }
 
-- (instancetype) initWithContext: (CGLContextObj) ctx frameSize: (CGSize) frameSize {
+- (instancetype) initWithContext: (CGLContextObj) ctx
+                  prototypeFrame:(dc1394video_frame_t *)prototype
+{
     self = [super init];
     if (self)
     {
-        _frameSize = frameSize;
+        CGSize frameSize = CGSizeMake( prototype->size[0], prototype->size[1]);
 
-        long bufferSize = frameSize.width * frameSize.height * 4.0;
-        _buffer = malloc(bufferSize);
-        memset(_buffer, 0, bufferSize); // pulisce la memoria
+        _frameSize = frameSize;
         
         cgl_ctx = ctx;
         
-//        glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_TRUE);
-        glGenTextures(1, &_textureId);
+        BOOL isSupported = NO;
+        
+        switch (prototype->video_mode) {
+            case DC1394_VIDEO_MODE_640x480_YUV411:
+                break;
+
+            case DC1394_VIDEO_MODE_1280x960_RGB8:
+            case DC1394_VIDEO_MODE_1600x1200_RGB8:
+            case DC1394_VIDEO_MODE_640x480_RGB8:
+            case DC1394_VIDEO_MODE_800x600_RGB8:
+            case DC1394_VIDEO_MODE_1024x768_RGB8:
+                _internalFormat = GL_RGB8;
+                _format = GL_RGB;
+                _type = GL_UNSIGNED_BYTE;
+                isSupported = YES;
+                break;
+
+            case DC1394_VIDEO_MODE_640x480_MONO8:
+            case DC1394_VIDEO_MODE_800x600_MONO8:
+            case DC1394_VIDEO_MODE_1024x768_MONO8:
+            case DC1394_VIDEO_MODE_1280x960_MONO8:
+            case DC1394_VIDEO_MODE_1600x1200_MONO8:
+                _internalFormat = GL_LUMINANCE8;
+                _format = GL_LUMINANCE;
+                _type = GL_UNSIGNED_BYTE;
+                isSupported = YES;
+                break;
+
+            case DC1394_VIDEO_MODE_640x480_MONO16:
+            case DC1394_VIDEO_MODE_800x600_MONO16:
+            case DC1394_VIDEO_MODE_1024x768_MONO16:
+            case DC1394_VIDEO_MODE_1280x960_MONO16:
+            case DC1394_VIDEO_MODE_1600x1200_MONO16:
+                _internalFormat = GL_LUMINANCE16;
+                _format = GL_LUMINANCE;
+                _type = GL_UNSIGNED_SHORT;
+                isSupported = YES;
+                break;
+                
+            case DC1394_VIDEO_MODE_320x240_YUV422:
+            case DC1394_VIDEO_MODE_640x480_YUV422:
+            case DC1394_VIDEO_MODE_800x600_YUV422:
+            case DC1394_VIDEO_MODE_1024x768_YUV422:
+            case DC1394_VIDEO_MODE_1280x960_YUV422:
+            case DC1394_VIDEO_MODE_1600x1200_YUV422:
+                _internalFormat = GL_RGB8;
+                _format = GL_YCBCR_422_APPLE;
+                _type = GL_UNSIGNED_SHORT_8_8_APPLE;
+                isSupported = YES;
+                break;
+                
+            case DC1394_VIDEO_MODE_160x120_YUV444:
+                break;
+                
+            case DC1394_VIDEO_MODE_EXIF:
+            case DC1394_VIDEO_MODE_FORMAT7_0:
+            case DC1394_VIDEO_MODE_FORMAT7_1:
+            case DC1394_VIDEO_MODE_FORMAT7_2:
+            case DC1394_VIDEO_MODE_FORMAT7_3:
+            case DC1394_VIDEO_MODE_FORMAT7_4:
+            case DC1394_VIDEO_MODE_FORMAT7_5:
+            case DC1394_VIDEO_MODE_FORMAT7_6:
+            case DC1394_VIDEO_MODE_FORMAT7_7:
+                break;
+                
+            default:
+                break;
+        }
+        
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
         
         glEnable(GL_TEXTURE_RECTANGLE_EXT);
-		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _textureId);
-		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, frameSize.width, frameSize.height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
-		glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+
+        // upload texture
+        glGenTextures(1, &_uploadTextureId);
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _uploadTextureId);
+		glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, _internalFormat, frameSize.width, frameSize.height, 0, _format, _type, NULL);
         
-		// depth buffer
-		glGenRenderbuffersEXT(1, &_depthBuffer);
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, _depthBuffer);
-		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, frameSize.width, frameSize.height);
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
-
-		// FBO and connect attachments
-		glGenFramebuffersEXT(1, &_surfaceFBO);
-		glBindFramebufferEXT(GL_FRAMEBUFFER, _surfaceFBO);
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_RECTANGLE_EXT, _textureId, 0);
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER_EXT, _depthBuffer);
-		// Draw black so we have output if the renderer isn't loaded
-		glClearColor(0.0, 0.0, 0.0, 0.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER);
-		if(status != GL_FRAMEBUFFER_COMPLETE)
-		{
-			NSLog(@"Frame uploader: OpenGL error %04X", status);
-			glDeleteTextures(1, &_textureId);
-			glDeleteFramebuffersEXT(1, &_surfaceFBO);
-			glDeleteRenderbuffersEXT(1, &_depthBuffer);
-			return nil;
-		}
-		glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
-
+        glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
         
-        glTextureRangeAPPLE(GL_TEXTURE_RECTANGLE_EXT, bufferSize, _buffer);
-
+        glPopAttrib();
+        glPopClientAttrib();
 
     }
     return self;
@@ -91,115 +137,48 @@
     int width = self.frameSize.width;
     int height = self.frameSize.height;
     
-    // TODO: controlla che width e height siano ancora validi
+    if (_uploadTextureId==0) return;
     
-    // TODO: copia il frame nel formato giusto nel _buffer
+    // State saving
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
     
-    void*tmpBuf = malloc(width*height);
-    CapturePixelFormatConvertMono8toBGRA8(dc1934frame->image,
-                                          dc1934frame->size[0],
-                                          _buffer,
-                                          width*4,
-                                          tmpBuf,
-                                          width,
-                                          width,
-                                          height);
-    free(tmpBuf);
+    glEnable(GL_TEXTURE_RECTANGLE_EXT);
     
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _textureId);
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, _surfaceFBO);
+    if (dc1934frame->data_depth == 16 && !dc1934frame->little_endian) {
+        glPixelStorei(GL_UNPACK_ALIGNMENT,  4);
+        glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_TRUE);
+    } else {
+        glPixelStorei(GL_UNPACK_ALIGNMENT,  1);
+    }
+    
+    // Upload the frame
+    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _uploadTextureId);
+    glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_TRUE);
+    glTextureRangeAPPLE(GL_TEXTURE_RECTANGLE_EXT, dc1934frame->total_bytes, dc1934frame->image);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_SHARED_APPLE);
+    glTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, width, height, _format, _type, dc1934frame->image);
 
+    // Reset Texture Storage optimizations.
+    glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_FALSE);
+    glTextureRangeAPPLE(GL_TEXTURE_RECTANGLE_EXT, 0, NULL);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_STORAGE_HINT_APPLE, GL_STORAGE_PRIVATE_APPLE);
 
-    // Set a CACHED or SHARED storage hint for requesting VRAM or AGP texturing respectively
-    // GL_STORAGE_PRIVATE_APPLE is the default and specifies normal texturing path
-glTexParameteri(GL_TEXTURE_RECTANGLE_EXT,
-                    GL_TEXTURE_STORAGE_HINT_APPLE,
-                    GL_STORAGE_SHARED_APPLE);
-    // Eliminate a data copy by the OpenGL framework using the Apple client storage extension
-    // glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, GL_TRUE);
-    // glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    //glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, TEXTURE_WIDTH, TEXTURE_HEIGHT, 0,
-    //             GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, &data);
-
-    /*                                glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA, _currentSize.width, _currentSize.height, 0,
-     GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, _clientStorage);*/
-    
-    // OpenGL likes the GL_BGRA + GL_UNSIGNED_INT_8_8_8_8_REV combination
-    glTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, _buffer);
-    
-    // Black/white checkerboard
-  /*  float pixels[] = {
-        0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,   0.0f, 0.0f, 0.0f
-    };
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGB, GL_FLOAT, pixels);*/
-    
- /*   glClearColor(0.0, 1.0, 0.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT);*/
-
-    
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
+   
+    glFlushRenderAPPLE();
     
+    glPopClientAttrib();
+    glPopAttrib();
 }
 
 - (void) destroyResources {
-    glDeleteTextures(1, &_textureId);
-    glDeleteFramebuffersEXT(1, &_surfaceFBO);
-    glDeleteRenderbuffersEXT(1, &_depthBuffer);
-    _textureId = _surfaceFBO = _depthBuffer = 0;
-}
-
-int CapturePixelFormatConvertMono8toBGRA8(uint8_t* srcBuf,
-                                            int srcRowBytes,
-                                            uint8_t* dstBuf,
-                                            int dstRowBytes,
-                                            uint8_t* tmpBuf,
-                                            int tmpRowBytes,
-                                            int width,
-                                            int height)
-{
-	if (0 == *tmpBuf)
-		memset(tmpBuf, UINT8_MAX, tmpRowBytes * height);
-    
-#if defined(_USES_IPP_)
-	IppiSize roiSize = { width, height };
-	const uint8_t* channels[] = { tmpBuf, srcBuf, srcBuf, srcBuf };
-	
-	ippiCopy_8u_P4C4R(channels,
-					  srcRowBytes,
-					  dstBuf,
-					  dstRowBytes,
-					  roiSize);
-#else
-	vImage_Buffer aSrc, mSrc, argbDest;
-	
-	aSrc.data = tmpBuf;
-	aSrc.width = width;
-	aSrc.height = height;
-	aSrc.rowBytes = tmpRowBytes;
-	
-	mSrc.data = srcBuf;
-	mSrc.width = width;
-	mSrc.height = height;
-	mSrc.rowBytes = srcRowBytes;
-	
-	argbDest.data = dstBuf;
-	argbDest.width = width;
-	argbDest.height = height;
-	argbDest.rowBytes = dstRowBytes;
-	
-	vImageConvert_Planar8toARGB8888(&mSrc,
-									&mSrc,
-									&mSrc,
-									&aSrc,
-									&argbDest,
-									0);
-#endif
-	
-	return 1;
+    glDeleteTextures(1, &_uploadTextureId);
+    _uploadTextureId = 0;
 }
 
 -(GLuint)textureName {
-    return _textureId;
+    return _uploadTextureId;
 }
+
 @end

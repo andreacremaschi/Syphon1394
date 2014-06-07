@@ -265,26 +265,11 @@
         if (frameUploader == nil || !CGSizeEqualToSize(frameUploader.frameSize, frameSize)) {
             [frameUploader destroyResources];
             frameUploader = self.frameUploader = [[DC1394FrameUploader alloc] initWithContext: cgl_ctx
-                                                                                    frameSize: frameSize];
+                                                                                    prototypeFrame: frame];
         }
         [frameUploader uploadFrame: frame];
 
-        
-        if (cgl_ctx) {
-            
-            // Setup OpenGL states
-            glViewport(0, 0, frameSize.width, frameSize.height);
-            
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glOrtho(0.0, frameSize.width, 0.0, frameSize.height, -1, 1);
-            
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-            
-            // glTranslated(frameSize.width * 0.5, frameSize.height * 0.5, 0.0);
-            
-        }
+
         // NSDictionary *options = @{SyphonServerOptionDepthBufferResolution: @16};
         SyphonServer *syphonServer = self.syphonServer;
         if (syphonServer == nil) {
@@ -292,6 +277,8 @@
             self.syphonServer = syphonServer;
         }
         [syphonServer bindToDrawFrameOfSize:frameSize];
+        
+        glViewport(0, 0, frameSize.width, frameSize.height);
         
         // Render our QCRenderer
         glMatrixMode(GL_PROJECTION);
@@ -329,6 +316,7 @@
             glBindTexture(GL_TEXTURE_RECTANGLE_EXT, self.frameUploader.textureName);
             
             // do a nearest linear interp.
+            glDisable(GL_BLEND);
             glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             

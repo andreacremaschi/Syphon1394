@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface DC1394FrameUploader : NSObject
-- (instancetype) initWithContext: (CGLContextObj) cgl_ctx frameSize: (CGSize) frameSize;
+
+- (instancetype) initWithContext: (CGLContextObj) cgl_ctx prototypeFrame: (void*)prototype;
 - (void) uploadFrame: (void*) dc1934frame;
 
 @property (readonly) GLuint textureName;
