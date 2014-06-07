@@ -145,12 +145,8 @@
     
     glEnable(GL_TEXTURE_RECTANGLE_EXT);
     
-    if (dc1934frame->data_depth == 16 && !dc1934frame->little_endian) {
-        glPixelStorei(GL_UNPACK_ALIGNMENT,  4);
-        glPixelStorei(GL_UNPACK_SWAP_BYTES, GL_TRUE);
-    } else {
-        glPixelStorei(GL_UNPACK_ALIGNMENT,  1);
-    }
+    glPixelStorei(GL_UNPACK_ALIGNMENT,  1);
+    glPixelStorei(GL_UNPACK_SWAP_BYTES, dc1934frame->little_endian == DC1394_FALSE ? GL_TRUE : GL_FALSE);
     
     // Upload the frame
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, _uploadTextureId);
