@@ -20,6 +20,6 @@
 - (IBAction) disconnectCamera: (id)sender;
 - (IBAction) enableSyphonServer: (id)sender;
 - (IBAction) setupCameraSettings: (id)sender;
-
+- (IBAction) resetCameraBus: (id)sender;
 
 @end

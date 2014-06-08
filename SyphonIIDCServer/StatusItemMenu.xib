@@ -13,6 +13,7 @@
                 <outlet property="connectionStatusMenuItem" destination="STN-jG-vWl" id="TjS-Xt-wKv"/>
                 <outlet property="disconnectMenuItem" destination="LeV-wH-LCO" id="QXV-RB-gjz"/>
                 <outlet property="enableSyphonServerMenuItem" destination="sdD-hq-YOX" id="ia5-Jl-TMS"/>
+                <outlet property="resetCameraBusMenuItem" destination="vhE-7H-8IG" id="C0K-Bp-jRL"/>
                 <outlet property="setupCameraSettingsMenuItem" destination="MCW-Ps-Vbu" id="bTW-or-tuh"/>
             </connections>
         </customObject>
@@ -34,6 +35,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="PfB-Ug-a6j"/>
+                <menuItem title="Reset camera bus" id="vhE-7H-8IG">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="resetCameraBus:" target="-1" id="KuO-OS-6mW"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Enable Syphon server" id="sdD-hq-YOX">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>

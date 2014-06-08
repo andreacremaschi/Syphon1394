@@ -27,6 +27,8 @@
 -(void)setPower: (BOOL) power;
 -(void)reset;
 
+-(void)resetCameraBus;
+
 // Features and videomodes
 @property (nonatomic, readonly) NSDictionary *features;
 @property (nonatomic, readonly) NSArray *videomodes;

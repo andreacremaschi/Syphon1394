@@ -22,6 +22,7 @@
 @property (weak) IBOutlet NSMenuItem *actionsSeparatorMenuItem;
 @property (weak) IBOutlet NSMenuItem *enableSyphonServerMenuItem;
 @property (weak) IBOutlet NSMenuItem *setupCameraSettingsMenuItem;
+@property (weak) IBOutlet NSMenuItem *resetCameraBusMenuItem;
 
 @end
 
@@ -102,7 +103,8 @@
         [self.actionsSeparatorMenuItem setHidden: !isCameraConnected];
         [self.enableSyphonServerMenuItem setHidden: !isCameraConnected];
         [self.setupCameraSettingsMenuItem setHidden: !isCameraConnected];
-
+        [self.resetCameraBusMenuItem setHidden:!isCameraConnected];
+        
         // delete all previous devices
         NSMenuItem *menuItem = menu.itemArray[4];
         while (menuItem != self.actionsSeparatorMenuItem) {

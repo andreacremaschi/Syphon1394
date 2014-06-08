@@ -183,6 +183,17 @@
     self.settingsWindowPanel = nil;
 }
 
+- (IBAction) resetCameraBus: (id)sender {
+
+    IIDCCaptureSession *captureSession = self.captureSession;
+    IIDCCamera *camera = captureSession.camera  ;
+    
+    [self disconnectCamera: sender];
+    
+    
+    
+}
+
 
 
 #pragma mark -Capture session delegate
