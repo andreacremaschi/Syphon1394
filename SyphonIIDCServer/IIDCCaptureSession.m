@@ -136,12 +136,6 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
     dc1394camera_t *camera = self.camera.cameraHandler;
     
     // just to be sure!
-	dc1394video_mode_t mode;
-	dc1394framerate_t framerate;
-	dc1394_video_get_mode(camera, &mode);
-	dc1394_video_get_framerate(camera, &framerate);
-	dc1394_video_set_mode(camera, mode);
-	dc1394_video_set_framerate(camera, framerate);
     
 	dc1394_capture_schedule_with_runloop(camera,
 										 [[NSRunLoop currentRunLoop] getCFRunLoop],
@@ -152,7 +146,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 	err = dc1394_capture_setup(camera,
                                NUM_DMA_BUFFERS,
                                DC1394_CAPTURE_FLAGS_DEFAULT | DC1394_CAPTURE_FLAGS_AUTO_ISO);
-    
+  	
 	if (err != DC1394_SUCCESS) {
         /*	if (NULL != error)
          *error = [NSError errorWithDomain:SICErrorDomain

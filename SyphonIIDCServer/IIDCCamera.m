@@ -412,6 +412,8 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     return videomodesArray;
 }
 
+
+
 #pragma mark -capturing
 - (BOOL)isCapturing
 {
@@ -427,7 +429,8 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
 
 - (BOOL)setVideomode: (dc1394video_mode_t)videoMode
 {
-    dc1394error_t err = dc1394_video_set_mode(self.cameraHandler, videoMode);
+    dc1394camera_t *camera = self.cameraHandler;
+    dc1394error_t err = dc1394_video_set_mode(camera, videoMode);
 
 	return (DC1394_SUCCESS == err);
 }
@@ -441,7 +444,6 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     return videoMode;
     
 }
-
 
 
 @end
