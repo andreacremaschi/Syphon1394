@@ -27,6 +27,7 @@
 - (NSArray *)arrayOfDictionariesRepresentingAvailableVideoModesForDeviceWithGUID:(NSString *)guid;
 - (NSString *)activeCameraGUID;
 - (NSNumber *)currentResolutionID;
+- (NSString *)currentResolutionDescription;
 
 - (void) updateAvailableDevicesListIfNeeded;
 

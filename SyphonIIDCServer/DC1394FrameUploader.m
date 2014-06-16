@@ -162,7 +162,7 @@
 
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, 0);
    
-    glFlushRenderAPPLE();
+   // glFlushRenderAPPLE();
     
     glPopClientAttrib();
     glPopAttrib();

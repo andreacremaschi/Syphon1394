@@ -71,7 +71,7 @@
     
 }
 
-- (NSNumber *)activeCameraGUID {
+- (NSString *)activeCameraGUID {
     return self.captureSession.camera.deviceIdentifier;
 }
 
@@ -79,6 +79,22 @@
     return @([self.captureSession.camera videomode]);
 }
 
+- (NSString *)currentResolutionDescription {
+    IIDCCamera *camera = self.captureSession.camera;
+    double framerate = [camera framerate];
+    NSInteger videomode = camera.videomode;
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dc1394_videomode == %d", videomode];
+    NSArray *item = [camera.videomodes filteredArrayUsingPredicate: predicate];
+    
+    NSDictionary *videomodeDict = item.firstObject;
+
+    int width = [videomodeDict[@"width"] intValue];
+    int height = [videomodeDict[@"height"] intValue];
+    
+    return [NSString stringWithFormat:@"%ix%i@%.ffps", width, height, framerate];
+    
+}
 
 - (NSArray *)orderedArrayOfDevicesGUIDs {
     if (_orderedArrayOfDevicesGUIDs) return _orderedArrayOfDevicesGUIDs;
@@ -137,6 +153,9 @@
         [self.captureSession stopCapturing: &error];
         [camera setVideomode: videoModeId.integerValue];
         [self.captureSession startCapturing: &error];
+
+        [[self settingsWindowPanel] setCaptureSession: self.captureSession];
+
     } else {
         
         // TODO:

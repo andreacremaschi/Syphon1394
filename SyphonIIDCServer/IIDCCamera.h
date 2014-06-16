@@ -34,6 +34,8 @@
 @property (nonatomic, readonly) NSArray *videomodes;
 
 @property (nonatomic, readwrite) NSInteger videomode;
+@property (nonatomic, readwrite) double framerate;
+@property (nonatomic, readonly) NSArray *availableFrameRatesForCurrentVideoMode;
 
 @property (readonly) IIDCContext *context;
 

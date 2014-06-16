@@ -14,6 +14,7 @@
 #import "IIDCCamera+KVO.h"
 
 @interface SettingsWindowController () <NSTableViewDataSource, NSTableViewDelegate>
+- (IBAction)setFrameRate:(id)sender;
 
 @end
 
@@ -34,121 +35,37 @@
 
 -(void)setCaptureSession:(IIDCCaptureSession *)captureSession {
     _captureSession = captureSession;
-    [self.tableView reloadData];
+    [self updateLayout];
 }
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
-   // [self updateLayout];
 }
 
--(void) updateLayout {
-    IIDCCamera *camera = self.captureSession.camera;
-    NSDictionary *features = camera.features;
-
-    NSView*controlsView = [[NSView alloc] initWithFrame: self.featuresScrollView.bounds];
-    controlsView.autoresizingMask = NSViewWidthSizable;
-    NSNib *featureNib = [[NSNib alloc] initWithNibNamed:@"FeatureControl" bundle:nil];
+- (void)updateLayout {
     
-    int i=0;
-    int marginY = 15;
-    int marginX = 15;
-    int cellHeight = 60;
-
-    NSMutableArray *controlsArray = [NSMutableArray array];
-    for (NSString *featureKey in features.allKeys) {
-        
-        NSDictionary * curFDict = [features valueForKey:featureKey];
-        
-        NSArray *objects;
-        NSViewController *vc = [NSViewController new];
-        [featureNib instantiateNibWithOwner:vc topLevelObjects: &objects];
-
-        NSView *controlView = vc.view;
-        controlView.frame = ({
-            CGRect frame = controlView.frame;
-            frame.origin.y = i;
-            frame.size.width = controlsView.frame.size.width;
-            frame;
-        });
-        [controlsArray addObject: controlView];
-        
-
-        /*
-        // label
-        uiFrame = NSMakeRect(0, 0, cell.bounds.size.width, 20);
-        NSTextField * label = [[NSTextField alloc] initWithFrame: uiFrame];
-        label.stringValue = featureKey;
-        label.editable=NO;
-        label.selectable=NO;
-        label.bezeled=NO;
-        label.bordered=NO;
-        label.backgroundColor = [NSColor clearColor];
-        [cell addSubview: label];
-        
-        // Slider
-        uiFrame = NSMakeRect(0, 20, cell.bounds.size.width, 20);
-        NSSlider * slider = [[NSSlider alloc] initWithFrame: uiFrame];
-        slider.maxValue = [[curFDict valueForKey: @"max_value"] doubleValue];
-        slider.minValue = [[curFDict valueForKey: @"min_value"] doubleValue];
-        slider.doubleValue = [[curFDict valueForKey: @"value"] doubleValue];
-        
-        [slider bind:@"value"
-            toObject:self.captureObject
-         withKeyPath:featureKey
-             options: nil];
-        
-        [cell addSubview: slider];
-        
-        // checkBox
-        if ([[curFDict allKeys] containsObject: @"auto"]) {
-            uiFrame = NSMakeRect(0, 40, 18, 18);
-            NSButton * autoCheckBox = [[NSButton alloc] initWithFrame: uiFrame];
-            autoCheckBox.buttonType=NSSwitchButton;
-            autoCheckBox.state  = [[curFDict valueForKey: @"auto"] boolValue] ? NSOnState : NSOffState;
-            
-            [autoCheckBox bind: @"value"
-                      toObject: self.captureObject
-                   withKeyPath: [NSString stringWithFormat: @"auto_%@", featureKey]
-                       options: nil];
-            [cell addSubview: autoCheckBox];
-            
-            [slider bind: @"enabled"
-                toObject: self.captureObject
-             withKeyPath: [NSString stringWithFormat: @"auto_%@", featureKey]
-                 options: @{NSValueTransformerBindingOption: [NSValueTransformer valueTransformerForName:@"NSNegateBoolean"]}];
-            
+    self.window; // costringe la window a caricare
+    
+    IIDCCaptureSession *session = self.captureSession;
+    IIDCCamera *camera = session.camera;
+    double curFramerate = [camera framerate];
+    
+    // riempie il popup button
+    NSArray *availableFramerates = camera.availableFrameRatesForCurrentVideoMode;
+    NSMenu *frameRateMenu = self.frameratePopupButton.menu;
+    [frameRateMenu removeAllItems];
+    for (NSNumber *framerate in availableFramerates) {
+        NSString *title = framerate.stringValue; //[NSString stringWithFormat: @"%.f", framerate.doubleValue];
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle: title  action:nil keyEquivalent:@""];
+        [frameRateMenu addItem:menuItem];
+        if (curFramerate == framerate.doubleValue) {
+            [self.frameratePopupButton selectItem: menuItem];
         }
-        
-        // one push auto button
-        if ([[curFDict allKeys] containsObject: @"onePushAuto"]) {
-            uiFrame = NSMakeRect(20, 40, 40, 18);
-            NSButton * autoCheckBox = [[NSButton alloc] initWithFrame: uiFrame];
-            autoCheckBox.buttonType=NSPushOnPushOffButton;
-            autoCheckBox.title = @"PUSH AUTO";
-            autoCheckBox.tag = [[captureObject featureIndexForKey: featureKey] intValue];
-            autoCheckBox.action = @selector(pushAuto:);
-         
-            
-            [cell addSubview: autoCheckBox];
-            
-        }*/
-        
-        i ++;
     }
-    
-    // set view height
-    
-    // add subview
-    for (NSView *view in controlsArray) {
-        
-        [controlsView addSubview: view];
-    }
-    
-    
-    [self.featuresScrollView setDocumentView:  controlsView];
+
+    [self.tableView reloadData];
+
 }
 
 #pragma mark -
@@ -212,13 +129,31 @@
 
 #pragma mark Actions
 
-- (void) pushAuto: (id) sender {
+- (void)pushAuto: (id)sender {
     
     IIDCCamera *camera = self.captureSession.camera;
     
-    int featureIndex = [sender tag];
+    NSInteger featureIndex = [sender tag];
     [camera pushToAutoFeatureWithIndex: featureIndex];
     
-    
 }
+
+- (IBAction)setFrameRate:(NSPopUpButton *)popupbutton {
+    
+    IIDCCamera *camera = self.captureSession.camera;
+    
+    NSArray *availableFramerates = camera.availableFrameRatesForCurrentVideoMode;
+    NSMenu *frameRateMenu = self.frameratePopupButton.menu;
+    
+    NSMenuItem *menuItem = [popupbutton selectedItem];
+    NSInteger itemIndex = [frameRateMenu indexOfItem:menuItem];
+    NSNumber *frameRate = [availableFramerates objectAtIndex: itemIndex];
+    
+    NSError *error;
+    [self.captureSession stopCapturing: &error];
+    [camera setFramerate:frameRate.doubleValue];
+    [self.captureSession startCapturing: &error];
+
+}
+
 @end

@@ -15,7 +15,7 @@
 @property (nonatomic, weak) IIDCCaptureSession*captureSession;
 
 // interface
-@property (weak) IBOutlet NSScrollView *featuresScrollView;
 @property (weak) IBOutlet NSTableView *tableView;
+@property (weak) IBOutlet NSPopUpButton *frameratePopupButton;
 
 @end

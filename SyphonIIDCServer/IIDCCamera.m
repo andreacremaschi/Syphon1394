@@ -412,6 +412,69 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     return videomodesArray;
 }
 
+- (double) _frameRateForDC1394FrameRateEnum: (dc1394framerate_t)dc1394_framerate {
+    double framerate = -1;
+    switch (dc1394_framerate) {
+            
+        case DC1394_FRAMERATE_1_875: framerate = 1.875; break;
+        case DC1394_FRAMERATE_3_75: framerate = 3.75; break;
+        case DC1394_FRAMERATE_7_5: framerate = 7.5; break;
+        case DC1394_FRAMERATE_15: framerate = 15.; break;
+        case DC1394_FRAMERATE_30: framerate = 30.; break;
+        case DC1394_FRAMERATE_60: framerate = 60.; break;
+        case DC1394_FRAMERATE_120: framerate = 120.; break;
+        case DC1394_FRAMERATE_240: framerate = 240.; break;
+            
+        default:
+            break;
+    }
+    return framerate;
+
+}
+
+- (dc1394framerate_t) _DC1394FrameRateEnumFromDouble: (double)framerate {
+
+    dc1394framerate_t dc1394_framerate = 0;
+    
+    long intFR = round(framerate*1000);
+    switch (intFR) {
+            
+        case 1875: dc1394_framerate = DC1394_FRAMERATE_1_875; break;
+        case 3750: dc1394_framerate = DC1394_FRAMERATE_3_75; break;
+        case 7500: dc1394_framerate = DC1394_FRAMERATE_7_5; break;
+        case 15000: dc1394_framerate = DC1394_FRAMERATE_15; break;
+        case 30000: dc1394_framerate = DC1394_FRAMERATE_30; break;
+        case 60000: dc1394_framerate = DC1394_FRAMERATE_60; break;
+        case 120000: dc1394_framerate = DC1394_FRAMERATE_120; break;
+        case 240000: dc1394_framerate = DC1394_FRAMERATE_240; break;
+            
+        default:
+            break;
+    }
+    return dc1394_framerate ;
+    
+}
+
+- (NSArray*)availableFrameRatesForCurrentVideoMode {
+
+    dc1394camera_t *camera = self.cameraHandler;
+    dc1394video_mode_t videoMode;
+    dc1394framerates_t frameRates;
+    
+    dc1394_video_get_mode(camera, &videoMode);
+    dc1394_video_get_supported_framerates(camera, videoMode, &frameRates);
+	
+    NSMutableArray *videomodesArray = [NSMutableArray array];
+    for (int i=0;i<frameRates.num;i++) {
+        
+        dc1394framerate_t dc1394_framerate = frameRates.framerates[i];
+        double framerate = [self _frameRateForDC1394FrameRateEnum: dc1394_framerate];
+        if (framerate != 0)
+            [videomodesArray addObject: @(framerate) ];
+    }
+    
+    return videomodesArray;
+}
 
 
 #pragma mark -capturing
@@ -429,9 +492,33 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
 
 - (BOOL)setVideomode: (dc1394video_mode_t)videoMode
 {
+    [self willChangeValueForKey:@"framerate"];
+    [self willChangeValueForKey:@"videomode"];
     dc1394camera_t *camera = self.cameraHandler;
     dc1394error_t err = dc1394_video_set_mode(camera, videoMode);
-
+    dc1394video_mode_t curVideoMode;
+    
+    // check if current framerate is supported
+    dc1394framerates_t frameRates;
+    dc1394_video_get_mode(camera, &curVideoMode);
+    dc1394_video_get_supported_framerates(camera, curVideoMode, &frameRates);
+    BOOL found = NO;
+    for (int i=0;i<frameRates.num;i++) {
+        if (frameRates.framerates[i] == curVideoMode) {
+            found=YES;
+            break;
+        }
+    }
+    if (!found && frameRates.num>0) {
+        // if not, set the max available
+        dc1394framerate_t frameRate = frameRates.framerates[frameRates.num-1];
+        dc1394_video_set_framerate(camera, frameRate);
+    }
+    [self didChangeValueForKey:@"videomode"];
+    [self didChangeValueForKey:@"framerate"];
+    
+    NSLog(@"Supported framerates: %@", [self availableFrameRatesForCurrentVideoMode]);
+    
 	return (DC1394_SUCCESS == err);
 }
 
@@ -445,5 +532,36 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     
 }
 
+- (double)framerate {
+    dc1394camera_t *camera = self.cameraHandler;
+
+    dc1394framerate_t frameRate;
+    dc1394error_t err = dc1394_video_get_framerate(camera, &frameRate);
+    
+    if (DC1394_SUCCESS == err) return [self _frameRateForDC1394FrameRateEnum: frameRate];
+
+    return 0;
+
+}
+
+-(void)setFramerate:(double)framerate {
+    dc1394camera_t *camera = self.cameraHandler;
+    
+    dc1394framerate_t dc1394_frameRate =  [self _DC1394FrameRateEnumFromDouble: framerate];
+    if (dc1394_frameRate == 0) return;
+    
+    dc1394error_t err = dc1394_video_set_framerate(camera, dc1394_frameRate);
+
+    if (DC1394_SUCCESS == err)
+    {
+        [self willChangeValueForKey:@"framerate"];
+        [self didChangeValueForKey:@"framerate"];
+    }
+    
+}
+
++(NSSet *)keyPathsForValuesAffectingFramerate {
+    return [NSSet setWithObject:@"videomode"];
+}
 
 @end

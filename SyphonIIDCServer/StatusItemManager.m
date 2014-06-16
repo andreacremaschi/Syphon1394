@@ -89,7 +89,12 @@
         BOOL isCameraConnected = activeCameraGUID != nil;
         
         // Show label status
-        self.connectionStatusMenuItem.title = !isCameraConnected ? NSLocalizedString( @"No camera connected", @"") : NSLocalizedString( @"Camera connected", @"");
+        if (!isCameraConnected)
+            self.connectionStatusMenuItem.title = NSLocalizedString( @"No camera connected", @"");
+        else {
+            NSString *framerate = [self.dataSource currentResolutionDescription];
+            self.connectionStatusMenuItem.title = [NSString stringWithFormat: NSLocalizedString( @"Capturing at %@", @""), framerate ];
+        }
         
         // Hide/show "Disconnect device" menu item
         [self.disconnectMenuItem setHidden: !isCameraConnected];

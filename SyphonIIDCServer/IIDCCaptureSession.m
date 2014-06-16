@@ -31,6 +31,8 @@
 @property (strong) NSLock* threadLock;
 
 @property BOOL isStopping;
+
+@property (strong) id activity;
 @end
 
 #define SECONDS_IN_RUNLOOP				(1)
@@ -82,6 +84,9 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
     if (nil != _thread)
         return YES;
     
+    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)])
+    self.activity = [[NSProcessInfo processInfo] beginActivityWithOptions: NSActivityUserInitiated | NSActivityIdleDisplaySleepDisabled | NSActivityLatencyCritical
+                                                               reason:@"Streaming firewire camera"];
     _thread = [[NSThread alloc] initWithTarget:self
                                       selector:@selector(_videoCaptureThread)
                                         object:nil];
@@ -92,7 +97,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
                withObject:[NSValue valueWithPointer:error]
             waitUntilDone:YES];
     
-    if (nil != *error) {
+    if (NO) {
         [_thread cancel];
         _thread = nil;
         
@@ -127,6 +132,11 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 	BOOL success = YES;
     self.isStopping = NO;
 
+    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(endActivity:)])
+        [[NSProcessInfo processInfo] endActivity: self.activity];
+    
+    self.activity = nil;
+    
 	return success;
 }
 
