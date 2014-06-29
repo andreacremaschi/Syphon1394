@@ -145,8 +145,26 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 {
     dc1394camera_t *camera = self.camera.cameraHandler;
     
-    // just to be sure!
+    dc1394error_t dc1394Error;
     
+	dc1394_camera_set_power(camera, DC1394_ON);
+	
+	// turn off the camera's ISO if it's running
+	dc1394_video_set_transmission(camera, DC1394_OFF);
+	
+	// try to set the camera operation mode to 1394B,
+	dc1394speed_t isoSpeed;
+    dc1394Error = dc1394_video_set_operation_mode(camera, DC1394_OPERATION_MODE_1394B);
+
+    // set ISO speed to the maximum available:
+    // if in 1394B to 800 MB/s, if in 1394A to 400 MB/s
+    dc1394operation_mode_t mode;
+    dc1394_video_get_operation_mode(camera, &mode);
+    dc1394_video_set_iso_speed(camera,
+                               mode == DC1394_OPERATION_MODE_1394B ?
+                               DC1394_ISO_SPEED_800 : DC1394_ISO_SPEED_400);
+
+    // setup the runloop
 	dc1394_capture_schedule_with_runloop(camera,
 										 [[NSRunLoop currentRunLoop] getCFRunLoop],
 										 kCFRunLoopDefaultMode);
