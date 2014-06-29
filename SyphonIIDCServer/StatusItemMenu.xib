@@ -12,7 +12,6 @@
                 <outlet property="connectToSeparatorMenuItem" destination="EJZ-n7-eLJ" id="EnZ-3R-WLW"/>
                 <outlet property="connectionStatusMenuItem" destination="STN-jG-vWl" id="TjS-Xt-wKv"/>
                 <outlet property="disconnectMenuItem" destination="LeV-wH-LCO" id="QXV-RB-gjz"/>
-                <outlet property="enableSyphonServerMenuItem" destination="sdD-hq-YOX" id="ia5-Jl-TMS"/>
                 <outlet property="resetCameraBusMenuItem" destination="vhE-7H-8IG" id="C0K-Bp-jRL"/>
                 <outlet property="setupCameraSettingsMenuItem" destination="MCW-Ps-Vbu" id="bTW-or-tuh"/>
             </connections>
@@ -41,12 +40,6 @@
                         <action selector="resetCameraBus:" target="-1" id="KuO-OS-6mW"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Enable Syphon server" id="sdD-hq-YOX">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="enableSyphonServer:" target="-1" id="ado-cm-nJP"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Setup camera settings..." id="MCW-Ps-Vbu">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -65,9 +58,6 @@
                     <connections>
                         <action selector="showHelp:" target="-1" id="YBN-9t-ZHP"/>
                     </connections>
-                </menuItem>
-                <menuItem title="Preferences..." id="bL8-Fj-18v">
-                    <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="Aiq-Hc-6Bu"/>
                 <menuItem title="Quit Syphon IIDC Server" id="buV-7R-cjl">

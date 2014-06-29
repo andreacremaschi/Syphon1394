@@ -32,11 +32,8 @@
     static StatusItemManager *__sharedManager;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSStatusBar *bar = [NSStatusBar systemStatusBar];
-        NSStatusItem *statusItem = [bar statusItemWithLength: NSSquareStatusItemLength];
-
         __sharedManager = [StatusItemManager new];
-        __sharedManager.statusItem = statusItem;
+        [__sharedManager updateStatusItem];
     });
     return __sharedManager;
 }
@@ -67,8 +64,12 @@
 
     });
     
-    NSImage *statusImage = [NSImage imageNamed:@"shape_red"];
+    NSString *activeCameraGUID = [self.dataSource activeCameraGUID];
+    BOOL isCameraConnected = activeCameraGUID != nil;
+    
+    NSImage *statusImage = isCameraConnected ? [NSImage imageNamed:@"camera_icon_active"] : [NSImage imageNamed:@"camera_icon"];
     [self.statusItem setImage: statusImage];
+    [self.statusItem setHighlightMode: YES];
 }
 
 
@@ -167,6 +168,12 @@
     return NO;
 }
 
+-(void)menuWillOpen:(NSMenu *)menu {
+    NSImage *statusImage = [NSImage imageNamed:@"camera_icon_i"];
+    [self.statusItem setImage: statusImage];
+}
 
-
+-(void)menuDidClose:(NSMenu *)menu {
+    [self updateStatusItem];
+}
 @end

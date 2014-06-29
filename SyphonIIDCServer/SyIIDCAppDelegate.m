@@ -176,6 +176,9 @@
         self.settingsWindowPanel.captureSession = captureSession;
         self.captureSession = captureSession;
     }
+    
+    [[StatusItemManager sharedManager] updateStatusItem];
+    
 //    [self.dataSource selectVideoModeWithId: videoModeId videoDevice: deviceId];
 }
 
@@ -200,6 +203,9 @@
     self.settingsWindowPanel.captureSession = nil;
     [self.settingsWindowPanel close];
     self.settingsWindowPanel = nil;
+
+    [[StatusItemManager sharedManager] updateStatusItem];
+
 }
 
 - (IBAction) resetCameraBus: (id)sender {
@@ -208,8 +214,6 @@
     IIDCCamera *camera = captureSession.camera  ;
     
     [self disconnectCamera: sender];
-    
-    
     
 }
 

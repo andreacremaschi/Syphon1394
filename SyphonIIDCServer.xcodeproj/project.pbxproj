@@ -31,10 +31,14 @@
 		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
 		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
 		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
+		CD254E9D195F0BBF002512D5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD254E9C195F0BBF002512D5 /* Images.xcassets */; };
+		CD254EA819602C9A002512D5 /* camera_icon_active.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA419602C9A002512D5 /* camera_icon_active.png */; };
+		CD254EA919602C9A002512D5 /* camera_icon_error.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA519602C9A002512D5 /* camera_icon_error.png */; };
+		CD254EAA19602C9A002512D5 /* camera_icon_i.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA619602C9A002512D5 /* camera_icon_i.png */; };
+		CD254EAB19602C9A002512D5 /* camera_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA719602C9A002512D5 /* camera_icon.png */; };
 		CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
 		CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
 		CD2F95AC192D180E001CB609 /* StatusItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2F95AB192D180E001CB609 /* StatusItemManager.m */; };
-		CD2F95AE192D1930001CB609 /* shape_red.png in Resources */ = {isa = PBXBuildFile; fileRef = CD2F95AD192D1930001CB609 /* shape_red.png */; };
 		CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */; };
 		CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13B91933D85000443E81 /* IIDCContext.m */; };
 		CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13BC1933DCC100443E81 /* IIDCCamera.m */; };
@@ -126,10 +130,14 @@
 		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
 		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
 		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
+		CD254E9C195F0BBF002512D5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SyphonIIDCServer/Images.xcassets; sourceTree = "<group>"; };
+		CD254EA419602C9A002512D5 /* camera_icon_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon_active.png; path = SyphonIIDCServer/Resources/camera_icon_active.png; sourceTree = "<group>"; };
+		CD254EA519602C9A002512D5 /* camera_icon_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon_error.png; path = SyphonIIDCServer/Resources/camera_icon_error.png; sourceTree = "<group>"; };
+		CD254EA619602C9A002512D5 /* camera_icon_i.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon_i.png; path = SyphonIIDCServer/Resources/camera_icon_i.png; sourceTree = "<group>"; };
+		CD254EA719602C9A002512D5 /* camera_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon.png; path = SyphonIIDCServer/Resources/camera_icon.png; sourceTree = "<group>"; };
 		CD2F95A7192D1773001CB609 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Syphon.framework; path = Frameworks/Syphon.framework; sourceTree = "<group>"; };
 		CD2F95AA192D180E001CB609 /* StatusItemManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemManager.h; sourceTree = "<group>"; };
 		CD2F95AB192D180E001CB609 /* StatusItemManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemManager.m; sourceTree = "<group>"; };
-		CD2F95AD192D1930001CB609 /* shape_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shape_red.png; sourceTree = "<group>"; };
 		CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StatusItemMenu.xib; path = SyphonIIDCServer/StatusItemMenu.xib; sourceTree = "<group>"; };
 		CD4D13B81933D85000443E81 /* IIDCContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCContext.h; sourceTree = "<group>"; };
 		CD4D13B91933D85000443E81 /* IIDCContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCContext.m; sourceTree = "<group>"; };
@@ -270,7 +278,11 @@
 		C4121A75144B412A0088F701 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CD2F95AD192D1930001CB609 /* shape_red.png */,
+				CD254E9C195F0BBF002512D5 /* Images.xcassets */,
+				CD254EA419602C9A002512D5 /* camera_icon_active.png */,
+				CD254EA519602C9A002512D5 /* camera_icon_error.png */,
+				CD254EA619602C9A002512D5 /* camera_icon_i.png */,
+				CD254EA719602C9A002512D5 /* camera_icon.png */,
 				C419579B144B376700338631 /* MainMenu.xib */,
 				C4121A73144B41020088F701 /* MainWindowController.xib */,
 				CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */,
@@ -479,12 +491,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD254EAA19602C9A002512D5 /* camera_icon_i.png in Resources */,
+				CD254EAB19602C9A002512D5 /* camera_icon.png in Resources */,
 				C4195791144B376700338631 /* InfoPlist.strings in Resources */,
+				CD254E9D195F0BBF002512D5 /* Images.xcassets in Resources */,
 				CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */,
 				CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */,
+				CD254EA919602C9A002512D5 /* camera_icon_error.png in Resources */,
 				C4195797144B376700338631 /* Credits.rtf in Resources */,
-				CD2F95AE192D1930001CB609 /* shape_red.png in Resources */,
 				C419579D144B376700338631 /* MainMenu.xib in Resources */,
+				CD254EA819602C9A002512D5 /* camera_icon_active.png in Resources */,
 				C4121A74144B41020088F701 /* MainWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,6 +682,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -695,6 +712,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
