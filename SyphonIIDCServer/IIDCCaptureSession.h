@@ -18,6 +18,8 @@ extern NSString *CapturedFrameNotification;
 @property (readonly) IIDCCamera *camera;
 @property (weak) id <IIDCCaptureSessionDelegate> delegate;
 
+@property (readonly) double fps;
+
 - (id) initWithCamera: (IIDCCamera *)camera;
 
 - (BOOL)startCapturing:(NSError**)error;

@@ -33,6 +33,9 @@
 @property BOOL isStopping;
 
 @property (strong) id activity;
+
+@property (readwrite) double fps;
+
 @end
 
 #define SECONDS_IN_RUNLOOP				(1)
@@ -397,7 +400,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     
-    [self.openGLContext flushBuffer];
+    //[self.openGLContext flushBuffer];
     
     [syphonServer unbindAndPublish];
 
@@ -437,6 +440,16 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data) {
             int errors = 0;
             dc1394error_t retval;
             
+            // calculate framerate with a smoothed average
+            double curTime = CFAbsoluteTimeGetCurrent();
+            float weightRatio = 0.025;
+            static CFAbsoluteTime time = 0;
+            static CFAbsoluteTime last_frame = 0;
+            time = curTime;
+            time = time * (1.0 - weightRatio) + last_frame * weightRatio;
+            last_frame = curTime;
+            captureSession.fps =  1.0 / (curTime-time) * weightRatio;
+            
             IIDCCaptureSession *captureSession = (__bridge IIDCCaptureSession*)data;
             
             // Get a frame from the camera
@@ -453,6 +466,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data) {
                     return;
                 } else {
                     NSLog(@"Too many frame errors.");
+                    // TODO: handle error
                     return;
                 }
             }

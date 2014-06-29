@@ -517,7 +517,7 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     [self didChangeValueForKey:@"videomode"];
     [self didChangeValueForKey:@"framerate"];
     
-    NSLog(@"Supported framerates: %@", [self availableFrameRatesForCurrentVideoMode]);
+    // NSLog(@"Supported framerates: %@", [self availableFrameRatesForCurrentVideoMode]);
     
 	return (DC1394_SUCCESS == err);
 }
