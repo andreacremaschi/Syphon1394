@@ -7,12 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */ = {isa = PBXBuildFile; fileRef = C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */; };
-		C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */; };
-		C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */; };
 		C4121A66144B3F150088F701 /* SICError.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A65144B3F150088F701 /* SICError.m */; };
-		C4121A74144B41020088F701 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4121A73144B41020088F701 /* MainWindowController.xib */; };
-		C4121A78144B41740088F701 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4121A77144B41740088F701 /* MainWindowController.m */; };
 		C4195787144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
 		C4195791144B376700338631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C419578F144B376700338631 /* InfoPlist.strings */; };
 		C4195793144B376700338631 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4195792144B376700338631 /* main.m */; };
@@ -23,14 +18,7 @@
 		C41957A6144B376700338631 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4195786144B376700338631 /* Cocoa.framework */; };
 		C41957AE144B376700338631 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C41957AC144B376700338631 /* InfoPlist.strings */; };
 		C41957B1144B376700338631 /* SyphonIIDCServerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957B0144B376700338631 /* SyphonIIDCServerTests.m */; };
-		C41957BE144B37B000338631 /* KOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957BD144B37B000338631 /* KOpenGLView.m */; };
-		C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */; };
 		C41957C3144B380900338631 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C41957C2144B380900338631 /* OpenGL.framework */; };
-		C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E594144C91DE00CF26C7 /* KCanvas.m */; };
-		C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E596144C91DE00CF26C7 /* KCVBufferPool.m */; };
-		C436E59B144C925B00CF26C7 /* KBO.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59A144C925B00CF26C7 /* KBO.m */; };
-		C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */; };
-		C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */; };
 		CD254E9D195F0BBF002512D5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD254E9C195F0BBF002512D5 /* Images.xcassets */; };
 		CD254EA819602C9A002512D5 /* camera_icon_active.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA419602C9A002512D5 /* camera_icon_active.png */; };
 		CD254EA919602C9A002512D5 /* camera_icon_error.png in Resources */ = {isa = PBXBuildFile; fileRef = CD254EA519602C9A002512D5 /* camera_icon_error.png */; };
@@ -40,10 +28,10 @@
 		CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD2F95A7192D1773001CB609 /* Syphon.framework */; };
 		CD2F95AC192D180E001CB609 /* StatusItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2F95AB192D180E001CB609 /* StatusItemManager.m */; };
 		CD2F95B0192D29BD001CB609 /* StatusItemMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */; };
+		CD3A220F19AB964700470B05 /* libdc1394.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13BE193678BB00443E81 /* libdc1394.dylib */; };
+		CD3A221019AB964D00470B05 /* libdc1394.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13BE193678BB00443E81 /* libdc1394.dylib */; };
 		CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13B91933D85000443E81 /* IIDCContext.m */; };
 		CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = CD4D13BC1933DCC100443E81 /* IIDCCamera.m */; };
-		CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
-		CD4D13C5193678F500443E81 /* libdc1394.22.dylib in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D13C3193678F000443E81 /* libdc1394.22.dylib */; };
 		CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF161510992600D3AC18 /* QuartzCore.framework */; };
 		CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD79EF181510994100D3AC18 /* Accelerate.framework */; };
 		CDB76ECA193B87BB008E92BD /* SettingsWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */; };
@@ -74,7 +62,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				CD2F95A9192D1776001CB609 /* Syphon.framework in Copy Frameworks */,
-				CD4D13C5193678F500443E81 /* libdc1394.22.dylib in Copy Frameworks */,
+				CD3A221019AB964D00470B05 /* libdc1394.dylib in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,20 +70,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFCapturePixelFormatConversions.c; sourceTree = "<group>"; };
-		C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCapturePixelFormatConversions.h; sourceTree = "<group>"; };
-		C4121A59144B3EFD0088F701 /* TFExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFExceptions.h; sourceTree = "<group>"; };
-		C4121A5A144B3EFD0088F701 /* TFIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFIncludes.h; sourceTree = "<group>"; };
-		C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLibDC1394Capture.h; sourceTree = "<group>"; };
-		C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLibDC1394Capture.m; sourceTree = "<group>"; };
-		C4121A5D144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.h"; sourceTree = "<group>"; };
-		C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFLibDC1394Capture+CIImageFromDc1394Frame.m"; sourceTree = "<group>"; };
-		C4121A5F144B3EFD0088F701 /* TFLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLocalization.h; sourceTree = "<group>"; };
 		C4121A64144B3F150088F701 /* SICError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SICError.h; sourceTree = "<group>"; };
 		C4121A65144B3F150088F701 /* SICError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SICError.m; sourceTree = "<group>"; };
-		C4121A73144B41020088F701 /* MainWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindowController.xib; sourceTree = "<group>"; };
-		C4121A76144B41740088F701 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
-		C4121A77144B41740088F701 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
 		C4195782144B376700338631 /* SyphonIIDCServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SyphonIIDCServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4195786144B376700338631 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C4195789144B376700338631 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -114,22 +90,7 @@
 		C41957AD144B376700338631 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C41957AF144B376700338631 /* SyphonIIDCServerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonIIDCServerTests.h; sourceTree = "<group>"; };
 		C41957B0144B376700338631 /* SyphonIIDCServerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonIIDCServerTests.m; sourceTree = "<group>"; };
-		C41957BC144B37B000338631 /* KOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KOpenGLView.h; sourceTree = "<group>"; };
-		C41957BD144B37B000338631 /* KOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KOpenGLView.m; sourceTree = "<group>"; };
-		C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFThreadMessagingQueue.h; sourceTree = "<group>"; };
-		C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFThreadMessagingQueue.m; sourceTree = "<group>"; };
 		C41957C2144B380900338631 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		C436E593144C91DE00CF26C7 /* KCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCanvas.h; sourceTree = "<group>"; };
-		C436E594144C91DE00CF26C7 /* KCanvas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCanvas.m; sourceTree = "<group>"; };
-		C436E595144C91DE00CF26C7 /* KCVBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCVBufferPool.h; sourceTree = "<group>"; };
-		C436E596144C91DE00CF26C7 /* KCVBufferPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCVBufferPool.m; sourceTree = "<group>"; };
-		C436E599144C925B00CF26C7 /* KBO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBO.h; sourceTree = "<group>"; };
-		C436E59A144C925B00CF26C7 /* KBO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KBO.m; sourceTree = "<group>"; };
-		C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCameraController.h; sourceTree = "<group>"; };
-		C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCameraController.m; sourceTree = "<group>"; };
-		C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerGLView.h; sourceTree = "<group>"; };
-		C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleServerGLView.m; sourceTree = "<group>"; };
-		C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleServerTextureSource.h; sourceTree = "<group>"; };
 		CD254E9C195F0BBF002512D5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SyphonIIDCServer/Images.xcassets; sourceTree = "<group>"; };
 		CD254EA419602C9A002512D5 /* camera_icon_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon_active.png; path = SyphonIIDCServer/Resources/camera_icon_active.png; sourceTree = "<group>"; };
 		CD254EA519602C9A002512D5 /* camera_icon_error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_icon_error.png; path = SyphonIIDCServer/Resources/camera_icon_error.png; sourceTree = "<group>"; };
@@ -144,7 +105,6 @@
 		CD4D13BB1933DCC100443E81 /* IIDCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIDCCamera.h; sourceTree = "<group>"; };
 		CD4D13BC1933DCC100443E81 /* IIDCCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IIDCCamera.m; sourceTree = "<group>"; };
 		CD4D13BE193678BB00443E81 /* libdc1394.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.dylib; path = Frameworks/libdc1394/libdc1394.dylib; sourceTree = "<group>"; };
-		CD4D13C3193678F000443E81 /* libdc1394.22.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdc1394.22.dylib; path = Frameworks/libdc1394/libdc1394.22.dylib; sourceTree = "<group>"; };
 		CD4D151B1937A25900443E81 /* camwire.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camwire.c; sourceTree = "<group>"; };
 		CD4D151C1937A25900443E81 /* camwire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwire.h; sourceTree = "<group>"; };
 		CD4D151D1937A25900443E81 /* camwire_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camwire_config.h; sourceTree = "<group>"; };
@@ -179,9 +139,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD3A220F19AB964700470B05 /* libdc1394.dylib in Frameworks */,
 				CDB76EDB193E32CB008E92BD /* GLKit.framework in Frameworks */,
 				CD79EF191510994100D3AC18 /* Accelerate.framework in Frameworks */,
-				CD4D13C4193678F000443E81 /* libdc1394.22.dylib in Frameworks */,
 				CD79EF171510992600D3AC18 /* QuartzCore.framework in Frameworks */,
 				CD2F95A8192D1773001CB609 /* Syphon.framework in Frameworks */,
 				C41957C3144B380900338631 /* OpenGL.framework in Frameworks */,
@@ -206,8 +166,6 @@
 			children = (
 				CD2F95AA192D180E001CB609 /* StatusItemManager.h */,
 				CD2F95AB192D180E001CB609 /* StatusItemManager.m */,
-				C4121A76144B41740088F701 /* MainWindowController.h */,
-				C4121A77144B41740088F701 /* MainWindowController.m */,
 				CDB76ECB193B87FB008E92BD /* SettingsWindowController.h */,
 				CDB76ECC193B87FB008E92BD /* SettingsWindowController.m */,
 			);
@@ -217,11 +175,6 @@
 		C4121A6F144B3FCD0088F701 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C41957BC144B37B000338631 /* KOpenGLView.h */,
-				C41957BD144B37B000338631 /* KOpenGLView.m */,
-				C4FEFD8C144E063800E2DDB4 /* SimpleServerGLView.h */,
-				C4FEFD8D144E063800E2DDB4 /* SimpleServerGLView.m */,
-				C4FEFD90144E066500E2DDB4 /* SimpleServerTextureSource.h */,
 				CDB76ED1193B9D8C008E92BD /* FeatureControlTableCellView.h */,
 				CDB76ED2193B9D8C008E92BD /* FeatureControlTableCellView.m */,
 			);
@@ -231,8 +184,6 @@
 		C4121A70144B3FD10088F701 /* DC1394 controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C436E59C144CA0FE00CF26C7 /* IIDCCameraController.h */,
-				C436E59D144CA0FE00CF26C7 /* IIDCCameraController.m */,
 				CD4D13B81933D85000443E81 /* IIDCContext.h */,
 				CD4D13B91933D85000443E81 /* IIDCContext.m */,
 				CD4D13BB1933DCC100443E81 /* IIDCCamera.h */,
@@ -251,12 +202,6 @@
 			isa = PBXGroup;
 			children = (
 				CDA1F3A41621C43B00D6BCEC /* libdc1394.dylib */,
-				C4121A58144B3EFD0088F701 /* TFCapturePixelFormatConversions.h */,
-				C4121A57144B3EFD0088F701 /* TFCapturePixelFormatConversions.c */,
-				C4121A5B144B3EFD0088F701 /* TFLibDC1394Capture.h */,
-				C4121A5C144B3EFD0088F701 /* TFLibDC1394Capture.m */,
-				C4121A5D144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.h */,
-				C4121A5E144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m */,
 			);
 			name = "IIDC protocol management";
 			sourceTree = "<group>";
@@ -266,11 +211,6 @@
 			children = (
 				C4121A64144B3F150088F701 /* SICError.h */,
 				C4121A65144B3F150088F701 /* SICError.m */,
-				C4121A59144B3EFD0088F701 /* TFExceptions.h */,
-				C4121A5A144B3EFD0088F701 /* TFIncludes.h */,
-				C4121A5F144B3EFD0088F701 /* TFLocalization.h */,
-				C41957BF144B37BF00338631 /* TFThreadMessagingQueue.h */,
-				C41957C0144B37BF00338631 /* TFThreadMessagingQueue.m */,
 			);
 			name = "Misc includes";
 			sourceTree = "<group>";
@@ -284,7 +224,6 @@
 				CD254EA619602C9A002512D5 /* camera_icon_i.png */,
 				CD254EA719602C9A002512D5 /* camera_icon.png */,
 				C419579B144B376700338631 /* MainMenu.xib */,
-				C4121A73144B41020088F701 /* MainWindowController.xib */,
 				CD2F95AF192D29BD001CB609 /* StatusItemMenu.xib */,
 				CDB76EC9193B87BB008E92BD /* SettingsWindow.xib */,
 			);
@@ -316,7 +255,6 @@
 			children = (
 				CDB76EDA193E32CB008E92BD /* GLKit.framework */,
 				CD4D151A1937A25900443E81 /* camwire */,
-				CD4D13C3193678F000443E81 /* libdc1394.22.dylib */,
 				CD4D13BE193678BB00443E81 /* libdc1394.dylib */,
 				CD2F95A7192D1773001CB609 /* Syphon.framework */,
 				CD79EF181510994100D3AC18 /* Accelerate.framework */,
@@ -342,7 +280,6 @@
 		C419578C144B376700338631 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */,
 				C4121A71144B3FE00088F701 /* IIDC protocol management */,
 				C4121A70144B3FD10088F701 /* DC1394 controllers */,
 				C4121A6F144B3FCD0088F701 /* View */,
@@ -387,19 +324,6 @@
 				C41957AC144B376700338631 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C436E591144C91C900CF26C7 /* CoreVideo and OpenGL convenience classes */ = {
-			isa = PBXGroup;
-			children = (
-				C436E593144C91DE00CF26C7 /* KCanvas.h */,
-				C436E594144C91DE00CF26C7 /* KCanvas.m */,
-				C436E595144C91DE00CF26C7 /* KCVBufferPool.h */,
-				C436E596144C91DE00CF26C7 /* KCVBufferPool.m */,
-				C436E599144C925B00CF26C7 /* KBO.h */,
-				C436E59A144C925B00CF26C7 /* KBO.m */,
-			);
-			name = "CoreVideo and OpenGL convenience classes";
 			sourceTree = "<group>";
 		};
 		CD4D151A1937A25900443E81 /* camwire */ = {
@@ -501,7 +425,6 @@
 				C4195797144B376700338631 /* Credits.rtf in Resources */,
 				C419579D144B376700338631 /* MainMenu.xib in Resources */,
 				CD254EA819602C9A002512D5 /* camera_icon_active.png in Resources */,
-				C4121A74144B41020088F701 /* MainWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,24 +464,13 @@
 				CDB76ED6193BA12D008E92BD /* IIDCCamera+KVO.m in Sources */,
 				C4195793144B376700338631 /* main.m in Sources */,
 				C419579A144B376700338631 /* SyIIDCAppDelegate.m in Sources */,
-				C41957BE144B37B000338631 /* KOpenGLView.m in Sources */,
-				C41957C1144B37BF00338631 /* TFThreadMessagingQueue.m in Sources */,
-				C4121A61144B3EFD0088F701 /* TFCapturePixelFormatConversions.c in Sources */,
 				CD4D13BA1933D85000443E81 /* IIDCContext.m in Sources */,
 				CDB76ECD193B87FB008E92BD /* SettingsWindowController.m in Sources */,
-				C4121A62144B3EFD0088F701 /* TFLibDC1394Capture.m in Sources */,
-				C4121A63144B3EFD0088F701 /* TFLibDC1394Capture+CIImageFromDc1394Frame.m in Sources */,
 				CDB76ED9193BA51E008E92BD /* NSStringToNSNumberValueTransformer.m in Sources */,
 				C4121A66144B3F150088F701 /* SICError.m in Sources */,
-				C4121A78144B41740088F701 /* MainWindowController.m in Sources */,
-				C436E597144C91DE00CF26C7 /* KCanvas.m in Sources */,
 				CD4D13BD1933DCC100443E81 /* IIDCCamera.m in Sources */,
-				C436E598144C91DE00CF26C7 /* KCVBufferPool.m in Sources */,
 				CDD9D3D4193A11EF008DB524 /* IIDCCaptureSession.m in Sources */,
-				C436E59B144C925B00CF26C7 /* KBO.m in Sources */,
-				C436E59E144CA0FE00CF26C7 /* IIDCCameraController.m in Sources */,
 				CDB76EDF193E38CD008E92BD /* DC1394FrameUploader.m in Sources */,
-				C4FEFD8E144E063800E2DDB4 /* SimpleServerGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,7 +612,7 @@
 					"$(PROJECT_DIR)/Frameworks/camwire/build/camwire/Debug",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Syphon1394;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers ${SRCROOT}/Frameworks/camwire";
 				VALID_ARCHS = x86_64;
@@ -730,7 +642,7 @@
 					"$(PROJECT_DIR)/Frameworks/camwire/build/camwire/Debug",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Syphon1394;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Frameworks/libdc1394 ${SRCROOT}/Frameworks/Syphon.framework/Headers ${SRCROOT}/Frameworks/camwire";
 				VALID_ARCHS = x86_64;

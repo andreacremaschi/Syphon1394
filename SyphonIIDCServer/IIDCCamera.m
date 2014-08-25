@@ -127,18 +127,6 @@
         return @{};
     }
 
-    // TODO: usa camwire qui
-    /*    User_handle internal_status = camwire_bus_get_userdata(_cameraHandler);
-     if (!internal_status)
-     {
-     // TODO: error handling
-     NSLog(@"");
-     return @{};
-     }
-     
-     dc1394featureset_t features = internal_status->feature_set;
-     */
-    
 	for (dc1394feature_t i=0; i<DC1394_FEATURE_NUM; i++) {
         
 		dc1394feature_info_t featureInfo = features.feature[i];
@@ -352,7 +340,8 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     int j;
     for (j=0; j<list.num; j++) {
         NSDictionary *curresolutionDictionary;
-        switch(list.modes[j]) {
+        int mode = list.modes[j];
+        switch(mode) {
             case DC1394_VIDEO_MODE_320x240_YUV422:
                 curresolutionDictionary = resolutionDictionary (320., 240., @"YUV422"); break;
                 break;
@@ -400,12 +389,30 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
                 curresolutionDictionary = resolutionDictionary (1600., 1200., @"MONO16"); break;
             case DC1394_VIDEO_MODE_1600x1200_YUV422:
                 curresolutionDictionary = resolutionDictionary (1600., 1200., @"YUV422"); break;
+
+            case DC1394_VIDEO_MODE_FORMAT7_0:
+            case DC1394_VIDEO_MODE_FORMAT7_1:
+            case DC1394_VIDEO_MODE_FORMAT7_2:
+            case DC1394_VIDEO_MODE_FORMAT7_3:
+            case DC1394_VIDEO_MODE_FORMAT7_4:
+            case DC1394_VIDEO_MODE_FORMAT7_5:
+            case DC1394_VIDEO_MODE_FORMAT7_6:
+            case DC1394_VIDEO_MODE_FORMAT7_7:
+                curresolutionDictionary = @{ @"color_mode" : [NSString stringWithFormat:@"User defined %i", mode-DC1394_VIDEO_MODE_FORMAT7_0]};
+                break;
+                
             default:
-                curresolutionDictionary = resolutionDictionary (0., 0., @"Not supported yet"); break;
+                 break;
         }
+        if (curresolutionDictionary == nil) continue;
         curresolutionDictionary = [curresolutionDictionary mutableCopy];
-        [curresolutionDictionary setValue: @(list.modes[j]) forKey:@"dc1394_videomode"];
-        [curresolutionDictionary setValue: [NSString stringWithFormat: @"%@ %@x%@", [curresolutionDictionary valueForKey:@"color_mode"], [curresolutionDictionary valueForKey:@"width"], [curresolutionDictionary valueForKey:@"height"] ] forKey:@"description"];
+        [curresolutionDictionary setValue: @(mode) forKey:@"dc1394_videomode"];
+        if ([curresolutionDictionary.allKeys containsObject:@"width"]) {
+            [curresolutionDictionary setValue: [NSString stringWithFormat: @"%@ %@x%@", [curresolutionDictionary valueForKey:@"color_mode"], curresolutionDictionary[@"width"], curresolutionDictionary[@"height"] ] forKey:@"description"];}
+        else {
+            [curresolutionDictionary setValue: curresolutionDictionary[@"color_mode"] forKey:@"description"];
+        }
+            
         [videomodesArray addObject: curresolutionDictionary];
     }
     _videomodes = videomodesArray;
@@ -455,11 +462,20 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     
 }
 
+-(BOOL)isFramerateApplicable {
+    dc1394camera_t *camera = self.cameraHandler;
+    dc1394video_mode_t videoMode;
+    dc1394_video_get_mode(camera, &videoMode);
+    return !(videoMode >= DC1394_VIDEO_MODE_EXIF);
+}
+
 - (NSArray*)availableFrameRatesForCurrentVideoMode {
 
     dc1394camera_t *camera = self.cameraHandler;
     dc1394video_mode_t videoMode;
     dc1394framerates_t frameRates;
+    
+    if (![self isFramerateApplicable]) return @[];
     
     dc1394_video_get_mode(camera, &videoMode);
     dc1394_video_get_supported_framerates(camera, videoMode, &frameRates);
@@ -499,24 +515,25 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
     dc1394video_mode_t curVideoMode;
     
     // check if current framerate is supported
-    dc1394framerates_t frameRates;
-    dc1394_video_get_mode(camera, &curVideoMode);
-    dc1394_video_get_supported_framerates(camera, curVideoMode, &frameRates);
-    BOOL found = NO;
-    for (int i=0;i<frameRates.num;i++) {
-        if (frameRates.framerates[i] == curVideoMode) {
-            found=YES;
-            break;
+    if ([self isFramerateApplicable]) {
+        dc1394framerates_t frameRates;
+        dc1394_video_get_mode(camera, &curVideoMode);
+        dc1394_video_get_supported_framerates(camera, curVideoMode, &frameRates);
+        BOOL found = NO;
+        for (int i=0;i<frameRates.num;i++) {
+            if (frameRates.framerates[i] == curVideoMode) {
+                found=YES;
+                break;
+            }
         }
+        if (!found && frameRates.num>0) {
+            // if not, set the max available
+            dc1394framerate_t frameRate = frameRates.framerates[frameRates.num-1];
+            dc1394_video_set_framerate(camera, frameRate);
+        }
+        [self didChangeValueForKey:@"videomode"];
+        [self didChangeValueForKey:@"framerate"];
     }
-    if (!found && frameRates.num>0) {
-        // if not, set the max available
-        dc1394framerate_t frameRate = frameRates.framerates[frameRates.num-1];
-        dc1394_video_set_framerate(camera, frameRate);
-    }
-    [self didChangeValueForKey:@"videomode"];
-    [self didChangeValueForKey:@"framerate"];
-    
     // NSLog(@"Supported framerates: %@", [self availableFrameRatesForCurrentVideoMode]);
     
 	return (DC1394_SUCCESS == err);

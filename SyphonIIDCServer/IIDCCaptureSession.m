@@ -35,12 +35,18 @@
 @property (strong) id activity;
 
 @property (readwrite) double fps;
+@property (readwrite) IIDCCaptureSessionState state;
+
+@property CFAbsoluteTime time;
+@property  CFAbsoluteTime lastFrame;
 
 @end
 
-#define SECONDS_IN_RUNLOOP				(1)
+#define SECONDS_IN_RUNLOOP				(2)
 #define NUM_DMA_BUFFERS					(10)
 #define MAX_FEATURE_KEY					(4)
+
+NSString *IIDCCameraErrorDomain = @"IIDCCameraErrorDomain";
 
 static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 
@@ -55,6 +61,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
     if (self) {
         _camera = camera;
         _threadLock = [NSLock new];
+        _state = IIDCCaptureSessionState_Initial;
     }
     return self;
 }
@@ -86,10 +93,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 {
     if (nil != _thread)
         return YES;
-    
-    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)])
-    self.activity = [[NSProcessInfo processInfo] beginActivityWithOptions: NSActivityUserInitiated | NSActivityIdleDisplaySleepDisabled | NSActivityLatencyCritical
-                                                               reason:@"Streaming firewire camera"];
+   
     _thread = [[NSThread alloc] initWithTarget:self
                                       selector:@selector(_videoCaptureThread)
                                         object:nil];
@@ -103,10 +107,19 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
     if (NO) {
         [_thread cancel];
         _thread = nil;
+
+        self.state = IIDCCaptureSessionState_Error;
         
         return NO;
     }
 	
+    self.state = IIDCCaptureSessionState_Capturing;
+
+    // avoid app nap!
+    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)])
+        self.activity = [[NSProcessInfo processInfo] beginActivityWithOptions: NSActivityUserInitiated | NSActivityIdleDisplaySleepDisabled | NSActivityLatencyCritical
+                                                                       reason:@"Streaming firewire camera"];
+
 	return YES;
 }
 
@@ -114,7 +127,7 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 {
     if (nil == _thread)
         return YES;
-
+    
     self.isStopping = YES;
 
     [self performSelector:@selector(_stopCapture:)
@@ -139,6 +152,12 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
         [[NSProcessInfo processInfo] endActivity: self.activity];
     
     self.activity = nil;
+    
+    if (success) {
+        self.state = IIDCCaptureSessionState_Terminated;
+    } else {
+        self.state = IIDCCaptureSessionState_Error;
+    }
     
 	return success;
 }
@@ -263,6 +282,16 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
 			do {
 				@autoreleasepool {
 					[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:SECONDS_IN_RUNLOOP]];
+                    
+                    CFAbsoluteTime curTime = CFAbsoluteTimeGetCurrent();
+                    CFAbsoluteTime lastFrame = self.lastFrame;
+                    CFTimeInterval timePassed = (curTime-lastFrame);
+                    if (self.state == IIDCCaptureSessionState_Capturing && timePassed > SECONDS_IN_RUNLOOP) {
+                        NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey : @"Connection error."};
+                        NSError *error = [NSError errorWithDomain:IIDCCameraErrorDomain code:101 userInfo: userInfo];
+                        [self terminateCapturingWithError: error];
+
+                    }
 				}
 			} while (![[NSThread currentThread] isCancelled]);
             
@@ -429,6 +458,14 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data);
         fprintf(stderr,"Buffer was already empty\n");*/
 }
 
+-(void)terminateCapturingWithError: (NSError*)error {
+    NSError *stopError;
+    [self stopCapturing: &stopError];
+    
+    self.state = IIDCCaptureSessionState_Error;
+    if ([self.delegate respondsToSelector:@selector(captureSession:didFailWithError:)])
+        [self.delegate captureSession:self didFailWithError:error];
+}
 
 static void libdc1394_frame_callback(dc1394camera_t* c, void* data) {
     @autoreleasepool {
@@ -443,12 +480,14 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data) {
             // calculate framerate with a smoothed average
             double curTime = CFAbsoluteTimeGetCurrent();
             float weightRatio = 0.025;
-            static CFAbsoluteTime time = 0;
-            static CFAbsoluteTime last_frame = 0;
+            CFAbsoluteTime time = captureSession.time;
+            CFAbsoluteTime last_frame = captureSession.lastFrame;
             time = curTime;
             time = time * (1.0 - weightRatio) + last_frame * weightRatio;
             last_frame = curTime;
             captureSession.fps =  1.0 / (curTime-time) * weightRatio;
+            captureSession.time = time;
+            captureSession.lastFrame = last_frame;
             
             IIDCCaptureSession *captureSession = (__bridge IIDCCaptureSession*)data;
             
@@ -466,7 +505,9 @@ static void libdc1394_frame_callback(dc1394camera_t* c, void* data) {
                     return;
                 } else {
                     NSLog(@"Too many frame errors.");
-                    // TODO: handle error
+                    NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey : @"Too many frame errors."};
+                    NSError *error = [NSError errorWithDomain:IIDCCameraErrorDomain code:100 userInfo: userInfo];
+                    [captureSession terminateCapturingWithError: error];
                     return;
                 }
             }

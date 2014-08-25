@@ -30,12 +30,13 @@
 -(void)resetCameraBus;
 
 // Features and videomodes
-@property (nonatomic, readonly) NSDictionary *features;
 @property (nonatomic, readonly) NSArray *videomodes;
-
 @property (nonatomic, readwrite) NSInteger videomode;
-@property (nonatomic, readwrite) double framerate;
+
+@property (nonatomic, readonly) NSDictionary *features;
+
 @property (nonatomic, readonly) NSArray *availableFrameRatesForCurrentVideoMode;
+@property (nonatomic, readwrite) double framerate;
 
 @property (readonly) IIDCContext *context;
 

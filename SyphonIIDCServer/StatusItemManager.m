@@ -67,7 +67,13 @@
     NSString *activeCameraGUID = [self.dataSource activeCameraGUID];
     BOOL isCameraConnected = activeCameraGUID != nil;
     
-    NSImage *statusImage = isCameraConnected ? [NSImage imageNamed:@"camera_icon_active"] : [NSImage imageNamed:@"camera_icon"];
+    NSImage *statusImage;
+    if (isCameraConnected) {
+        BOOL isInErrorState = [self.dataSource connectionError] != nil;
+        statusImage = isInErrorState ? [NSImage imageNamed:@"camera_icon_error"] : [NSImage imageNamed:@"camera_icon_active"];
+    } else {
+        statusImage = [NSImage imageNamed:@"camera_icon"];
+    }
     [self.statusItem setImage: statusImage];
     [self.statusItem setHighlightMode: YES];
 }
@@ -94,7 +100,12 @@
             self.connectionStatusMenuItem.title = NSLocalizedString( @"No camera connected", @"");
         else {
             NSString *framerate = [self.dataSource currentResolutionDescription];
-            self.connectionStatusMenuItem.title = [NSString stringWithFormat: NSLocalizedString( @"Capturing at %@", @""), framerate ];
+            NSError *connectionError = [self.dataSource connectionError];
+            if (connectionError) {
+                self.connectionStatusMenuItem.title = connectionError.localizedFailureReason;
+            } else {
+                self.connectionStatusMenuItem.title = [NSString stringWithFormat: NSLocalizedString( @"Capturing at %@", @""), framerate ];
+            }
         }
         
         // Hide/show "Disconnect device" menu item

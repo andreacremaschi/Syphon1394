@@ -10,6 +10,13 @@
 
 extern NSString *CapturedFrameNotification;
 
+typedef NS_ENUM(int, IIDCCaptureSessionState)  {
+    IIDCCaptureSessionState_Initial,
+    IIDCCaptureSessionState_Capturing,
+    IIDCCaptureSessionState_Error,
+    IIDCCaptureSessionState_Terminated
+};
+
 @class IIDCCamera;
 @protocol IIDCCaptureSessionDelegate;
 
@@ -19,14 +26,17 @@ extern NSString *CapturedFrameNotification;
 @property (weak) id <IIDCCaptureSessionDelegate> delegate;
 
 @property (readonly) double fps;
+@property (readonly) IIDCCaptureSessionState state;
 
-- (id) initWithCamera: (IIDCCamera *)camera;
+-(id)initWithCamera: (IIDCCamera *)camera;
 
-- (BOOL)startCapturing:(NSError**)error;
-- (BOOL)stopCapturing:(NSError**)error;
+-(BOOL)startCapturing:(NSError**)error;
+-(BOOL)stopCapturing:(NSError**)error;
 
 @end
 
-@protocol IIDCCaptureSessionDelegate
+@protocol IIDCCaptureSessionDelegate <NSObject>
 - (void)captureSession:(IIDCCaptureSession*)captureSession didCaptureFrame:(void*)capturedFrame;
+- (void)captureSession:(IIDCCaptureSession*)captureSession didFailWithError:(NSError*)error;
+
 @end

@@ -29,6 +29,8 @@
 - (NSNumber *)currentResolutionID;
 - (NSString *)currentResolutionDescription;
 
+- (NSError *)connectionError;
+
 - (void) updateAvailableDevicesListIfNeeded;
 
 @end
