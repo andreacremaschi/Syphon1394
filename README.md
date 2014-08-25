@@ -21,6 +21,6 @@ Andrea Cremaschi
 
 ## License
 
-Syphon1394 source code is available under the MIT license. See the LICENSE file for more info.
-[Syphon](http://syphon.v002.info) source code is available under a Simplified BSD software license.
-[libdc1394](http://damien.douxchamps.net/ieee1394/libdc1394/) is available under the GPL2.1 license.
+Syphon1394 source code is available under the MIT license. See the LICENSE file for more info.  
+[Syphon](http://syphon.v002.info) source code is available under a Simplified BSD software license.  
+[libdc1394](http://damien.douxchamps.net/ieee1394/libdc1394/) is available under the GPL2.1 license.  
