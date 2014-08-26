@@ -398,7 +398,7 @@ NSDictionary *resolutionDictionary (float width, float height, NSString* color_m
             case DC1394_VIDEO_MODE_FORMAT7_5:
             case DC1394_VIDEO_MODE_FORMAT7_6:
             case DC1394_VIDEO_MODE_FORMAT7_7:
-                curresolutionDictionary = @{ @"color_mode" : [NSString stringWithFormat:@"User defined %i", mode-DC1394_VIDEO_MODE_FORMAT7_0]};
+                // curresolutionDictionary = @{ @"color_mode" : [NSString stringWithFormat:@"User defined %i", mode-DC1394_VIDEO_MODE_FORMAT7_0]};
                 break;
                 
             default:
