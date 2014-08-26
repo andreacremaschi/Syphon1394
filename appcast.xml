@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Syphon1394</title>
+        <link>https://andreacremaschi.github.io/Syphon1394/</link>
+        <description>Tweak your firewire camera settings and create a Syphon video stream</description>
+        <generator>Feeder 2.5.3(1856); Mac OS X Version 10.9.4 (Build 13E28) http://reinventedsoftware.com/feeder/</generator>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <language>en</language>
+        <pubDate>Tue, 26 Aug 2014 13:51:08 +0200</pubDate>
+        <lastBuildDate>Tue, 26 Aug 2014 13:51:08 +0200</lastBuildDate>
+        <atom:link href="http://andreacremaschi.github.io/Syphon1394/appcast.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title>Version 1.0</title>
+            <pubDate>Tue, 26 Aug 2014 13:49:19 +0200</pubDate>
+            <enclosure url="https://github.com/andreacremaschi/Syphon1394/releases/download/1.0/Syphon1394_1.0.zip" length="1842868" type="application/zip" sparkle:version="1" sparkle:shortVersionString="1.0" sparkle:dsaSignature="MC0CFGd5mCMH+I8G65nRRZ5BVJc/jgocAhUAi2aLTCatc7L1igvXL1z/qxJdbik="/>
+            <guid isPermaLink="false">F8989B9F-E8B2-423F-A406-EA9A57A0E97D</guid>
+        </item>
+    </channel>
+</rss>
