@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C4195781144B376700338631"
-               BuildableName = "SyphonIIDCServer.app"
+               BuildableName = "Syphon1394.app"
                BlueprintName = "SyphonIIDCServer"
                ReferencedContainer = "container:SyphonIIDCServer.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4195781144B376700338631"
-            BuildableName = "SyphonIIDCServer.app"
+            BuildableName = "Syphon1394.app"
             BlueprintName = "SyphonIIDCServer"
             ReferencedContainer = "container:SyphonIIDCServer.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4195781144B376700338631"
-            BuildableName = "SyphonIIDCServer.app"
+            BuildableName = "Syphon1394.app"
             BlueprintName = "SyphonIIDCServer"
             ReferencedContainer = "container:SyphonIIDCServer.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4195781144B376700338631"
-            BuildableName = "SyphonIIDCServer.app"
+            BuildableName = "Syphon1394.app"
             BlueprintName = "SyphonIIDCServer"
             ReferencedContainer = "container:SyphonIIDCServer.xcodeproj">
          </BuildableReference>

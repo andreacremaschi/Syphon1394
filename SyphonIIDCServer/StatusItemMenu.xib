@@ -53,6 +53,12 @@
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="xpd-Ky-gLy"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Check for updates..." id="g6N-7v-cfp">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkForUpdates:" target="A2o-UV-IFx" id="Wmb-wO-swe"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Help on Syphon IIDC Server" hidden="YES" id="mAb-qM-3f4">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -71,5 +77,6 @@
                 <outlet property="delegate" destination="-2" id="uie-Dv-DXl"/>
             </connections>
         </menu>
+        <customObject id="A2o-UV-IFx" customClass="SUUpdater"/>
     </objects>
 </document>
