@@ -6,9 +6,9 @@ Apple's automagics are great most of the time but sometimes you need control ove
 
 > Currently only RGB8, MONO8, MONO16, YUV422 video modes are supported. If you need support for some other video modes or for Format7 get in touch opening an issue.
 
-## Supported cameras
+## System requirements
 
-Any IIDC/DCAM-compliant Firewire camera (see the [compatibility list on dc1394's website](http://damien.douxchamps.net/ieee1394/cameras/)).
+OSX 10.8 and later and any IIDC/DCAM-compliant Firewire camera (see the [compatibility list on dc1394's website](http://damien.douxchamps.net/ieee1394/cameras/)).
 
 Tested cameras:
 - AVT Guppy PRO F125B. 
@@ -17,11 +17,6 @@ Well, that's all.. If you test it on other cameras please [let me know](https://
 
 Incompatible Cameras
 - Firefly FFMV-03M2M by Point Grey Research
-
-## System requirements
-
-- OSX 10.8 and later
-- a camera that follows the IIDC standard ([here is a list](http://damien.douxchamps.net/ieee1394/cameras/))
 
 ## Contact
 
