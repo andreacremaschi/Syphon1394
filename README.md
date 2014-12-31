@@ -10,12 +10,12 @@ Apple's automagics are great most of the time but sometimes you need control ove
 
 OSX 10.8 and later and any IIDC/DCAM-compliant Firewire camera (see the [compatibility list on dc1394's website](http://damien.douxchamps.net/ieee1394/cameras/)).
 
-Tested cameras:
+### Tested cameras:
 - AVT Guppy PRO F125B. 
 
 Well, that's all.. If you test it on other cameras please [let me know](https://github.com/andreacremaschi/Syphon1394/issues/1) and I'll add it to this list.  
 
-Incompatible Cameras
+### Incompatible Cameras
 - Firefly FFMV-03M2M by Point Grey Research
 
 ## Contact
